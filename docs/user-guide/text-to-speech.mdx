@@ -20,32 +20,32 @@ API này cũng tuân theo chuẩn của OpenAI, giúp việc tích hợp trở n
 <Tabs>
   <TabItem value="curl" label="curl">
     <p>Cách này cho phép bạn nhanh chóng tạo và lưu file âm thanh.</p>
-    <pre><code className="language-bash">
-    {`curl http://localhost:4000/audio/speech \\
+    <CodeBlock language="bash">
+    {`curl https://api0.lab.vbi-server.com/audio/speech \\
   -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer {'<your_api_key>'}" \\
+  -H "Authorization: Bearer <your_api_key>" \\
   -d '{
     "model": "gemini-2.5-flash-preview-tts",
-    "input": "Xin chào, đây là một thử nghiệm chuyển văn bản thành giọng nói qua LiteLLM.",
+    "input": "Xin chào, đây là một thử nghiệm chuyển văn bản thành giọng nói qua VBI AI Gateway.",
     "voice": "echo"
   }' \\
   --output speech_output.mp3`}
-    </code></pre>
+    </CodeBlock>
   </TabItem>
   <TabItem value="python-requests" label="Python (requests)">
     <p>Cách này cho bạn quyền kiểm soát việc lưu file.</p>
-    <pre><code className="language-python">
+    <CodeBlock language="python">
     {`import requests
 
 # --- Cấu hình ---
-LITELLM_API_BASE = "http://localhost:4000"
-LITELLM_MASTER_KEY = "sk-1234" # Thay bằng key của bạn
+VBI_API_BASE = "https://api0.lab.vbi-server.com"
+VBI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---
-url = f"{LITELLM_API_BASE}/audio/speech"
+url = f"{VBI_API_BASE}/audio/speech"
 headers = {
     "Content-Type": "application/json",
-    "Authorization": f"Bearer {LITELLM_MASTER_KEY}"
+    "Authorization": f"Bearer {VBI_API_KEY}"
 }
 data = {
     "model": "gemini-2.5-pro-preview-tts",
@@ -63,22 +63,22 @@ if response.status_code == 200:
 else:
     print(f"Error: {response.status_code}")
     print(response.text)`}
-    </code></pre>
+    </CodeBlock>
   </TabItem>
   <TabItem value="python-openai" label="Python (openai)">
     <p>Thư viện <code>openai</code> cung cấp một giao diện rất sạch sẽ cho tác vụ này.</p>
-    <pre><code className="language-python">
+    <CodeBlock language="python">
     {`from openai import OpenAI
 from pathlib import Path
 
 # --- Cấu hình ---
-LITELLM_API_BASE = "http://localhost:4000"
-LITELLM_MASTER_KEY = "sk-1234" # Thay bằng key của bạn
+VBI_API_BASE = "https://api0.lab.vbi-server.com"
+VBI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---
 client = OpenAI(
-    api_key=LITELLM_MASTER_KEY,
-    base_url=LITELLM_API_BASE
+    api_key=VBI_API_KEY,
+    base_url=VBI_API_BASE
 )
 
 speech_file_path = Path(__file__).parent / "speech_from_openai.mp3"
@@ -91,6 +91,6 @@ response = client.audio.speech.create(
 
 response.stream_to_file(speech_file_path)
 print(f"File âm thanh đã được lưu tại: {speech_file_path}")`}
-    </code></pre>
+    </CodeBlock>
   </TabItem>
 </Tabs>

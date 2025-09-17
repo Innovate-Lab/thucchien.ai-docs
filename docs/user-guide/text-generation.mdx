@@ -22,9 +22,9 @@ API này tuân theo chuẩn của OpenAI, vì vậy bạn có thể sử dụng 
 
 <Tabs>
   <TabItem value="curl" label="curl">
-    <p>Đây là cách đơn giản nhất để kiểm tra API. Thay <code>{'<your_api_key>'}</code> bằng Master Key của bạn.</p>
+    <p>Đây là cách đơn giản nhất để kiểm tra API. Thay <code>{'<your_api_key>'}</code> bằng API key của bạn.</p>
     <CodeBlock language="bash">
-    {`curl http://localhost:4000/chat/completions \\
+    {`curl https://api0.lab.vbi-server.com/chat/completions \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer <your_api_key>" \\
   -d '{
@@ -50,14 +50,14 @@ API này tuân theo chuẩn của OpenAI, vì vậy bạn có thể sử dụng 
 import json
 
 # --- Cấu hình ---
-LITELLM_API_BASE = "http://localhost:4000"
-LITELLM_MASTER_KEY = "sk-1234" # Thay bằng key của bạn
+VBI_API_BASE = "https://api0.lab.vbi-server.com"
+VBI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---
-url = f"{LITELLM_API_BASE}/chat/completions"
+url = f"{VBI_API_BASE}/chat/completions"
 headers = {
     "Content-Type": "application/json",
-    "Authorization": f"Bearer {LITELLM_MASTER_KEY}"
+    "Authorization": f"Bearer {VBI_API_KEY}"
 }
 data = {
     "model": "gpt-4.1",
@@ -86,13 +86,13 @@ else:
     {`from openai import OpenAI
 
 # --- Cấu hình ---
-LITELLM_API_BASE = "http://localhost:4000"
-LITELLM_MASTER_KEY = "sk-1234" # Thay bằng key của bạn
+VBI_API_BASE = "https://api0.lab.vbi-server.com"
+VBI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---
 client = OpenAI(
-    api_key=LITELLM_MASTER_KEY,
-    base_url=LITELLM_API_BASE
+    api_key=VBI_API_KEY,
+    base_url=VBI_API_BASE
 )
 
 response = client.chat.completions.create(
@@ -114,11 +114,11 @@ print(response.choices[0].message.content)`}
     {`import litellm
 
 # --- Cấu hình ---
-LITELLM_API_BASE = "http://localhost:4000"
-LITELLM_MASTER_KEY = "sk-1234" # Thay bằng key của bạn
+VBI_API_BASE = "https://api0.lab.vbi-server.com"
+VBI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---
-litellm.api_base = LITELLM_API_BASE
+litellm.api_base = VBI_API_BASE
 
 response = litellm.completion(
     model="gemini-2.5-pro",
@@ -128,7 +128,7 @@ response = litellm.completion(
             "content": "Viết một đoạn văn ngắn về tầm quan trọng của AI."
         }
     ],
-    api_key=LITELLM_MASTER_KEY
+    api_key=VBI_API_KEY
 )
 
 print(response.choices[0].message.content)`}

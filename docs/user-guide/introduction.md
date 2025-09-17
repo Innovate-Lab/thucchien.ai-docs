@@ -4,13 +4,13 @@ sidebar_position: 1
 
 # Giới thiệu
 
-Chào mừng bạn đến với tài liệu hướng dẫn sử dụng API của hệ thống LiteLLM Proxy. Tài liệu này sẽ cung cấp cho bạn mọi thông tin cần thiết để tương tác với một loạt các mô hình Trí tuệ nhân tạo (AI) mạnh mẽ từ nhiều nhà cung cấp khác nhau như Google, Azure OpenAI và Vertex AI.
+Chào mừng bạn đến với tài liệu hướng dẫn sử dụng VBI AI Gateway. Tài liệu này sẽ cung cấp cho bạn mọi thông tin cần thiết để tích hợp các mô hình Trí tuệ nhân tạo (AI) mạnh mẽ vào ứng dụng của bạn chỉ với một API key duy nhất.
 
-## LiteLLM Proxy là gì?
+## VBI AI Gateway là gì?
 
-LiteLLM Proxy đóng vai trò là một cổng kết nối (gateway) thống nhất, giúp đơn giản hóa việc tích hợp và sử dụng các mô hình AI. Thay vì phải viết code riêng cho từng API của mỗi nhà cung cấp, bạn chỉ cần gửi yêu cầu đến một endpoint duy nhất do chúng tôi cung cấp:
+VBI AI Gateway là một cổng kết nối (gateway) hợp nhất, giúp bạn truy cập các mô hình AI hàng đầu một cách đơn giản và hiệu quả. Thay vì phải quản lý nhiều API phức tạp từ các nhà cung cấp khác nhau, bạn chỉ cần gửi yêu cầu đến một endpoint duy nhất do chúng tôi cung cấp:
 
-`http://localhost:4000`
+`https://api0.lab.vbi-server.com`
 
 Hệ thống sẽ tự động định tuyến yêu cầu của bạn đến đúng mô hình và nhà cung cấp tương ứng, sau đó trả về kết quả.
 

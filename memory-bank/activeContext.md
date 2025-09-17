@@ -2,11 +2,21 @@
 
 ## 1. Công việc đang tập trung
 
-- **Ưu tiên hàng đầu:** Cải thiện giao diện người dùng bằng cách cập nhật CSS cho các khối code và thêm nút sao chép.
+- **Hoàn thành:** Cập nhật ngữ nghĩa tài liệu để phản ánh mô hình kinh doanh là nhà cung cấp dịch vụ AI Gateway.
 - **Nhiệm vụ tiếp theo:** Hoàn tất sửa lỗi biên dịch MDX trên trang tài liệu Docusaurus.
 
 ## 2. Các thay đổi gần đây
 
+- **Sửa lỗi biên dịch MDX:**
+    - **Khắc phục lỗi cú pháp:** Sửa lỗi thẻ đóng không khớp trong file `text-to-speech.mdx` bằng cách thay thế `</code></pre>` bằng `</CodeBlock>`, giải quyết vấn đề biên dịch thất bại.
+- **Hoàn thiện tính nhất quán tài liệu:**
+    - **Đồng bộ hóa code examples:** Thay thế các biến `LITELLM_MASTER_KEY` bằng `VBI_API_KEY` và cập nhật các comment liên quan trong tất cả các file hướng dẫn (`.mdx`) để đảm bảo tính nhất quán.
+    - **Sửa lỗi component:** Thay thế các thẻ `<pre><code>` không đúng chuẩn bằng component `<CodeBlock>` của Docusaurus trong file `text-to-speech.mdx`.
+    - **Cập nhật trang tham khảo:** Viết lại trang `references.md` để gỡ bỏ các liên kết trực tiếp đến tài liệu của LiteLLM, thay vào đó hướng người dùng đến tài liệu của các nhà cung cấp mô hình gốc.
+- **Cập nhật ngữ nghĩa tài liệu:**
+    - **Thay đổi định vị:** Chuyển đổi cách diễn đạt trong tài liệu từ việc hướng dẫn người dùng tự host "LiteLLM Proxy" sang hướng dẫn sử dụng dịch vụ "VBI AI Gateway" đã được hosted sẵn.
+    - **Đơn giản hóa xác thực:** Cập nhật trang `core-concepts.md` để giải thích quy trình xác thực bằng API key do nhà cung cấp cấp, loại bỏ các chi tiết kỹ thuật không cần thiết về `LITELLM_MASTER_KEY`.
+    - **Cập nhật giới thiệu:** Tinh chỉnh trang `introduction.md` để giới thiệu dịch vụ dưới tên "VBI AI Gateway" và nhấn mạnh sự đơn giản cho người dùng cuối.
 - **Tùy chỉnh Theme cho Code Block:** Tạo file theme Prism tùy chỉnh (`src/utils/prismTheme.ts`) và cập nhật `docusaurus.config.ts` để áp dụng bảng màu mới cho việc tô sáng cú pháp, đảm bảo tính nhất quán về giao diện.
 - **Áp dụng Bảng màu Mới:** Cập nhật file `src/css/custom.css` để triển khai bảng màu mới theo yêu cầu, bao gồm việc định nghĩa lại các biến màu chính, màu nền và màu chữ cho cả hai chế độ sáng và tối.
 - **Sửa lỗi Tô sáng Cú pháp (Syntax Highlighting):** Thay thế các khối code `<pre><code>` không chuẩn bằng component `<CodeBlock>` của Docusaurus trong các file `.mdx`. Điều này khắc phục lỗi không hiển thị màu cho code.

@@ -22,7 +22,7 @@ API này cũng tuân theo chuẩn của OpenAI, giúp việc tích hợp trở n
   <TabItem value="curl" label="curl">
     <p>Một cách nhanh chóng để tạo hình ảnh từ dòng lệnh.</p>
     <CodeBlock language="bash">
-    {`curl http://localhost:4000/images/generations \\
+    {`curl https://api0.lab.vbi-server.com/images/generations \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer <your_api_key>" \\
   -d '{
@@ -40,14 +40,14 @@ API này cũng tuân theo chuẩn của OpenAI, giúp việc tích hợp trở n
 import json
 
 # --- Cấu hình ---
-LITELLM_API_BASE = "http://localhost:4000"
-LITELLM_MASTER_KEY = "sk-1234" # Thay bằng key của bạn
+VBI_API_BASE = "https://api0.lab.vbi-server.com"
+VBI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---
-url = f"{LITELLM_API_BASE}/images/generations"
+url = f"{VBI_API_BASE}/images/generations"
 headers = {
     "Content-Type": "application/json",
-    "Authorization": f"Bearer {LITELLM_MASTER_KEY}"
+    "Authorization": f"Bearer {VBI_API_KEY}"
 }
 data = {
     "model": "imagen-4",
@@ -73,13 +73,13 @@ else:
     {`from openai import OpenAI
 
 # --- Cấu hình ---
-LITELLM_API_BASE = "http://localhost:4000"
-LITELLM_MASTER_KEY = "sk-1234" # Thay bằng key của bạn
+VBI_API_BASE = "https://api0.lab.vbi-server.com"
+VBI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---
 client = OpenAI(
-    api_key=LITELLM_MASTER_KEY,
-    base_url=LITELLM_API_BASE
+    api_key=VBI_API_KEY,
+    base_url=VBI_API_BASE
 )
 
 response = client.images.generate(
@@ -99,16 +99,16 @@ print(image_url)`}
     {`import litellm
 
 # --- Cấu hình ---
-LITELLM_API_BASE = "http://localhost:4000"
-LITELLM_MASTER_KEY = "sk-1234" # Thay bằng key của bạn
+VBI_API_BASE = "https://api0.lab.vbi-server.com"
+VBI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---
-litellm.api_base = LITELLM_API_BASE
+litellm.api_base = VBI_API_BASE
 
 response = litellm.image_generation(
     prompt="A peaceful Japanese garden with a koi pond and cherry blossoms",
     model="imagen-4",
-    api_key=LITELLM_MASTER_KEY
+    api_key=VBI_API_KEY
 )
 
 image_url = response.data[0].url

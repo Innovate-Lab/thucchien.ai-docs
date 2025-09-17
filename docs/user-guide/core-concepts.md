@@ -10,26 +10,26 @@ Trước khi đi vào chi tiết từng loại mô hình, hãy cùng nắm vữn
 
 Điểm mạnh nhất của LiteLLM Proxy là cung cấp một endpoint duy nhất cho tất cả các tương tác. Thay vì phải nhớ nhiều URL khác nhau, bạn chỉ cần gửi tất cả các yêu cầu đến:
 
-`http://localhost:4000`
+`https://api0.lab.vbi-server.com`
 
 Hệ thống sẽ tự động xử lý và định tuyến dựa trên nội dung yêu cầu của bạn. Hầu hết các API (sinh văn bản, hình ảnh, giọng nói) đều tuân theo cấu trúc của OpenAI API. Các trường hợp đặc biệt như sinh video sẽ được ghi chú rõ ràng trong phần tài liệu riêng.
 
 ## Xác thực (Authentication)
 
-Mọi yêu cầu gửi đến proxy đều phải được xác thực bằng một **Master Key**. Key này được định nghĩa trong biến môi trường `LITELLM_MASTER_KEY` khi bạn khởi chạy proxy.
+Để sử dụng VBI AI Gateway, bạn cần một API key. Key này sẽ được chúng tôi cung cấp.
 
-Để xác thực, bạn cần thêm key này vào header `Authorization` của mỗi yêu cầu theo định dạng `Bearer`.
+Bạn cần gửi key này trong header `Authorization` của mỗi yêu cầu theo định dạng `Bearer`.
 
 **Ví dụ header:**
 ```
-Authorization: Bearer <your_api_key>
+Authorization: Bearer YOUR_API_KEY
 ```
 
-Nếu không có header này hoặc key không hợp lệ, proxy sẽ trả về lỗi `401 Unauthorized`.
+Hãy thay `YOUR_API_KEY` bằng API key mà bạn đã nhận được. Nếu không có header này hoặc key không hợp lệ, hệ thống sẽ trả về lỗi `401 Unauthorized`.
 
 ## Định tuyến Model (Model Routing)
 
-Để chọn một mô hình cụ thể để xử lý yêu cầu của bạn, bạn chỉ cần chỉ định `model_name` (đã được định nghĩa trong file cấu hình của bạn) trong trường `model` của body request.
+Để chọn một mô hình cụ thể để xử lý yêu cầu của bạn, bạn chỉ cần chỉ định tên của nó trong trường `model` của body request.
 
 **Ví dụ Body Request (JSON):**
 ```json

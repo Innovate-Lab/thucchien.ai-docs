@@ -11,9 +11,9 @@ LiteLLM Proxy đã giải quyết vấn đề này ở tầng kỹ thuật bằn
 
 ## 2. Giải pháp
 
-Trang tài liệu Docusaurus này được tạo ra để trở thành **nguồn thông tin chính thức và duy nhất** cho các nhà phát triển sử dụng hệ thống LiteLLM Proxy.
+Trang tài liệu Docusaurus này được tạo ra để trở thành **nguồn thông tin chính thức và duy nhất** cho các nhà phát triển sử dụng VBI AI Gateway, một dịch vụ LiteLLM Proxy được cung cấp dưới dạng hosted.
 
-- **Cung cấp sự rõ ràng:** Thay vì phải đọc tài liệu của LiteLLM, Google, và Azure, người dùng chỉ cần đọc một tài liệu duy nhất được viết riêng cho hệ thống đã được cấu hình sẵn này.
+- **Cung cấp sự rõ ràng:** Tài liệu được viết từ góc độ của người dùng cuối, tập trung vào việc sử dụng dịch vụ thông qua API key thay vì các chi tiết kỹ thuật về việc tự host LiteLLM. Người dùng chỉ cần đọc một tài liệu duy nhất được viết riêng cho dịch vụ của chúng tôi.
 - **Giảm thời gian tích hợp:** Với các ví dụ "sao chép-dán" (copy-paste), nhà phát triển có thể tích hợp các mô hình AI vào ứng dụng của họ một cách nhanh chóng.
 - **Tăng cường trải nghiệm người dùng:** Một trang tài liệu chuyên nghiệp, có cấu trúc tốt, dễ tìm kiếm sẽ cải thiện đáng kể trải nghiệm của nhà phát triển, giúp họ tập trung vào việc xây dựng ứng dụng thay vì loay hoay với các API.
 

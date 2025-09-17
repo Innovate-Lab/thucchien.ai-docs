@@ -25,7 +25,7 @@ Việc tạo video là một tác vụ tốn nhiều tài nguyên và thời gia
     <h4>Bước 1: Bắt đầu tạo video</h4>
     <p>Gửi một yêu cầu POST đến endpoint đặc biệt dành cho Veo.</p>
     <CodeBlock language="bash">
-    {`curl -X POST http://localhost:4000/models/veo-3.0-generate-preview:predictLongRunning \\
+    {`curl -X POST https://api0.lab.vbi-server.com/models/veo-3.0-generate-preview:predictLongRunning \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer <your_api_key>" \\
   -d '{
@@ -40,7 +40,7 @@ Việc tạo video là một tác vụ tốn nhiều tài nguyên và thời gia
     <p>Sử dụng <code>operation_name</code> bạn nhận được ở Bước 1 để gửi yêu cầu GET.</p>
     <CodeBlock language="bash">
     {`# Thay operations/1234567890 bằng operation_name của bạn
-curl http://localhost:4000/operations/1234567890 \\
+curl https://api0.lab.vbi-server.com/operations/1234567890 \\
   -H "Authorization: Bearer <your_api_key>"`}
     </CodeBlock>
     <p>Lặp lại yêu cầu này cho đến khi response chứa <code>"done": true</code>.</p>
@@ -51,7 +51,7 @@ curl http://localhost:4000/operations/1234567890 \\
     {`# URI gốc: https://generativelanguage.googleapis.com/v1beta/files/generated_video_abcxyz
 # File path: v1beta/files/generated_video_abcxyz
 
-curl http://localhost:4000/download/v1beta/files/generated_video_abcxyz \\
+curl https://api0.lab.vbi-server.com/download/v1beta/files/generated_video_abcxyz \\
   -H "Authorization: Bearer <your_api_key>" \\
   --output my_generated_video.mp4`}
     </CodeBlock>
@@ -83,16 +83,16 @@ from typing import Optional
 
 
 class VeoVideoGenerator:
-    """Complete Veo video generation client using LiteLLM proxy."""
+    """Complete Veo video generation client using VBI AI Gateway."""
     
-    def __init__(self, base_url: str = "http://localhost:4000", 
-                 api_key: str = "sk-1234"):
+    def __init__(self, base_url: str = "https://api0.lab.vbi-server.com", 
+                 api_key: str = "YOUR_API_KEY"): # Thay bằng API key của bạn
         """
         Initialize the Veo video generator.
         
         Args:
-            base_url: Base URL for the LiteLLM proxy
-            api_key: API key for LiteLLM proxy authentication
+            base_url: Base URL for the VBI AI Gateway
+            api_key: Your API key for authentication
         """
         self.base_url = base_url
         self.api_key = api_key
@@ -266,8 +266,8 @@ def main():
     """
     Example usage of the VeoVideoGenerator.
     """
-    base_url = os.getenv("LITELLM_BASE_URL", "http://localhost:4000")
-    api_key = os.getenv("LITELLM_API_KEY", "sk-1234")
+    base_url = os.getenv("VBI_API_BASE", "https://api0.lab.vbi-server.com")
+    api_key = os.getenv("VBI_API_KEY", "sk-1234") # Thay bằng API key của bạn
     
     generator = VeoVideoGenerator(base_url=base_url, api_key=api_key)
     
