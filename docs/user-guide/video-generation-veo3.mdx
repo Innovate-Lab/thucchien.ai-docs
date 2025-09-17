@@ -24,6 +24,9 @@ Việc tạo video là một tác vụ tốn nhiều tài nguyên và thời gia
   <TabItem value="curl" label="curl (Từng bước)">
     <h4>Bước 1: Bắt đầu tạo video</h4>
     <p>Gửi một yêu cầu POST đến endpoint đặc biệt dành cho Veo.</p>
+    :::info[Quan trọng]
+    Do máy chủ proxy đang sử dụng cơ chế pass-through tới Google AI Studio, bạn sẽ sử dụng header `x-goog-api-key` thay cho header `Authorization` tiêu chuẩn.
+    :::
     <CodeBlock language="bash">
     {`curl -X POST https://api0.lab.vbi-server.com/gemini/v1beta/models/veo-3.0-generate-preview:predictLongRunning \\
   -H "Content-Type: application/json" \\
@@ -85,6 +88,9 @@ curl https://api0.lab.vbi-server.com/gemini/download/v1beta/files/3j6svp4106e7:d
   </TabItem>
   <TabItem value="python" label="Python (Script tự động)">
     <p>Dưới đây là một kịch bản Python hoàn chỉnh để tự động hóa cả 3 bước.</p>
+    :::info[Quan trọng]
+    Tương tự như ví dụ với `curl`, kịch bản Python này cũng sử dụng header `x-goog-api-key` do cơ chế pass-through của máy chủ proxy.
+    :::
     <CodeBlock language="python">
     {`#!/usr/bin/env python3
 """
@@ -212,9 +218,9 @@ class VeoVideoGenerator:
                     
                     try:
                         # Extract video URI from nested response
-                        video_url = data["response"]["generateVideoResponse"]["generatedSamples"][0]["video"]["uri"]
-                        print(f"📹 Video URI: {video_url}")
-                        return video_url
+                        video_uri = data["response"]["generateVideoResponse"]["generatedSamples"][0]["video"]["uri"]
+                        print(f"📹 Video URI: {video_uri}")
+                        return video_uri
                     except KeyError as e:
                         print(f"❌ Could not extract video URI: {e}")
                         print("Full response:")
@@ -232,29 +238,29 @@ class VeoVideoGenerator:
         print(f"⏰ Timeout after {max_wait_time} seconds")
         return None
     
-    def download_video(self, video_url: str, output_filename: str = "generated_video.mp4") -> bool:
+    def download_video(self, video_uri: str, output_filename: str = "generated_video.mp4") -> bool:
         """
         Download the generated video file.
         
         Args:
-            video_url: URI of the video to download (from Google's response)
+            video_uri: URI of the video to download (from Google's response)
             output_filename: Local filename to save the video
             
         Returns:
             True if download successful, False otherwise
         """
         print(f"⬇️  Downloading video...")
-        print(f"Original URI: {video_url}")
+        print(f"Original URI: {video_uri}")
         
         # Convert Google URI to LiteLLM proxy URI
         # Example: https://generativelanguage.googleapis.com/v1beta/files/abc123 -> /gemini/download/v1beta/files/abc123:download?alt=media
-        if video_url.startswith("https://generativelanguage.googleapis.com/"):
-            relative_path = video_url.replace(
+        if video_uri.startswith("https://generativelanguage.googleapis.com/"):
+            relative_path = video_uri.replace(
                 "https://generativelanguage.googleapis.com/",
                 ""
             )
         else:
-            relative_path = video_url
+            relative_path = video_uri
 
         # base_url: https://api0.lab.vbi-server.com/gemini/v1beta
         if self.base_url.endswith("/v1beta"):
@@ -337,12 +343,12 @@ class VeoVideoGenerator:
             return False
         
         # Step 2: Wait for completion
-        video_url = self.wait_for_completion(operation_name)
-        if not video_url:
+        video_uri = self.wait_for_completion(operation_name)
+        if not video_uri:
             return False
         
         # Step 3: Download video
-        success = self.download_video(video_url, output_filename)
+        success = self.download_video(video_uri, output_filename)
         
         if success:
             print("=" * 60)
