@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.8.1">
 <title data-rh="true">Tích hợp với Cursor | AI Thực Chiến</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://innovate-lab.github.io/thucchien.ai-docs/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://innovate-lab.github.io/thucchien.ai-docs/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://innovate-lab.github.io/thucchien.ai-docs/docs/vibe-coding/cursor-integration"><meta data-rh="true" property="og:locale" content="vn"><meta data-rh="true" name="docusaurus_locale" content="vn"><meta data-rh="true" name="docsearch:language" content="vn"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Tích hợp với Cursor | AI Thực Chiến"><meta data-rh="true" name="description" content="Cursor là một trình soạn thảo code được xây dựng dựa trên VSCode, được tối ưu hóa cho việc lập trình với AI. Việc tích hợp Cursor với AI Thực Chiến Gateway cho phép bạn tận dụng các mô hình mạnh mẽ ngay trong môi trường code của mình."><meta data-rh="true" property="og:description" content="Cursor là một trình soạn thảo code được xây dựng dựa trên VSCode, được tối ưu hóa cho việc lập trình với AI. Việc tích hợp Cursor với AI Thực Chiến Gateway cho phép bạn tận dụng các mô hình mạnh mẽ ngay trong môi trường code của mình."><link data-rh="true" rel="icon" href="/thucchien.ai-docs/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://innovate-lab.github.io/thucchien.ai-docs/docs/vibe-coding/cursor-integration"><link data-rh="true" rel="alternate" href="https://innovate-lab.github.io/thucchien.ai-docs/docs/vibe-coding/cursor-integration" hreflang="vn"><link data-rh="true" rel="alternate" href="https://innovate-lab.github.io/thucchien.ai-docs/docs/vibe-coding/cursor-integration" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"VibeCoding","item":"https://innovate-lab.github.io/thucchien.ai-docs/docs/category/vibecoding"},{"@type":"ListItem","position":2,"name":"Tích hợp với Cursor","item":"https://innovate-lab.github.io/thucchien.ai-docs/docs/vibe-coding/cursor-integration"}]}</script><link rel="stylesheet" href="/thucchien.ai-docs/assets/css/styles.f885dcf1.css">
-<script src="/thucchien.ai-docs/assets/js/runtime~main.8a90fdd5.js" defer="defer"></script>
+<script src="/thucchien.ai-docs/assets/js/runtime~main.cb189011.js" defer="defer"></script>
 <script src="/thucchien.ai-docs/assets/js/main.63f87321.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -17,27 +17,19 @@
 <p>Cursor hỗ trợ việc sử dụng các mô hình OpenAI-compatible, giúp việc tích hợp trở nên dễ dàng.</p>
 <ol>
 <li>
-<p><strong>Mở cài đặt AI:</strong>
-Trong Cursor, mở bảng điều khiển AI (thường bằng <code>Cmd+K</code> hoặc <code>Ctrl+K</code>) và tìm đến phần cài đặt mô hình (<code>Model Settings</code>).</p>
+<p><strong>Vào <code>Settings &gt; Models</code>:</strong>
+Chọn <code>+Add Custom Model</code>, điền <code>gemini-2.5-pro</code> và nhấn <code>Add</code>.</p>
 </li>
 <li>
-<p><strong>Thêm mô hình tùy chỉnh:</strong>
-Tìm tùy chọn để thêm một mô hình tùy chỉnh (&quot;Custom Model&quot;) hoặc &quot;OpenAI-compatible&quot;.</p>
-</li>
-<li>
-<p><strong>Điền thông tin:</strong>
-Bạn sẽ cần cung cấp các thông tin sau:</p>
+<p><strong>Cấu hình API Keys:</strong></p>
 <ul>
-<li><strong>Model Name / ID:</strong> Đặt một tên gợi nhớ, ví dụ: <code>gemini-1.5-pro-latest</code>. Đây là tên sẽ hiển thị trong danh sách chọn mô hình của Cursor.</li>
-<li><strong>API Base:</strong> <code>https://api0.lab.vbi-server.com/v1</code></li>
-<li><strong>API Key:</strong> <code>YOUR_VBI_API_KEY</code> (Thay thế bằng <code>VBI_API_KEY</code> của bạn)</li>
+<li>Trong mục <code>API Keys</code>, điền <code>OpenAI API Key</code> của bạn (<code>&lt;your_api_key&gt;</code>).</li>
+<li>Bật (enable) <code>Override OpenAI Base URL</code> và điền <code>https://api0.lab.vbi-server.com/v1</code>.</li>
 </ul>
 </li>
-<li>
-<p><strong>Lưu và chọn mô hình:</strong>
-Lưu lại cấu hình. Bây giờ, bạn có thể chọn mô hình tùy chỉnh của mình (<code>gemini-1.5-pro-latest</code>) từ danh sách các mô hình có sẵn trong Cursor.</p>
-</li>
 </ol>
+<div class="theme-admonition theme-admonition-warning admonition_xJq3 alert alert--warning"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"></path></svg></span>Lưu ý</div><div class="admonitionContent_BuS1"><p>Đảm bảo disable các provider khác trong mục API Keys chỉ giữ lại OpenAI</p></div></div>
+<p>Sau khi hoàn tất, bạn có thể chọn <code>gemini-2.5-pro</code> từ danh sách mô hình để bắt đầu sử dụng.</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="ví-dụ-thực-tế">Ví dụ thực tế<a href="#ví-dụ-thực-tế" class="hash-link" aria-label="Direct link to Ví dụ thực tế" title="Direct link to Ví dụ thực tế">​</a></h2>
 <p>Với Cursor đã được cấu hình, bạn có thể thực hành VibeCoding một cách liền mạch:</p>
 <ul>
