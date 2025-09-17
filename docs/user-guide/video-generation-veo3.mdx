@@ -44,12 +44,19 @@ Việc tạo video là một tác vụ tốn nhiều tài nguyên và thời gia
   "name": "models/veo-3.0-generate-preview/operations/idrk08ltkg0a"
 }`}
     </CodeBlock>
+    <p>
+      Trong đó:
+      <ul>
+        <li><b><code>operation_name</code></b>: là toàn bộ chuỗi <code>models/veo-3.0-generate-preview/operations/idrk08ltkg0a</code>.</li>
+        <li><b><code>operation_id</code></b>: là phần định danh duy nhất của tác vụ, trong ví dụ này là <code>idrk08ltkg0a</code>. Bạn sẽ sử dụng ID này ở bước tiếp theo.</li>
+      </ul>
+    </p>
     
     <h4>Bước 2: Kiểm tra trạng thái</h4>
-    <p>Sử dụng <code>operation_name</code> bạn nhận được ở Bước 1 để gửi yêu cầu GET.</p>
+    <p>Sử dụng <code>operation_id</code> (ví dụ: <code>idrk08ltkg0a</code>) bạn nhận được ở Bước 1 để xây dựng URL và gửi yêu cầu GET để kiểm tra trạng thái.</p>
     <CodeBlock language="bash">
-    {`# Thay operations/idrk08ltkg0a bằng operation_name của bạn
-curl https://api0.lab.vbi-server.com/gemini/v1beta/models/veo-3.0-generate-preview/operations/idrk08ltkg0a \\
+    {`# URL kiểm tra trạng thái: https://api0.lab.vbi-server.com/gemini/v1beta/models/veo-3.0-generate-preview/operations/idrk08ltkg0a
+curl https://api0.lab.vbi-server.com/gemini/v1beta/models/veo-3.0-generate-preview/operations/<operation_id> \\
   -H "x-goog-api-key: <your_api_key>"`}
     </CodeBlock>
     <p>Lặp lại yêu cầu này cho đến khi response chứa <code>"done": true</code>.</p>
@@ -71,14 +78,16 @@ curl https://api0.lab.vbi-server.com/gemini/v1beta/models/veo-3.0-generate-previ
     }
 }`}
     </CodeBlock>
+    <p>Khi tác vụ hoàn tất (<code>"done": true</code>), response sẽ chứa một trường <code>uri</code>. Từ URI này, chúng ta có thể trích xuất ra <b><code>video_id</code></b>, trong trường hợp này là <code>3j6svp4106e7</code>. ID này được dùng để tải video ở bước cuối cùng.</p>
 
     <h4>Bước 3: Tải video</h4>
-    <p>Sử dụng <code>uri</code> từ response ở Bước 2 để tải video.</p>
+    <p>Sử dụng <code>video_id</code> (ví dụ: <code>3j6svp4106e7</code>) đã trích xuất ở Bước 2 để tạo URL tải xuống cuối cùng thông qua proxy.</p>
     <CodeBlock language="bash">
-    {`# URI gốc: https://generativelanguage.googleapis.com/v1beta/files/3j6svp4106e7:download?alt=media
-# File path: v1beta/files/3j6svp4106e7:download?alt=media
+    {`# URI gốc từ Google: https://generativelanguage.googleapis.com/v1beta/files/3j6svp4106e7:download?alt=media
+# Đường dẫn tương đối cần dùng: v1beta/files/3j6svp4106e7:download?alt=media
+# URL tải xuống qua proxy: https://api0.lab.vbi-server.com/gemini/download/v1beta/files/3j6svp4106e7:download?alt=media
 
-curl https://api0.lab.vbi-server.com/gemini/download/v1beta/files/3j6svp4106e7:download?alt=media \\
+curl https://api0.lab.vbi-server.com/gemini/download/v1beta/files/<video_id>:download?alt=media \\
   -H "x-goog-api-key: <your_api_key>" \\
   --output my_generated_video.mp4`}
     </CodeBlock>
@@ -399,10 +408,10 @@ def main():
     success = generator.generate_and_download(prompt)
     
     if success:
-        print("\n✅ Example completed successfully!")
+        print("✅ Example completed successfully!")
         print("💡 Try modifying the prompt in the script for different videos!")
     else:
-        print("\n❌ Example failed!")
+        print("❌ Example failed!")
         print("🔧 Check your API Configuration")
 
 if __name__ == "__main__":
@@ -410,3 +419,9 @@ if __name__ == "__main__":
     </CodeBlock>
   </TabItem>
 </Tabs>
+
+## Các tham số tùy chọn
+
+Ngoài `prompt`, bạn có thể chỉ định thêm các tham số khác trong body của yêu cầu ở **Bước 1** để kiểm soát video được tạo ra, ví dụ như thời lượng, chất lượng, v.v.
+
+Để biết danh sách đầy đủ các tham số và cách sử dụng, vui lòng tham khảo tài liệu chính thức tại đây: [Google AI for Developers - Video Generation](https://ai.google.dev/gemini-api/docs/video?example=dialogue#veo-model-parameters).
