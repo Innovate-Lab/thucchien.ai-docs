@@ -1,0 +1,137 @@
+---
+sidebar_position: 3
+---
+
+# Sinh văn bản (Text Generation)
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Các mô hình sinh văn bản cho phép bạn thực hiện nhiều tác vụ như trả lời câu hỏi, viết nội dung, tóm tắt văn bản, và nhiều hơn nữa.
+
+**Các model được hỗ trợ:**
+- `gemini-2.5-pro` (Google Gemini)
+- `gpt-5-mini` (Azure OpenAI)
+- `gpt-4.1` (Azure OpenAI)
+- `o3-mini` (Azure OpenAI)
+
+**Endpoint:** `POST /chat/completions`
+
+API này tuân theo chuẩn của OpenAI, vì vậy bạn có thể sử dụng các thư viện client của OpenAI một cách trực tiếp.
+
+<Tabs>
+  <TabItem value="curl" label="curl">
+    <p>Đây là cách đơn giản nhất để kiểm tra API. Thay <code>{'<your_api_key>'}</code> bằng Master Key của bạn.</p>
+    <CodeBlock language="bash">
+    {`curl http://localhost:4000/chat/completions \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer <your_api_key>" \\
+  -d '{
+    "model": "gpt-5-mini",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a helpful assistant."
+      },
+      {
+        "role": "user",
+        "content": "Hãy viết một câu giới thiệu về Việt Nam."
+      }
+    ]
+  }'`}
+    </CodeBlock>
+    <p>Để sử dụng model khác, chỉ cần thay đổi giá trị <code>model</code>, ví dụ: <code>"model": "gemini-2.5-pro"</code>.</p>
+  </TabItem>
+  <TabItem value="python-requests" label="Python (requests)">
+    <p>Cách này cho bạn thấy rõ cấu trúc của một request HTTP trong Python.</p>
+    <CodeBlock language="python">
+    {`import requests
+import json
+
+# --- Cấu hình ---
+LITELLM_API_BASE = "http://localhost:4000"
+LITELLM_MASTER_KEY = "sk-1234" # Thay bằng key của bạn
+
+# --- Thực thi ---
+url = f"{LITELLM_API_BASE}/chat/completions"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {LITELLM_MASTER_KEY}"
+}
+data = {
+    "model": "gpt-4.1",
+    "messages": [
+        {
+            "role": "user",
+            "content": "What are the main benefits of using LiteLLM?"
+        }
+    ],
+    "temperature": 0.7
+}
+
+response = requests.post(url, headers=headers, data=json.dumps(data))
+
+if response.status_code == 200:
+    result = response.json()
+    print(result['choices'][0]['message']['content'])
+else:
+    print(f"Error: {response.status_code}")
+    print(response.text)`}
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="python-openai" label="Python (openai)">
+    <p>Đây là cách tiếp cận được khuyến khích vì sự tiện lợi và quen thuộc.</p>
+    <CodeBlock language="python">
+    {`from openai import OpenAI
+
+# --- Cấu hình ---
+LITELLM_API_BASE = "http://localhost:4000"
+LITELLM_MASTER_KEY = "sk-1234" # Thay bằng key của bạn
+
+# --- Thực thi ---
+client = OpenAI(
+    api_key=LITELLM_MASTER_KEY,
+    base_url=LITELLM_API_BASE
+)
+
+response = client.chat.completions.create(
+    model="o3-mini", # Chọn model bạn muốn
+    messages=[
+        {
+            "role": "user",
+            "content": "Explain the concept of API gateway in simple terms."
+        }
+    ]
+)
+
+print(response.choices[0].message.content)`}
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="python-litellm" label="Python (litellm)">
+    <p>Thư viện <code>litellm</code> cũng cung cấp một cách tiện lợi để gọi API.</p>
+    <CodeBlock language="python">
+    {`import litellm
+
+# --- Cấu hình ---
+LITELLM_API_BASE = "http://localhost:4000"
+LITELLM_MASTER_KEY = "sk-1234" # Thay bằng key của bạn
+
+# --- Thực thi ---
+litellm.api_base = LITELLM_API_BASE
+
+response = litellm.completion(
+    model="gemini-2.5-pro",
+    messages=[
+        {
+            "role": "user",
+            "content": "Viết một đoạn văn ngắn về tầm quan trọng của AI."
+        }
+    ],
+    api_key=LITELLM_MASTER_KEY
+)
+
+print(response.choices[0].message.content)`}
+    </CodeBlock>
+  </TabItem>
+</Tabs>

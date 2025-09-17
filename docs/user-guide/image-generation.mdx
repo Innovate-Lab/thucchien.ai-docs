@@ -1,0 +1,118 @@
+---
+sidebar_position: 4
+---
+
+# Sinh hình ảnh (Image Generation)
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+Các mô hình sinh hình ảnh cho phép bạn tạo ra những hình ảnh độc đáo từ mô tả bằng văn bản (prompt).
+
+**Các model được hỗ trợ:**
+- `gemini-2.5-flash-image-preview` (Google Gemini)
+- `imagen-4` (Google Vertex AI)
+
+**Endpoint:** `POST /images/generations`
+
+API này cũng tuân theo chuẩn của OpenAI, giúp việc tích hợp trở nên dễ dàng.
+
+<Tabs>
+  <TabItem value="curl" label="curl">
+    <p>Một cách nhanh chóng để tạo hình ảnh từ dòng lệnh.</p>
+    <CodeBlock language="bash">
+    {`curl http://localhost:4000/images/generations \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer <your_api_key>" \\
+  -d '{
+    "model": "gemini-2.5-flash-image-preview",
+    "prompt": "A futuristic cityscape at sunset, with flying cars and neon lights",
+    "n": 1,
+    "size": "1024x1024"
+  }'`}
+    </CodeBlock>
+    <p>Kết quả trả về sẽ là một đối tượng JSON chứa URL của hình ảnh đã được tạo.</p>
+  </TabItem>
+  <TabItem value="python-requests" label="Python (requests)">
+    <CodeBlock language="python">
+    {`import requests
+import json
+
+# --- Cấu hình ---
+LITELLM_API_BASE = "http://localhost:4000"
+LITELLM_MASTER_KEY = "sk-1234" # Thay bằng key của bạn
+
+# --- Thực thi ---
+url = f"{LITELLM_API_BASE}/images/generations"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {LITELLM_MASTER_KEY}"
+}
+data = {
+    "model": "imagen-4",
+    "prompt": "A majestic white tiger walking through a snowy forest",
+    "n": 1,
+    "size": "1024x1024"
+}
+
+response = requests.post(url, headers=headers, data=json.dumps(data))
+
+if response.status_code == 200:
+    result = response.json()
+    image_url = result['data'][0]['url']
+    print(f"Image generated successfully: {image_url}")
+else:
+    print(f"Error: {response.status_code}")
+    print(response.text)`}
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="python-openai" label="Python (openai)">
+    <p>Sử dụng thư viện <code>openai</code> giúp code của bạn ngắn gọn và dễ đọc hơn.</p>
+    <CodeBlock language="python">
+    {`from openai import OpenAI
+
+# --- Cấu hình ---
+LITELLM_API_BASE = "http://localhost:4000"
+LITELLM_MASTER_KEY = "sk-1234" # Thay bằng key của bạn
+
+# --- Thực thi ---
+client = OpenAI(
+    api_key=LITELLM_MASTER_KEY,
+    base_url=LITELLM_API_BASE
+)
+
+response = client.images.generate(
+    model="gemini-2.5-flash-image-preview",
+    prompt="An astronaut riding a horse on Mars, photorealistic",
+    n=1,
+    size="1024x1024"
+)
+
+image_url = response.data[0].url
+print(image_url)`}
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="python-litellm" label="Python (litellm)">
+    <p>Bạn cũng có thể sử dụng hàm <code>litellm.image_generation</code>.</p>
+    <CodeBlock language="python">
+    {`import litellm
+
+# --- Cấu hình ---
+LITELLM_API_BASE = "http://localhost:4000"
+LITELLM_MASTER_KEY = "sk-1234" # Thay bằng key của bạn
+
+# --- Thực thi ---
+litellm.api_base = LITELLM_API_BASE
+
+response = litellm.image_generation(
+    prompt="A peaceful Japanese garden with a koi pond and cherry blossoms",
+    model="imagen-4",
+    api_key=LITELLM_MASTER_KEY
+)
+
+image_url = response.data[0].url
+print(image_url)`}
+    </CodeBlock>
+  </TabItem>
+</Tabs>

@@ -1,0 +1,96 @@
+---
+sidebar_position: 6
+---
+
+# Chuyển văn bản thành giọng nói (Text-to-Speech)
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Các mô hình Text-to-Speech (TTS) cho phép bạn chuyển đổi một đoạn văn bản thành file âm thanh có giọng nói tự nhiên.
+
+**Các model được hỗ trợ:**
+- `gemini-2.5-flash-preview-tts` (Google Gemini)
+- `gemini-2.5-pro-preview-tts` (Google Gemini)
+
+**Endpoint:** `POST /audio/speech`
+
+API này cũng tuân theo chuẩn của OpenAI, giúp việc tích hợp trở nên nhất quán.
+
+<Tabs>
+  <TabItem value="curl" label="curl">
+    <p>Cách này cho phép bạn nhanh chóng tạo và lưu file âm thanh.</p>
+    <pre><code className="language-bash">
+    {`curl http://localhost:4000/audio/speech \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer {'<your_api_key>'}" \\
+  -d '{
+    "model": "gemini-2.5-flash-preview-tts",
+    "input": "Xin chào, đây là một thử nghiệm chuyển văn bản thành giọng nói qua LiteLLM.",
+    "voice": "echo"
+  }' \\
+  --output speech_output.mp3`}
+    </code></pre>
+  </TabItem>
+  <TabItem value="python-requests" label="Python (requests)">
+    <p>Cách này cho bạn quyền kiểm soát việc lưu file.</p>
+    <pre><code className="language-python">
+    {`import requests
+
+# --- Cấu hình ---
+LITELLM_API_BASE = "http://localhost:4000"
+LITELLM_MASTER_KEY = "sk-1234" # Thay bằng key của bạn
+
+# --- Thực thi ---
+url = f"{LITELLM_API_BASE}/audio/speech"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {LITELLM_MASTER_KEY}"
+}
+data = {
+    "model": "gemini-2.5-pro-preview-tts",
+    "input": "Hello world! This is a test of the text-to-speech API.",
+    "voice": "nova"
+}
+
+response = requests.post(url, headers=headers, json=data, stream=True)
+
+if response.status_code == 200:
+    with open("speech_from_requests.mp3", "wb") as f:
+        for chunk in response.iter_content(chunk_size=8192):
+            f.write(chunk)
+    print("File âm thanh đã được tạo thành công!")
+else:
+    print(f"Error: {response.status_code}")
+    print(response.text)`}
+    </code></pre>
+  </TabItem>
+  <TabItem value="python-openai" label="Python (openai)">
+    <p>Thư viện <code>openai</code> cung cấp một giao diện rất sạch sẽ cho tác vụ này.</p>
+    <pre><code className="language-python">
+    {`from openai import OpenAI
+from pathlib import Path
+
+# --- Cấu hình ---
+LITELLM_API_BASE = "http://localhost:4000"
+LITELLM_MASTER_KEY = "sk-1234" # Thay bằng key của bạn
+
+# --- Thực thi ---
+client = OpenAI(
+    api_key=LITELLM_MASTER_KEY,
+    base_url=LITELLM_API_BASE
+)
+
+speech_file_path = Path(__file__).parent / "speech_from_openai.mp3"
+
+response = client.audio.speech.create(
+  model="gemini-2.5-flash-preview-tts",
+  voice="alloy",
+  input="Hôm nay là một ngày đẹp trời để lập trình."
+)
+
+response.stream_to_file(speech_file_path)
+print(f"File âm thanh đã được lưu tại: {speech_file_path}")`}
+    </code></pre>
+  </TabItem>
+</Tabs>

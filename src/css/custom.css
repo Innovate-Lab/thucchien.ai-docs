@@ -1,0 +1,57 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #1675D1;
+  --ifm-color-primary-dark: #1F53C0;
+  --ifm-color-primary-darker: #1F53C0;
+  --ifm-color-primary-darkest: #1F53C0;
+  --ifm-color-primary-light: #50C2F6;
+  --ifm-color-primary-lighter: #50C2F6;
+  --ifm-color-primary-lightest: #50C2F6;
+  --ifm-background-color: #FFFFFF;
+  --ifm-font-color-base: #1D1E1E;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #50C2F6;
+  --ifm-color-primary-dark: #1675D1;
+  --ifm-color-primary-darker: #1675D1;
+  --ifm-color-primary-darkest: #1F53C0;
+  --ifm-color-primary-light: #50C2F6;
+  --ifm-color-primary-lighter: #50C2F6;
+  --ifm-color-primary-lightest: #50C2F6;
+  --ifm-background-color: #1D1E1E;
+  --ifm-font-color-base: #DEE4E9;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Custom Code Block Styling */
+div[class*="codeBlockContainer_"] {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-pre-border-radius);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.copyButton_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-CopyButton-styles-module {
+  transition: all 0.2s ease;
+  background-color: transparent;
+  border: none;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.copyButton_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-CopyButton-styles-module:hover {
+  background-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-primary);
+}
+
+.copyButtonSuccess_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-CopyButton-styles-module {
+  color: var(--ifm-color-success-dark);
+}
