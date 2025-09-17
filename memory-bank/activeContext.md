@@ -2,10 +2,15 @@
 
 ## 1. Công việc đang tập trung
 
-- **Hoàn thành:** Cập nhật Memory Bank.
-- **Nhiệm vụ tiếp theo:** Bắt đầu triển khai tính năng tìm kiếm local (local search) cho trang tài liệu.
+- **Hoàn thành:** Thêm mục hướng dẫn VibeCoding.
+- **Nhiệm vụ tiếp theo:** Cập nhật Memory Bank.
 
 ## 2. Các thay đổi gần đây
+
+- **Thêm hướng dẫn VibeCoding:**
+    - **Tạo nội dung:** Soạn thảo và tạo mới 4 file tài liệu (`introduction.md`, `cline-integration.md`, `cursor-integration.md`, `best-practices.mdx`) để giải thích và hướng dẫn phương pháp VibeCoding.
+    - **Cập nhật nội dung:** Thêm liên kết Wikipedia vào trang giới thiệu VibeCoding theo yêu cầu.
+    - **Cấu hình sidebar:** Thêm file `_category_.json` để đảm bảo mục VibeCoding hiển thị chính xác trên thanh điều hướng.
 
 - **Gỡ bỏ tính năng tìm kiếm:**
     - **Gỡ cài đặt plugin:** Gỡ bỏ gói `docusaurus-lunr-search` khỏi dự án.
