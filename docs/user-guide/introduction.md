@@ -25,9 +25,9 @@ Hệ thống sẽ tự động định tuyến yêu cầu của bạn đến đ�
 
 Tài liệu này sẽ hướng dẫn bạn cách sử dụng các loại mô hình sau:
 
-- **Sinh văn bản (Text Generation):** Tạo ra văn bản, trả lời câu hỏi, tóm tắt nội dung.
-- **Sinh hình ảnh (Image Generation):** Tạo ra hình ảnh từ mô tả văn bản.
-- **Sinh video (Video Generation):** Tạo ra các đoạn video ngắn từ mô tả.
-- **Chuyển văn bản thành giọng nói (Text-to-Speech):** Chuyển đổi văn bản thành file âm thanh.
+- **[Sinh văn bản (Text Generation)](./text-generation.mdx):** Tạo ra văn bản, trả lời câu hỏi, tóm tắt nội dung.
+- **[Sinh hình ảnh (Image Generation)](./image-generation.mdx):** Tạo ra hình ảnh từ mô tả văn bản.
+- **[Sinh video (Video Generation)](./video-generation-veo3.mdx):** Tạo ra các đoạn video ngắn từ mô tả.
+- **[Chuyển văn bản thành giọng nói (Text-to-Speech)](./text-to-speech.mdx):** Chuyển đổi văn bản thành file âm thanh.
 
 Hãy bắt đầu với [Các khái niệm cốt lõi](./core-concepts.md) để hiểu về cách xác thực và gửi yêu cầu đầu tiên của bạn.

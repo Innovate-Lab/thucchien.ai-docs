@@ -11,8 +11,8 @@ import CodeBlock from '@theme/CodeBlock';
 Các mô hình Text-to-Speech (TTS) cho phép bạn chuyển đổi một đoạn văn bản thành file âm thanh có giọng nói tự nhiên.
 
 **Các model được hỗ trợ:**
-- `gemini-tts-flash` (Google Gemini)
-- `gemini-tts-pro` (Google Gemini)
+- `gemini-2.5-flash-preview-tts` (Google Gemini)
+- `gemini-2.5-pro-preview-tts` (Google Gemini)
 
 **Endpoint:** `POST /audio/speech`
 
@@ -26,12 +26,16 @@ API này cũng tuân theo chuẩn của OpenAI, giúp việc tích hợp trở n
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer <your_api_key>" \\
   -d '{
-    "model": "gemini-tts-flash",
+    "model": "gemini-2.5-flash-preview-tts",
     "input": "Xin chào, đây là một thử nghiệm chuyển văn bản thành giọng nói qua [AI Thực Chiến](https://thucchien.ai) gateway.",
     "voice": "echo"
   }' \\
   --output speech_output.mp3`}
     </CodeBlock>
+    <p>Kết quả bạn sẽ có file audio như sau:</p>
+    <audio controls>
+      <source src="/audio/speech_output.mp3" type="audio/mpeg" />
+    </audio>
   </TabItem>
   <TabItem value="python-requests" label="Python (requests)">
     <p>Cách này cho bạn quyền kiểm soát việc lưu file.</p>
@@ -49,7 +53,7 @@ headers = {
     "Authorization": f"Bearer {VBI_API_KEY}"
 }
 data = {
-    "model": "gemini-tts-pro",
+    "model": "gemini-2.5-pro-preview-tts",
     "input": "Hello world! This is a test of the text-to-speech API.",
     "voice": "nova"
 }
@@ -65,6 +69,10 @@ else:
     print(f"Error: {response.status_code}")
     print(response.text)`}
     </CodeBlock>
+    <p>Kết quả bạn sẽ có file audio như sau:</p>
+    <audio controls>
+      <source src="/audio/speech_output.mp3" type="audio/mpeg" />
+    </audio>
   </TabItem>
   <TabItem value="python-openai" label="Python (openai)">
     <p>Thư viện <code>openai</code> cung cấp một giao diện rất sạch sẽ cho tác vụ này.</p>
@@ -85,7 +93,7 @@ client = OpenAI(
 speech_file_path = Path(__file__).parent / "speech_from_openai.mp3"
 
 response = client.audio.speech.create(
-  model="gemini-tts-flash",
+  model="gemini-2.5-flash-preview-tts",
   voice="alloy",
   input="Hôm nay là một ngày đẹp trời để lập trình."
 )
@@ -93,5 +101,9 @@ response = client.audio.speech.create(
 response.stream_to_file(speech_file_path)
 print(f"File âm thanh đã được lưu tại: {speech_file_path}")`}
     </CodeBlock>
+    <p>Kết quả bạn sẽ có file audio như sau:</p>
+    <audio controls>
+      <source src="/audio/speech_output.mp3" type="audio/mpeg" />
+    </audio>
   </TabItem>
 </Tabs>
