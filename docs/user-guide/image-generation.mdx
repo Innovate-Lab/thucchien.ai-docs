@@ -8,42 +8,59 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-Các mô hình sinh hình ảnh cho phép bạn tạo ra những hình ảnh độc đáo từ mô tả bằng văn bản (prompt).
+VBI cung cấp hai phương pháp để tạo hình ảnh từ mô tả văn bản (prompt), tùy thuộc vào mô hình bạn sử dụng.
 
-**Các model được hỗ trợ:**
-- `gemini-2.5-flash-image-preview` (Google Gemini)
+- **Phương pháp chuẩn (Standard):** Sử dụng endpoint `/images/generations`, tuân thủ theo API của OpenAI.
+- **Phương pháp trò chuyện (Chat):** Sử dụng endpoint `/chat/completions` với các mô hình đa phương thức (multimodal).
+
+---
+
+## 1. Phương pháp chuẩn (Endpoint: `/images/generations`)
+
+Phương pháp này tương thích với các thư viện client của OpenAI và là cách được khuyến nghị cho các mô hình sinh ảnh chuyên dụng.
+
+**Model được hỗ trợ:**
 - `imagen-4` (Google Vertex AI)
 
 **Endpoint:** `POST /images/generations`
 
-API này cũng tuân theo chuẩn của OpenAI, giúp việc tích hợp trở nên dễ dàng.
-
 <Tabs>
   <TabItem value="curl" label="curl">
-    <p>Một cách nhanh chóng để tạo hình ảnh từ dòng lệnh.</p>
+    <p>Sử dụng <code>curl</code> để tạo và lưu hình ảnh.</p>
     <CodeBlock language="bash">
-    {`curl https://api0.lab.vbi-server.com/images/generations \\
+    {`# Bước 1: Gọi API để tạo hình ảnh và lấy URL
+IMAGE_URL=$(curl -s https://api0.lab.vbi-server.com/v1/images/generations \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer <your_api_key>" \\
   -d '{
-    "model": "gemini-2.5-flash-image-preview",
-    "prompt": "A futuristic cityscape at sunset, with flying cars and neon lights",
+    "model": "imagen-4",
+    "prompt": "An olympic size swimming pool with crystal clear water and modern architecture",
     "n": 1,
     "size": "1024x1024"
-  }'`}
+  }' | jq -r .data[0].url)
+
+# Bước 2: Tải hình ảnh từ URL về và lưu với tên "generated_image.png"
+if [ -n "$IMAGE_URL" ]; then
+  curl -o generated_image.png "$IMAGE_URL"
+  echo "Image saved to generated_image.png"
+else
+  echo "Failed to get image URL"
+fi`}
     </CodeBlock>
-    <p>Kết quả trả về sẽ là một đối tượng JSON chứa URL của hình ảnh đã được tạo.</p>
+    <p>Lệnh trên sử dụng <code>jq</code> để trích xuất URL. Sau đó, một lệnh <code>curl</code> thứ hai sẽ tải và lưu hình ảnh.</p>
   </TabItem>
   <TabItem value="python-requests" label="Python (requests)">
+    <p>Sử dụng thư viện <code>requests</code> để tạo và lưu hình ảnh.</p>
     <CodeBlock language="python">
     {`import requests
 import json
 
 # --- Cấu hình ---
-VBI_API_BASE = "https://api0.lab.vbi-server.com"
-VBI_API_KEY = "sk-1234" # Thay bằng API key của bạn
+VBI_API_BASE = "https://api0.lab.vbi-server.com/v1"
+VBI_API_KEY = "<your_api_key>" # Thay bằng API key của bạn
+IMAGE_SAVE_PATH = "generated_image.png"
 
-# --- Thực thi ---
+# --- Bước 1: Gọi API để tạo hình ảnh ---
 url = f"{VBI_API_BASE}/images/generations"
 headers = {
     "Content-Type": "application/json",
@@ -56,53 +73,83 @@ data = {
     "size": "1024x1024"
 }
 
-response = requests.post(url, headers=headers, data=json.dumps(data))
+try:
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+    response.raise_for_status()  # Ném lỗi nếu status code là 4xx/5xx
 
-if response.status_code == 200:
     result = response.json()
     image_url = result['data'][0]['url']
-    print(f"Image generated successfully: {image_url}")
-else:
-    print(f"Error: {response.status_code}")
-    print(response.text)`}
+    print(f"Image generated successfully. URL: {image_url}")
+
+    # --- Bước 2: Tải và lưu hình ảnh ---
+    image_response = requests.get(image_url, stream=True)
+    image_response.raise_for_status()
+
+    with open(IMAGE_SAVE_PATH, 'wb') as f:
+        for chunk in image_response.iter_content(chunk_size=8192):
+            f.write(chunk)
+    
+    print(f"Image saved to {IMAGE_SAVE_PATH}")
+
+except requests.exceptions.RequestException as e:
+    print(f"An error occurred: {e}")
+    print(f"Response body: {response.text if 'response' in locals() else 'No response'}")`}
     </CodeBlock>
   </TabItem>
   <TabItem value="python-openai" label="Python (openai)">
-    <p>Sử dụng thư viện <code>openai</code> giúp code của bạn ngắn gọn và dễ đọc hơn.</p>
+    <p>Sử dụng thư viện <code>openai</code> giúp code ngắn gọn hơn.</p>
     <CodeBlock language="python">
     {`from openai import OpenAI
+import requests
 
 # --- Cấu hình ---
-VBI_API_BASE = "https://api0.lab.vbi-server.com"
-VBI_API_KEY = "sk-1234" # Thay bằng API key của bạn
+VBI_API_BASE = "https://api0.lab.vbi-server.com/v1"
+VBI_API_KEY = "<your_api_key>" # Thay bằng API key của bạn
+IMAGE_SAVE_PATH = "generated_image.png"
 
-# --- Thực thi ---
+# --- Bước 1: Gọi API để tạo hình ảnh ---
 client = OpenAI(
     api_key=VBI_API_KEY,
     base_url=VBI_API_BASE
 )
 
 response = client.images.generate(
-    model="gemini-2.5-flash-image-preview",
+    model="imagen-4",
     prompt="An astronaut riding a horse on Mars, photorealistic",
     n=1,
     size="1024x1024"
 )
 
 image_url = response.data[0].url
-print(image_url)`}
+print(f"Image generated successfully. URL: {image_url}")
+
+# --- Bước 2: Tải và lưu hình ảnh ---
+try:
+    image_response = requests.get(image_url, stream=True)
+    image_response.raise_for_status()
+
+    with open(IMAGE_SAVE_PATH, 'wb') as f:
+        for chunk in image_response.iter_content(chunk_size=8192):
+            f.write(chunk)
+            
+    print(f"Image saved to {IMAGE_SAVE_PATH}")
+
+except requests.exceptions.RequestException as e:
+    print(f"Failed to download image: {e}")`}
     </CodeBlock>
   </TabItem>
   <TabItem value="python-litellm" label="Python (litellm)">
-    <p>Bạn cũng có thể sử dụng hàm <code>litellm.image_generation</code>.</p>
+    <p>Sử dụng hàm <code>litellm.image_generation</code>.</p>
     <CodeBlock language="python">
     {`import litellm
+import requests
 
 # --- Cấu hình ---
-VBI_API_BASE = "https://api0.lab.vbi-server.com"
-VBI_API_KEY = "sk-1234" # Thay bằng API key của bạn
+VBI_API_BASE = "https://api0.lab.vbi-server.com/v1"
+VBI_API_KEY = "<your_api_key>" # Thay bằng API key của bạn
+IMAGE_SAVE_PATH = "generated_image.png"
 
-# --- Thực thi ---
+# --- Bước 1: Gọi API để tạo hình ảnh ---
 litellm.api_base = VBI_API_BASE
 
 response = litellm.image_generation(
@@ -112,7 +159,115 @@ response = litellm.image_generation(
 )
 
 image_url = response.data[0].url
-print(image_url)`}
+print(f"Image generated successfully. URL: {image_url}")
+
+# --- Bước 2: Tải và lưu hình ảnh ---
+try:
+    image_response = requests.get(image_url, stream=True)
+    image_response.raise_for_status()
+
+    with open(IMAGE_SAVE_PATH, 'wb') as f:
+        for chunk in image_response.iter_content(chunk_size=8192):
+            f.write(chunk)
+            
+    print(f"Image saved to {IMAGE_SAVE_PATH}")
+
+except requests.exceptions.RequestException as e:
+    print(f"Failed to download image: {e}")`}
+    </CodeBlock>
+  </TabItem>
+</Tabs>
+
+---
+
+## 2. Phương pháp trò chuyện (Endpoint: `/chat/completions`)
+
+Một số mô hình đa phương thức cho phép bạn tạo hình ảnh ngay trong một cuộc hội thoại.
+
+**Model được hỗ trợ:**
+- `gemini-2.5-flash-image-preview`
+
+**Endpoint:** `POST /chat/completions`
+
+<Tabs>
+  <TabItem value="curl" label="curl">
+    <p>Sử dụng <code>curl</code> để yêu cầu hình ảnh thông qua endpoint chat.</p>
+    <CodeBlock language="bash">
+    {`# Bước 1: Gọi API và trích xuất URL hình ảnh
+IMAGE_URL=$(curl -s https://api0.lab.vbi-server.com/v1/chat/completions \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer <your_api_key>" \\
+  -d '{
+    "model": "gemini-2.5-flash-image-preview",
+    "messages": [
+        {
+            "role": "user",
+            "content": "An olympic size swimming pool with crystal clear water and modern architecture"
+        }
+    ]
+  }' | jq -r .choices[0].message.content)
+
+# Bước 2: Tải hình ảnh từ URL về
+if [[ "$IMAGE_URL" == http* ]]; then
+  curl -o generated_chat_image.png "$IMAGE_URL"
+  echo "Image saved to generated_chat_image.png"
+else
+  echo "Failed to get image URL. Response was: $IMAGE_URL"
+fi`}
+    </CodeBlock>
+  </TabItem>
+  <TabItem value="python-requests" label="Python (requests)">
+    <p>Sử dụng thư viện <code>requests</code>.</p>
+    <CodeBlock language="python">
+    {`import requests
+import json
+
+# --- Cấu hình ---
+VBI_API_BASE = "https://api0.lab.vbi-server.com/v1"
+VBI_API_KEY = "<your_api_key>" # Thay bằng API key của bạn
+IMAGE_SAVE_PATH = "generated_chat_image.png"
+
+# --- Bước 1: Gọi API để tạo hình ảnh ---
+url = f"{VBI_API_BASE}/chat/completions"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {VBI_API_KEY}"
+}
+data = {
+    "model": "gemini-2.5-flash-image-preview",
+    "messages": [
+        {
+            "role": "user",
+            "content": "A futuristic cityscape at sunset, with flying cars and neon lights"
+        }
+    ]
+}
+
+try:
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+    response.raise_for_status()
+
+    result = response.json()
+    # Nội dung trả về chính là URL của hình ảnh
+    image_url = result['choices'][0]['message']['content']
+    print(f"Image generated successfully. URL: {image_url}")
+
+    # --- Bước 2: Tải và lưu hình ảnh ---
+    if image_url.startswith('http'):
+        image_response = requests.get(image_url, stream=True)
+        image_response.raise_for_status()
+
+        with open(IMAGE_SAVE_PATH, 'wb') as f:
+            for chunk in image_response.iter_content(chunk_size=8192):
+                f.write(chunk)
+        
+        print(f"Image saved to {IMAGE_SAVE_PATH}")
+    else:
+        print(f"Received content is not a valid URL: {image_url}")
+
+except requests.exceptions.RequestException as e:
+    print(f"An error occurred: {e}")
+    print(f"Response body: {response.text if 'response' in locals() else 'No response'}")`}
     </CodeBlock>
   </TabItem>
 </Tabs>

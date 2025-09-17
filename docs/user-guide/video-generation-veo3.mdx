@@ -25,9 +25,9 @@ Việc tạo video là một tác vụ tốn nhiều tài nguyên và thời gia
     <h4>Bước 1: Bắt đầu tạo video</h4>
     <p>Gửi một yêu cầu POST đến endpoint đặc biệt dành cho Veo.</p>
     <CodeBlock language="bash">
-    {`curl -X POST https://api0.lab.vbi-server.com/models/veo-3.0-generate-preview:predictLongRunning \\
+    {`curl -X POST https://api0.lab.vbi-server.com/gemini/v1beta/models/veo-3.0-generate-preview:predictLongRunning \\
   -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer <your_api_key>" \\
+  -H "x-goog-api-key: <your_api_key>" \\
   -d '{
     "instances": [{
       "prompt": "A cinematic shot of a hummingbird flying in slow motion"
@@ -35,29 +35,56 @@ Việc tạo video là một tác vụ tốn nhiều tài nguyên và thời gia
   }'`}
     </CodeBlock>
     <p>Nếu thành công, API sẽ trả về một JSON chứa <code>name</code> của tác vụ. Hãy lưu lại giá trị này.</p>
+    <CodeBlock language="json">
+    {`{
+  "name": "models/veo-3.0-generate-preview/operations/idrk08ltkg0a"
+}`}
+    </CodeBlock>
     
     <h4>Bước 2: Kiểm tra trạng thái</h4>
     <p>Sử dụng <code>operation_name</code> bạn nhận được ở Bước 1 để gửi yêu cầu GET.</p>
     <CodeBlock language="bash">
-    {`# Thay operations/1234567890 bằng operation_name của bạn
-curl https://api0.lab.vbi-server.com/operations/1234567890 \\
-  -H "Authorization: Bearer <your_api_key>"`}
+    {`# Thay operations/idrk08ltkg0a bằng operation_name của bạn
+curl https://api0.lab.vbi-server.com/gemini/v1beta/models/veo-3.0-generate-preview/operations/idrk08ltkg0a \\
+  -H "x-goog-api-key: <your_api_key>"`}
     </CodeBlock>
     <p>Lặp lại yêu cầu này cho đến khi response chứa <code>"done": true</code>.</p>
+    <CodeBlock language="json">
+    {`{
+    "name": "models/veo-3.0-generate-preview/operations/idrk08ltkg0a",
+    "done": true,
+    "response": {
+        "@type": "type.googleapis.com/google.ai.generativelanguage.v1beta.PredictLongRunningResponse",
+        "generateVideoResponse": {
+            "generatedSamples": [
+                {
+                    "video": {
+                        "uri": "https://generativelanguage.googleapis.com/v1beta/files/3j6svp4106e7:download?alt=media"
+                    }
+                }
+            ]
+        }
+    }
+}`}
+    </CodeBlock>
 
     <h4>Bước 3: Tải video</h4>
     <p>Sử dụng <code>uri</code> từ response ở Bước 2 để tải video.</p>
     <CodeBlock language="bash">
-    {`# URI gốc: https://generativelanguage.googleapis.com/v1beta/files/generated_video_abcxyz
-# File path: v1beta/files/generated_video_abcxyz
+    {`# URI gốc: https://generativelanguage.googleapis.com/v1beta/files/3j6svp4106e7:download?alt=media
+# File path: v1beta/files/3j6svp4106e7:download?alt=media
 
-curl https://api0.lab.vbi-server.com/download/v1beta/files/generated_video_abcxyz \\
-  -H "Authorization: Bearer <your_api_key>" \\
+curl https://api0.lab.vbi-server.com/gemini/download/v1beta/files/3j6svp4106e7:download?alt=media \\
+  -H "x-goog-api-key: <your_api_key>" \\
   --output my_generated_video.mp4`}
     </CodeBlock>
+    <p>Kết quả bạn sẽ có file video như sau:</p>
+    <video controls style={{maxWidth: '100%'}}>
+        <source src="/video/my_generated_video.mp4" type="video/mp4" />
+    </video>
   </TabItem>
   <TabItem value="python" label="Python (Script tự động)">
-    <p>Dưới đây là một kịch bản Python hoàn chỉnh để tự động hóa cả 3 bước, sử dụng code gốc từ repository <code>ansible-litellm-proxy</code>.</p>
+    <p>Dưới đây là một kịch bản Python hoàn chỉnh để tự động hóa cả 3 bước.</p>
     <CodeBlock language="python">
     {`#!/usr/bin/env python3
 """
@@ -83,21 +110,21 @@ from typing import Optional
 
 
 class VeoVideoGenerator:
-    """Complete Veo video generation client using VBI AI Gateway."""
+    """Complete Veo video generation client using LiteLLM proxy."""
     
-    def __init__(self, base_url: str = "https://api0.lab.vbi-server.com", 
-                 api_key: str = "YOUR_API_KEY"): # Thay bằng API key của bạn
+    def __init__(self, base_url: str = "https://api0.lab.vbi-server.com/gemini/v1beta", 
+                 api_key: str = "sk-1234"):
         """
         Initialize the Veo video generator.
         
         Args:
-            base_url: Base URL for the VBI AI Gateway
-            api_key: Your API key for authentication
+            base_url: Base URL for the LiteLLM proxy with Gemini pass-through
+            api_key: API key for LiteLLM proxy authentication
         """
         self.base_url = base_url
         self.api_key = api_key
         self.headers = {
-            "Authorization": f"Bearer {api_key}",
+            "x-goog-api-key": api_key,
             "Content-Type": "application/json"
         }
     
@@ -171,18 +198,21 @@ class VeoVideoGenerator:
                 
                 data = response.json()
                 
+                # Check for errors
                 if "error" in data:
                     print("❌ Error in video generation:")
                     print(json.dumps(data["error"], indent=2))
                     return None
                 
+                # Check if operation is complete
                 is_done = data.get("done", False)
                 
                 if is_done:
                     print("🎉 Video generation complete!")
                     
                     try:
-                        video_url = data["response"]["generatedSamples"][0]["video"]["uri"]
+                        # Extract video URI from nested response
+                        video_url = data["response"]["generateVideoResponse"]["generatedSamples"][0]["video"]["uri"]
                         print(f"📹 Video URI: {video_url}")
                         return video_url
                     except KeyError as e:
@@ -191,8 +221,9 @@ class VeoVideoGenerator:
                         print(json.dumps(data, indent=2))
                         return None
                 
+                # Wait before next poll, with exponential backoff
                 time.sleep(poll_interval)
-                poll_interval = min(poll_interval * 1.2, 30)
+                poll_interval = min(poll_interval * 1.2, 30)  # Cap at 30 seconds
                 
             except requests.RequestException as e:
                 print(f"❌ Error polling operation status: {e}")
@@ -206,74 +237,166 @@ class VeoVideoGenerator:
         Download the generated video file.
         
         Args:
-            video_url: URI of the video to download
+            video_url: URI of the video to download (from Google's response)
             output_filename: Local filename to save the video
             
         Returns:
             True if download successful, False otherwise
         """
         print(f"⬇️  Downloading video...")
+        print(f"Original URI: {video_url}")
         
+        # Convert Google URI to LiteLLM proxy URI
+        # Example: https://generativelanguage.googleapis.com/v1beta/files/abc123 -> /gemini/download/v1beta/files/abc123:download?alt=media
         if video_url.startswith("https://generativelanguage.googleapis.com/"):
-            relative_path = video_url.replace("https://generativelanguage.googleapis.com/", "")
+            relative_path = video_url.replace(
+                "https://generativelanguage.googleapis.com/",
+                ""
+            )
         else:
             relative_path = video_url
 
-        litellm_download_url = f"{self.base_url}/download/{relative_path}"
+        # base_url: https://api0.lab.vbi-server.com/gemini/v1beta
+        if self.base_url.endswith("/v1beta"):
+            base_path = self.base_url.replace("/v1beta", "/download")
+        else:
+            base_path = self.base_url
+
+        litellm_download_url = f"{base_path}/{relative_path}"
         print(f"Download URL: {litellm_download_url}")
         
         try:
-            response = requests.get(litellm_download_url, headers=self.headers, stream=True, allow_redirects=True)
+            # Download with streaming and redirect handling
+            response = requests.get(
+                litellm_download_url, 
+                headers=self.headers, 
+                stream=True,
+                allow_redirects=True  # Handle redirects automatically
+            )
             response.raise_for_status()
             
+            # Save video file
             with open(output_filename, 'wb') as f:
+                downloaded_size = 0
                 for chunk in response.iter_content(chunk_size=8192):
                     if chunk:
                         f.write(chunk)
+                        downloaded_size += len(chunk)
+                        
+                        # Progress indicator for large files
+                        if downloaded_size % (1024 * 1024) == 0:  # Every MB
+                            print(f"📦 Downloaded {downloaded_size / (1024*1024):.1f} MB...")
             
-            if os.path.exists(output_filename) and os.path.getsize(output_filename) > 0:
-                print(f"✅ Video downloaded successfully to {output_filename}")
-                return True
+            # Verify file was created and has content
+            if os.path.exists(output_filename):
+                file_size = os.path.getsize(output_filename)
+                if file_size > 0:
+                    print(f"✅ Video downloaded successfully!")
+                    print(f"📁 Saved as: {output_filename}")
+                    print(f"📏 File size: {file_size / (1024*1024):.2f} MB")
+                    return True
+                else:
+                    print("❌ Downloaded file is empty")
+                    os.remove(output_filename)
+                    return False
             else:
-                print("❌ Downloaded file is empty or was not created")
+                print("❌ File was not created")
                 return False
                 
         except requests.RequestException as e:
             print(f"❌ Download failed: {e}")
+            if hasattr(e, 'response') and e.response is not None:
+                print(f"Status code: {e.response.status_code}")
+                print(f"Response headers: {dict(e.response.headers)}")
             return False
     
     def generate_and_download(self, prompt: str, output_filename: str = None) -> bool:
         """
         Complete workflow: generate video and download it.
+        
+        Args:
+            prompt: Text description for video generation
+            output_filename: Output filename (auto-generated if None)
+            
+        Returns:
+            True if successful, False otherwise
         """
+        # Auto-generate filename if not provided
         if output_filename is None:
             timestamp = int(time.time())
             safe_prompt = "".join(c for c in prompt[:30] if c.isalnum() or c in (' ', '-', '_')).rstrip()
             output_filename = f"veo_video_{safe_prompt.replace(' ', '_')}_{timestamp}.mp4"
         
+        print("=" * 60)
+        print("🎬 VEO VIDEO GENERATION WORKFLOW")
+        print("=" * 60)
+        
+        # Step 1: Generate video
         operation_name = self.generate_video(prompt)
         if not operation_name:
             return False
         
+        # Step 2: Wait for completion
         video_url = self.wait_for_completion(operation_name)
         if not video_url:
             return False
         
-        return self.download_video(video_url, output_filename)
+        # Step 3: Download video
+        success = self.download_video(video_url, output_filename)
+        
+        if success:
+            print("=" * 60)
+            print("🎉 SUCCESS! Video generation complete!")
+            print(f"📁 Video saved as: {output_filename}")
+            print("=" * 60)
+        else:
+            print("=" * 60)
+            print("❌ FAILED! Video generation or download failed")
+            print("=" * 60)
+        
+        return success
 
 
 def main():
     """
     Example usage of the VeoVideoGenerator.
-    """
-    base_url = os.getenv("VBI_API_BASE", "https://api0.lab.vbi-server.com")
-    api_key = os.getenv("VBI_API_KEY", "sk-1234") # Thay bằng API key của bạn
     
+    Configure these environment variables:
+    - LITELLM_BASE_URL: Your LiteLLM proxy URL (default: https://api0.lab.vbi-server.com/gemini/v1beta)
+    - LITELLM_API_KEY: Your LiteLLM API key (default: sk-1234)
+    """
+    
+    # Configuration from environment or defaults
+    base_url = os.getenv("LITELLM_BASE_URL", "https://api0.lab.vbi-server.com/gemini/v1beta")
+    api_key = os.getenv("LITELLM_API_KEY", "sk-1234")
+    
+    print("🚀 Starting Veo Video Generation Example")
+    print(f"📡 Using LiteLLM proxy at: {base_url}")
+    
+    # Initialize generator
     generator = VeoVideoGenerator(base_url=base_url, api_key=api_key)
     
-    prompt = "A cat playing with a ball of yarn in a sunny garden"
-    generator.generate_and_download(prompt)
-
+    # Example prompts - try different ones!
+    example_prompts = [
+        "A cat playing with a ball of yarn in a sunny garden",
+        "Ocean waves crashing against rocky cliffs at sunset",
+        "A bustling city street with people walking and cars passing by",
+        "A peaceful forest with sunlight filtering through the trees"
+    ]
+    
+    # Use first example or get from user
+    prompt = example_prompts[0]
+    print(f"🎬 Using prompt: '{prompt}'")
+    
+    # Generate and download video
+    success = generator.generate_and_download(prompt)
+    
+    if success:
+        print("\n✅ Example completed successfully!")
+        print("💡 Try modifying the prompt in the script for different videos!")
+    else:
+        print("\n❌ Example failed!")
+        print("🔧 Check your API Configuration")
 
 if __name__ == "__main__":
     main()`}

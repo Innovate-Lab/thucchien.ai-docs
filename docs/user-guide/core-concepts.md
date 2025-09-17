@@ -16,7 +16,7 @@ Hệ thống sẽ tự động xử lý và định tuyến dựa trên nội du
 
 ## Xác thực (Authentication)
 
-Để sử dụng VBI AI Gateway, bạn cần một API key. Key này sẽ được chúng tôi cung cấp.
+Để sử dụng [AI Thực Chiến](https://thucchien.ai) gateway, bạn cần một API key. Key này sẽ được chúng tôi cung cấp.
 
 Bạn cần gửi key này trong header `Authorization` của mỗi yêu cầu theo định dạng `Bearer`.
 

@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Tài liệu VBI AI Gateway',
+  title: 'AI Thực Chiến',
   tagline: 'Hướng dẫn sử dụng AI APIs thông qua LiteLLM',
   favicon: 'img/favicon.ico',
 
@@ -73,25 +73,21 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'Tài liệu VBI AI Gateway',
+      title: 'AI Thực Chiến',
       logo: {
-        alt: 'Tài liệu VBI AI Gateway Logo',
+        alt: 'AI Thực Chiến Logo',
         src: 'img/logo.svg',
       },
       items: [
         {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Tutorial',
+          position: 'right',
+          label: 'Tài liệu',
         },
         {
           href: 'https://github.com/facebook/docusaurus',
           label: 'GitHub',
-          position: 'right',
-        },
-        {
-          type: 'search',
           position: 'right',
         },
       ],

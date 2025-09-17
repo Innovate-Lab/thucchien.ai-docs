@@ -4,11 +4,11 @@ sidebar_position: 1
 
 # Giới thiệu
 
-Chào mừng bạn đến với tài liệu hướng dẫn sử dụng VBI AI Gateway. Tài liệu này sẽ cung cấp cho bạn mọi thông tin cần thiết để tích hợp các mô hình Trí tuệ nhân tạo (AI) mạnh mẽ vào ứng dụng của bạn chỉ với một API key duy nhất.
+Chào mừng bạn đến với tài liệu hướng dẫn sử dụng [AI Thực Chiến](https://thucchien.ai) gateway. Tài liệu này sẽ cung cấp cho bạn mọi thông tin cần thiết để tích hợp các mô hình Trí tuệ nhân tạo (AI) mạnh mẽ vào ứng dụng của bạn chỉ với một API key duy nhất.
 
-## VBI AI Gateway là gì?
+## [AI Thực Chiến](https://thucchien.ai) gateway là gì?
 
-VBI AI Gateway là một cổng kết nối (gateway) hợp nhất, giúp bạn truy cập các mô hình AI hàng đầu một cách đơn giản và hiệu quả. Thay vì phải quản lý nhiều API phức tạp từ các nhà cung cấp khác nhau, bạn chỉ cần gửi yêu cầu đến một endpoint duy nhất do chúng tôi cung cấp:
+[AI Thực Chiến](https://thucchien.ai) gateway là một cổng kết nối (gateway) hợp nhất, giúp bạn truy cập các mô hình AI hàng đầu một cách đơn giản và hiệu quả. Thay vì phải quản lý nhiều API phức tạp từ các nhà cung cấp khác nhau, bạn chỉ cần gửi yêu cầu đến một endpoint duy nhất do chúng tôi cung cấp:
 
 `https://api0.lab.vbi-server.com`
 

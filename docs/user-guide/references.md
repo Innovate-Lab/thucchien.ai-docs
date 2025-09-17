@@ -4,9 +4,14 @@ sidebar_position: 7
 
 # Tham khảo
 
-Tài liệu của chúng tôi cung cấp mọi thứ bạn cần để tích hợp VBI AI Gateway vào ứng dụng của mình.
+Tài liệu của chúng tôi cung cấp mọi thứ bạn cần để tích hợp [AI Thực Chiến](https://thucchien.ai) gateway vào ứng dụng của mình.
 
-Tuy nhiên, để hiểu sâu hơn về các tham số nâng cao, các khả năng đặc biệt, hoặc các giới hạn của từng mô hình AI cụ thể, bạn có thể tham khảo tài liệu chính thức từ các nhà phát triển mô hình đó.
+Tuy nhiên, để hiểu sâu hơn về công nghệ nền tảng hoặc các khả năng của từng mô hình AI cụ thể, bạn có thể tham khảo tài liệu chính thức từ các nhà phát triển.
+
+## LiteLLM
+
+- **[Tài liệu chính thức của LiteLLM](https://docs.litellm.ai/docs/)**: Nguồn thông tin toàn diện về công nghệ proxy đang được sử dụng, bao gồm các tính năng nâng cao như caching, fallbacks, và virtual keys.
+- **[Hỗ trợ API của OpenAI trên LiteLLM](https://docs.litellm.ai/docs/providers/openai)**: Chi tiết về cách LiteLLM triển khai và hỗ trợ các endpoint theo chuẩn OpenAI.
 
 ## Google
 
