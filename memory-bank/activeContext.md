@@ -2,8 +2,8 @@
 
 ## 1. Công việc đang tập trung
 
-- **Hoàn thành:** Gỡ bỏ hoàn toàn tính năng tìm kiếm khỏi trang tài liệu.
-- **Nhiệm vụ tiếp theo:** Chuyển sang local search.
+- **Hoàn thành:** Cập nhật Memory Bank.
+- **Nhiệm vụ tiếp theo:** Bắt đầu triển khai tính năng tìm kiếm local (local search) cho trang tài liệu.
 
 ## 2. Các thay đổi gần đây
 

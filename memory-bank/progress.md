@@ -22,8 +22,7 @@
 
 ## 3. Trạng thái hiện tại
 
-- **Bị chặn (Blocked):** Công việc chính (hoàn thiện trang tài liệu) đang bị tạm dừng để thực hiện nhiệm vụ có độ ưu tiên cao hơn là khởi tạo Memory Bank.
-- **Sẵn sàng để tiếp tục:** Ngay sau khi Memory Bank được tạo xong, công việc sửa lỗi Docusaurus đã sẵn sàng để được tiếp tục.
+- **Sẵn sàng để tiếp tục:** Công việc trên trang tài liệu đã sẵn sàng để tiếp tục. Nhiệm vụ tiếp theo là triển khai tính năng tìm kiếm local.
 
 ## 4. Các vấn đề đã biết
 
