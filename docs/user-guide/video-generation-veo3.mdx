@@ -7,6 +7,7 @@ sidebar_position: 5
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import GeneratedVideo from '@site/static/video/my_generated_video.mp4';
 
 Việc tạo video là một tác vụ tốn nhiều tài nguyên và thời gian. Do đó, tương tác với mô hình `veo 3` không diễn ra ngay lập tức mà theo một quy trình bất đồng bộ (asynchronous) gồm 3 bước.
 
@@ -82,8 +83,8 @@ curl https://api0.lab.vbi-server.com/gemini/download/v1beta/files/3j6svp4106e7:d
   --output my_generated_video.mp4`}
     </CodeBlock>
     <p>Kết quả bạn sẽ có file video như sau:</p>
-    <video controls style={{maxWidth: '100%'}}>
-        <source src="/video/my_generated_video.mp4" type="video/mp4" />
+    <video controls style={{maxWidth: '100%'}} src={GeneratedVideo}>
+        Your browser does not support the video tag.
     </video>
   </TabItem>
   <TabItem value="python" label="Python (Script tự động)">

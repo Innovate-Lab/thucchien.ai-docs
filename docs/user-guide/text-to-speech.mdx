@@ -7,6 +7,7 @@ sidebar_position: 6
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
+import SpeechOutput from '@site/static/audio/speech_output.mp3';
 
 Các mô hình Text-to-Speech (TTS) cho phép bạn chuyển đổi một đoạn văn bản thành file âm thanh có giọng nói tự nhiên.
 
@@ -33,8 +34,8 @@ API này cũng tuân theo chuẩn của OpenAI, giúp việc tích hợp trở n
   --output speech_output.mp3`}
     </CodeBlock>
     <p>Kết quả bạn sẽ có file audio như sau:</p>
-    <audio controls>
-      <source src="audio/speech_output.mp3" type="audio/mpeg" />
+    <audio controls src={SpeechOutput}>
+      Your browser does not support the audio element.
     </audio>
   </TabItem>
   <TabItem value="python-requests" label="Python (requests)">
@@ -70,8 +71,8 @@ else:
     print(response.text)`}
     </CodeBlock>
     <p>Kết quả bạn sẽ có file audio như sau:</p>
-    <audio controls>
-      <source src="audio/speech_output.mp3" type="audio/mpeg" />
+    <audio controls src={SpeechOutput}>
+      Your browser does not support the audio element.
     </audio>
   </TabItem>
   <TabItem value="python-openai" label="Python (openai)">
@@ -102,8 +103,8 @@ response.stream_to_file(speech_file_path)
 print(f"File âm thanh đã được lưu tại: {speech_file_path}")`}
     </CodeBlock>
     <p>Kết quả bạn sẽ có file audio như sau:</p>
-    <audio controls>
-      <source src="audio/speech_output.mp3" type="audio/mpeg" />
+    <audio controls src={SpeechOutput}>
+      Your browser does not support the audio element.
     </audio>
   </TabItem>
 </Tabs>
