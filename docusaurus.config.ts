@@ -24,6 +24,7 @@ const config: Config = {
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'Innovate-Lab', // Usually your GitHub org/user name.
   projectName: 'thucchien.ai-docs', // Usually your repo name.
+  deploymentBranch: 'gh-pages', // The branch to deploy to.
 
   trailingSlash: false, // Remove trailing slash from URLs
   onBrokenLinks: 'throw',
