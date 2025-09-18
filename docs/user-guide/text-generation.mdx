@@ -24,7 +24,7 @@ API này tuân theo chuẩn của OpenAI, vì vậy bạn có thể sử dụng 
   <TabItem value="curl" label="curl">
     <p>Đây là cách đơn giản nhất để kiểm tra API. Thay <code>{'<your_api_key>'}</code> bằng API key của bạn.</p>
     <CodeBlock language="bash">
-    {`curl https://api0.lab.vbi-server.com/chat/completions \\
+    {`curl https://api0.lab.AI-server.com/chat/completions \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer <your_api_key>" \\
   -d '{
@@ -50,14 +50,14 @@ API này tuân theo chuẩn của OpenAI, vì vậy bạn có thể sử dụng 
 import json
 
 # --- Cấu hình ---
-VBI_API_BASE = "https://api0.lab.vbi-server.com"
-VBI_API_KEY = "sk-1234" # Thay bằng API key của bạn
+AI_API_BASE = "https://api0.lab.AI-server.com"
+AI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---
-url = f"{VBI_API_BASE}/chat/completions"
+url = f"{AI_API_BASE}/chat/completions"
 headers = {
     "Content-Type": "application/json",
-    "Authorization": f"Bearer {VBI_API_KEY}"
+    "Authorization": f"Bearer {AI_API_KEY}"
 }
 data = {
     "model": "gpt-4.1",
@@ -86,13 +86,13 @@ else:
     {`from openai import OpenAI
 
 # --- Cấu hình ---
-VBI_API_BASE = "https://api0.lab.vbi-server.com"
-VBI_API_KEY = "sk-1234" # Thay bằng API key của bạn
+AI_API_BASE = "https://api0.lab.AI-server.com"
+AI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---
 client = OpenAI(
-    api_key=VBI_API_KEY,
-    base_url=VBI_API_BASE
+    api_key=AI_API_KEY,
+    base_url=AI_API_BASE
 )
 
 response = client.chat.completions.create(
@@ -114,21 +114,21 @@ print(response.choices[0].message.content)`}
     {`import litellm
 
 # --- Cấu hình ---
-VBI_API_BASE = "https://api0.lab.vbi-server.com"
-VBI_API_KEY = "sk-1234" # Thay bằng API key của bạn
+AI_API_BASE = "https://api0.lab.AI-server.com"
+AI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---
-litellm.api_base = VBI_API_BASE
+litellm.api_base = AI_API_BASE
 
 response = litellm.completion(
-    model="gemini-2.5-pro",
+    model="litellm_proxy/gemini-2.5-pro",
     messages=[
         {
             "role": "user",
             "content": "Viết một đoạn văn ngắn về tầm quan trọng của AI."
         }
     ],
-    api_key=VBI_API_KEY
+    api_key=AI_API_KEY
 )
 
 print(response.choices[0].message.content)`}

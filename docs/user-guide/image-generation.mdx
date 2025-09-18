@@ -11,7 +11,7 @@ import GeneratedImage1 from '@site/static/img/generated_image_1.png';
 import GeneratedImage2 from '@site/static/img/generated_image_2.png';
 import GeneratedChatImage from '@site/static/img/generated_chat_image.png';
 
-VBI cung cấp hai phương pháp để tạo hình ảnh từ mô tả văn bản (prompt), tùy thuộc vào mô hình bạn sử dụng.
+AI cung cấp hai phương pháp để tạo hình ảnh từ mô tả văn bản (prompt), tùy thuộc vào mô hình bạn sử dụng.
 
 - **Phương pháp chuẩn (Standard):** Sử dụng endpoint `/images/generations`, tuân thủ theo API của OpenAI.
 - **Phương pháp trò chuyện (Chat):** Sử dụng endpoint `/chat/completions` với các mô hình đa phương thức (multimodal).
@@ -32,7 +32,7 @@ Phương pháp này tương thích với các thư viện client của OpenAI v�
     <p>Sử dụng <code>curl</code> để tạo nhiều hình ảnh và lưu chúng từ dữ liệu base64.</p>
     <CodeBlock language="bash">
     {`# Cấu hình
-API_URL="https://api0.lab.vbi-server.com/v1/images/generations"
+API_URL="https://api0.lab.AI-server.com/v1/images/generations"
 API_KEY="<your_api_key>"
 PROMPT="Một bức tranh phong cảnh biển hoàng hôn, phong cách sơn dầu"
 NUM_IMAGES=2 # Số lượng ảnh cần tạo
@@ -77,14 +77,14 @@ import json
 import base64
 
 # --- Cấu hình ---
-VBI_API_BASE = "https://api0.lab.vbi-server.com/v1"
-VBI_API_KEY = "<your_api_key>"
+AI_API_BASE = "https://api0.lab.AI-server.com/v1"
+AI_API_KEY = "<your_api_key>"
 
 # --- Gọi API để tạo hình ảnh ---
-url = f"{VBI_API_BASE}/images/generations"
+url = f"{AI_API_BASE}/images/generations"
 headers = {
     "Content-Type": "application/json",
-    "Authorization": f"Bearer {VBI_API_KEY}"
+    "Authorization": f"Bearer {AI_API_KEY}"
 }
 data = {
     "model": "imagen-4",
@@ -121,13 +121,13 @@ except requests.exceptions.RequestException as e:
 import base64
 
 # --- Cấu hình ---
-VBI_API_BASE = "https://api0.lab.vbi-server.com/v1"
-VBI_API_KEY = "<your_api_key>"
+AI_API_BASE = "https://api0.lab.AI-server.com/v1"
+AI_API_KEY = "<your_api_key>"
 
 # --- Khởi tạo client ---
 client = OpenAI(
-    api_key=VBI_API_KEY,
-    base_url=VBI_API_BASE
+    api_key=AI_API_KEY,
+    base_url=AI_API_BASE
 )
 
 # --- Gọi API để tạo hình ảnh ---
@@ -135,7 +135,6 @@ response = client.images.generate(
     model="imagen-4",
     prompt="An astronaut riding a horse on Mars, photorealistic",
     n=2, # Yêu cầu 2 ảnh
-    response_format="b64_json" # Yêu cầu trả về base64
 )
 
 # --- Xử lý và lưu từng ảnh ---
@@ -156,19 +155,16 @@ for i, image_obj in enumerate(response.data):
 import base64
 
 # --- Cấu hình ---
-VBI_API_BASE = "https://api0.lab.vbi-server.com/v1"
-VBI_API_KEY = "<your_api_key>"
-
-# --- Thiết lập litellm ---
-litellm.api_base = VBI_API_BASE
+AI_API_BASE = "https://api0.lab.AI-server.com"
+AI_API_KEY = "<your_api_key>"
 
 # --- Gọi API để tạo hình ảnh ---
 response = litellm.image_generation(
     prompt="A peaceful Japanese garden with a koi pond and cherry blossoms",
-    model="imagen-4",
+    model="litellm_proxy/imagen-4",
     n=2, # Yêu cầu 2 ảnh
-    api_key=VBI_API_KEY,
-    response_format="b64_json" # Yêu cầu trả về base64
+    api_key=AI_API_KEY,
+    api_base=AI_API_BASE
 )
 
 # --- Xử lý và lưu từng ảnh ---
@@ -199,7 +195,7 @@ Một số mô hình đa phương thức cho phép bạn tạo hình ảnh ngay 
     <p>Sử dụng <code>curl</code> để yêu cầu hình ảnh và lưu từ dữ liệu base64.</p>
     <CodeBlock language="bash">
     {`# Bước 1: Gọi API và trích xuất dữ liệu ảnh base64
-IMAGE_DATA=$(curl -s https://api0.lab.vbi-server.com/v1/chat/completions \\
+IMAGE_DATA=$(curl -s https://api0.lab.AI-server.com/v1/chat/completions \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer <your_api_key>" \\
   -d '{
@@ -233,15 +229,15 @@ import json
 import base64
 
 # --- Cấu hình ---
-VBI_API_BASE = "https://api0.lab.vbi-server.com/v1"
-VBI_API_KEY = "<your_api_key>" # Thay bằng API key của bạn
+AI_API_BASE = "https://api0.lab.AI-server.com/v1"
+AI_API_KEY = "<your_api_key>" # Thay bằng API key của bạn
 IMAGE_SAVE_PATH = "generated_chat_image.png"
 
 # --- Bước 1: Gọi API để tạo hình ảnh ---
-url = f"{VBI_API_BASE}/chat/completions"
+url = f"{AI_API_BASE}/chat/completions"
 headers = {
     "Content-Type": "application/json",
-    "Authorization": f"Bearer {VBI_API_KEY}"
+    "Authorization": f"Bearer {AI_API_KEY}"
 }
 data = {
     "model": "gemini-2.5-flash-image-preview",
@@ -293,14 +289,14 @@ except (KeyError, IndexError) as e:
 import base64
 
 # --- Cấu hình ---
-VBI_API_BASE = "https://api0.lab.vbi-server.com/v1"
-VBI_API_KEY = "<your_api_key>" # Thay bằng API key của bạn
+AI_API_BASE = "https://api0.lab.AI-server.com/v1"
+AI_API_KEY = "<your_api_key>" # Thay bằng API key của bạn
 IMAGE_SAVE_PATH = "generated_chat_image.png"
 
 # --- Khởi tạo client ---
 client = OpenAI(
-    api_key=VBI_API_KEY,
-    base_url=VBI_API_BASE,
+    api_key=AI_API_KEY,
+    base_url=AI_API_BASE,
 )
 
 # --- Bước 1: Gọi API để tạo hình ảnh ---
@@ -343,24 +339,24 @@ except Exception as e:
 import base64
 
 # --- Cấu hình ---
-VBI_API_BASE = "https://api0.lab.vbi-server.com/v1"
-VBI_API_KEY = "<your_api_key>" # Thay bằng API key của bạn
+AI_API_BASE = "https://api0.lab.AI-server.com"
+AI_API_KEY = "<your_api_key>" # Thay bằng API key của bạn
 IMAGE_SAVE_PATH = "generated_chat_image.png"
 
 # --- Thiết lập litellm ---
-litellm.api_base = VBI_API_BASE
+litellm.api_base = AI_API_BASE
 
 # --- Bước 1: Gọi API để tạo hình ảnh ---
 try:
     response = litellm.completion(
-        model="gemini-2.5-flash-image-preview",
+        model="litellm_proxy/gemini-2.5-flash-image-preview",
         messages=[
             {
                 "role": "user",
                 "content": "A vibrant coral reef teeming with exotic fish and marine life. High resolution, photorealistic, 8k"
             }
         ],
-        api_key=VBI_API_KEY
+        api_key=AI_API_KEY
     )
 
     # Trích xuất dữ liệu ảnh base64
