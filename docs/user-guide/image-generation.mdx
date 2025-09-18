@@ -27,12 +27,17 @@ Phương pháp này tương thích với các thư viện client của OpenAI v�
 
 **Endpoint:** `POST /images/generations`
 
+:::warning[Chú ý]
+Một số mô hình có thể trả về URL thay vì dữ liệu base64. Trong trường hợp đó, bạn có thể sử dụng phương pháp trò chuyện bên dưới.
+Ngoài ra để tránh lỗi caching, bạn có thể thêm một chuỗi ngẫu nhiên vào cuối prompt, ví dụ: `"A beautiful landscape painting, " + str(random.randint(1, 10000))`. hoặc thay đổi prompt một chút.
+:::
+
 <Tabs>
   <TabItem value="curl" label="curl">
     <p>Sử dụng <code>curl</code> để tạo nhiều hình ảnh và lưu chúng từ dữ liệu base64.</p>
     <CodeBlock language="bash">
     {`# Cấu hình
-API_URL="https://api0.lab.AI-server.com/v1/images/generations"
+API_URL="https://api0.lab.vbi-server.com/v1/images/generations"
 API_KEY="<your_api_key>"
 PROMPT="Một bức tranh phong cảnh biển hoàng hôn, phong cách sơn dầu"
 NUM_IMAGES=2 # Số lượng ảnh cần tạo
@@ -77,7 +82,7 @@ import json
 import base64
 
 # --- Cấu hình ---
-AI_API_BASE = "https://api0.lab.AI-server.com/v1"
+AI_API_BASE = "https://api0.lab.vbi-server.com/v1"
 AI_API_KEY = "<your_api_key>"
 
 # --- Gọi API để tạo hình ảnh ---
@@ -121,7 +126,7 @@ except requests.exceptions.RequestException as e:
 import base64
 
 # --- Cấu hình ---
-AI_API_BASE = "https://api0.lab.AI-server.com/v1"
+AI_API_BASE = "https://api0.lab.vbi-server.com/v1"
 AI_API_KEY = "<your_api_key>"
 
 # --- Khởi tạo client ---
@@ -155,27 +160,28 @@ for i, image_obj in enumerate(response.data):
 import base64
 
 # --- Cấu hình ---
-AI_API_BASE = "https://api0.lab.AI-server.com"
-AI_API_KEY = "<your_api_key>"
+AI_API_BASE = "https://api0.lab.vbi-server.com"
+AI_API_KEY = "your_api_key"
+
 
 # --- Gọi API để tạo hình ảnh ---
 response = litellm.image_generation(
-    prompt="A peaceful Japanese garden with a koi pond and cherry blossoms",
+    prompt="A peaceful Japanese garden with a koi pond and cherry blossoms 2",
     model="litellm_proxy/imagen-4",
-    n=2, # Yêu cầu 2 ảnh
+    n=2,
     api_key=AI_API_KEY,
-    api_base=AI_API_BASE
+    api_base=AI_API_BASE,
 )
 
 # --- Xử lý và lưu từng ảnh ---
 for i, image_obj in enumerate(response.data):
     b64_data = image_obj['b64_json']
     image_data = base64.b64decode(b64_data)
-    
+
     save_path = f"generated_image_{i+1}.png"
     with open(save_path, 'wb') as f:
         f.write(image_data)
-    print(f"Image saved to {save_path}")`}
+        print(f"Image saved to {save_path}")`}
     </CodeBlock>
   </TabItem>
 </Tabs>
@@ -195,7 +201,7 @@ Một số mô hình đa phương thức cho phép bạn tạo hình ảnh ngay 
     <p>Sử dụng <code>curl</code> để yêu cầu hình ảnh và lưu từ dữ liệu base64.</p>
     <CodeBlock language="bash">
     {`# Bước 1: Gọi API và trích xuất dữ liệu ảnh base64
-IMAGE_DATA=$(curl -s https://api0.lab.AI-server.com/v1/chat/completions \\
+IMAGE_DATA=$(curl -s https://api0.lab.vbi-server.com/v1/chat/completions \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer <your_api_key>" \\
   -d '{
@@ -229,7 +235,7 @@ import json
 import base64
 
 # --- Cấu hình ---
-AI_API_BASE = "https://api0.lab.AI-server.com/v1"
+AI_API_BASE = "https://api0.lab.vbi-server.com/v1"
 AI_API_KEY = "<your_api_key>" # Thay bằng API key của bạn
 IMAGE_SAVE_PATH = "generated_chat_image.png"
 
@@ -289,7 +295,7 @@ except (KeyError, IndexError) as e:
 import base64
 
 # --- Cấu hình ---
-AI_API_BASE = "https://api0.lab.AI-server.com/v1"
+AI_API_BASE = "https://api0.lab.vbi-server.com/v1"
 AI_API_KEY = "<your_api_key>" # Thay bằng API key của bạn
 IMAGE_SAVE_PATH = "generated_chat_image.png"
 
@@ -337,47 +343,47 @@ except Exception as e:
     <CodeBlock language="python">
     {`import litellm
 import base64
+import json
+import random
 
-# --- Cấu hình ---
-AI_API_BASE = "https://api0.lab.AI-server.com"
-AI_API_KEY = "<your_api_key>" # Thay bằng API key của bạn
+random_prompt_seed = random.randint(1, 10000)
+# Seed is used use to generate different images for the same prompt and avoiding caching issues
+
+VBI_API_BASE = "https://api0.lab.vbi-server.com/v1"
+VBI_API_KEY = "your_api_key"
 IMAGE_SAVE_PATH = "generated_chat_image.png"
 
-# --- Thiết lập litellm ---
-litellm.api_base = AI_API_BASE
+# Configure Litellm to use VBI API
+litellm.api_base = VBI_API_BASE
 
-# --- Bước 1: Gọi API để tạo hình ảnh ---
-try:
-    response = litellm.completion(
-        model="litellm_proxy/gemini-2.5-flash-image-preview",
-        messages=[
-            {
-                "role": "user",
-                "content": "A vibrant coral reef teeming with exotic fish and marine life. High resolution, photorealistic, 8k"
-            }
-        ],
-        api_key=AI_API_KEY
-    )
+# Use streaming with Gemini 2.5 Flash Image Preview model
+response = litellm.completion(
+    model="litellm_proxy/gemini-2.5-flash-image-preview",
+    messages=[
+        {
+            "role": "user",
+            "content": "Tạo ảnh 2 con mèo bên khung cửa sổ đang nhìn ra vườn hoa. " + str(random_prompt_seed)
+        }
+    ],
+    api_key=VBI_API_KEY,
+    modalities=["image"]  # Specify modalities to include image data
+)
+# Get the base64 image string from the response
+base64_string = response.choices[0].message.provider_specific_fields.get('image').get('url')
+print("Image data received successfully.")
 
-    # Trích xuất dữ liệu ảnh base64
-    base64_string = response.choices[0].message.image.url
-    print("Image data received successfully.")
+# Decode and save the image ---
+if ',' in base64_string:
+    header, encoded = base64_string.split(',', 1)
+else:
+    encoded = base64_string
 
-    # --- Bước 2: Giải mã và lưu hình ảnh ---
-    if ',' in base64_string:
-        header, encoded = base64_string.split(',', 1)
-    else:
-        encoded = base64_string
+image_data = base64.b64decode(encoded)
 
-    image_data = base64.b64decode(encoded)
-
-    with open(IMAGE_SAVE_PATH, 'wb') as f:
-        f.write(image_data)
-        
-    print(f"Image saved to {IMAGE_SAVE_PATH}")
-
-except Exception as e:
-    print(f"An error occurred: {e}")`}
+with open(IMAGE_SAVE_PATH, 'wb') as f:
+    f.write(image_data)
+    
+print(f"Image saved to {IMAGE_SAVE_PATH}")`}
     </CodeBlock>
   </TabItem>
 </Tabs>
