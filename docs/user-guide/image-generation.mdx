@@ -50,7 +50,6 @@ response=$(curl -s --location "$API_URL" \\
     \\"model\\": \\"imagen-4\\",
     \\"prompt\\": \\"$PROMPT\\",
     \\"n\\": $NUM_IMAGES,
-    \\"response_format\\": \\"b64_json\\"
   }")
 
 # Xử lý và lưu từng ảnh
@@ -95,7 +94,6 @@ data = {
     "model": "imagen-4",
     "prompt": "A majestic white tiger walking through a snowy forest",
     "n": 2, # Yêu cầu 2 ảnh
-    "response_format": "b64_json"
 }
 
 try:
@@ -120,7 +118,6 @@ except requests.exceptions.RequestException as e:
     </CodeBlock>
   </TabItem>
   <TabItem value="python-openai" label="Python (openai)">
-    <p>Sử dụng thư viện <code>openai</code> với <code>response_format="b64_json"</code>.</p>
     <CodeBlock language="python">
     {`from openai import OpenAI
 import base64
@@ -314,11 +311,12 @@ try:
                 "role": "user",
                 "content": "A detailed illustration of a vintage steam train crossing a mountain bridge. High resolution, photorealistic, 8k"
             }
-        ]
+        ],
+        modalities=["image"]  # Chỉ định trả về dữ liệu ảnh
     )
 
     # Trích xuất dữ liệu ảnh base64
-    base64_string = response.choices[0].message.image.url
+    base64_string = response.choices[0].message.image.get('url')
     print("Image data received successfully.")
 
     # --- Bước 2: Giải mã và lưu hình ảnh ---
