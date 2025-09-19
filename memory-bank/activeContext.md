@@ -2,11 +2,17 @@
 
 ## 1. Công việc đang tập trung
 
-- **Hoàn thành:** Thêm mục hướng dẫn VibeCoding.
+- **Hoàn thành:** Thêm mục hướng dẫn VibeCoding, Cấu hình chuyển hướng trang chủ.
 - **Nhiệm vụ tiếp theo:** Cập nhật Memory Bank.
 
 ## 2. Các thay đổi gần đây
 
+- **Tích hợp trang giới thiệu vào trang chủ:**
+    - **Mục tiêu:** Thay thế trang chủ mặc định bằng nội dung của trang giới thiệu để cung cấp thông tin hữu ích ngay từ đầu.
+    - **Triển khai:**
+        - Sao chép nội dung từ `docs/user-guide/introduction.md` vào một file mới tại `src/pages/index.mdx`.
+        - Xóa file `src/pages/index.tsx` cũ để tránh xung đột.
+        - Cập nhật file `docusaurus.config.ts` để đảm bảo logo trên thanh điều hướng trỏ đúng đến trang giới thiệu.
 - **Thêm hướng dẫn VibeCoding:**
     - **Tạo nội dung:** Soạn thảo và tạo mới 4 file tài liệu (`introduction.md`, `cline-integration.md`, `cursor-integration.md`, `best-practices.mdx`) để giải thích và hướng dẫn phương pháp VibeCoding.
     - **Cập nhật nội dung:** Thêm liên kết Wikipedia vào trang giới thiệu VibeCoding theo yêu cầu.

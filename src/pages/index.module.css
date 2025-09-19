@@ -21,3 +21,46 @@
   align-items: center;
   justify-content: center;
 }
+
+.features {
+  padding: 2rem 0;
+}
+
+.sectionTitle {
+  text-align: center;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+.sectionTitle:first-child {
+  margin-top: 0;
+}
+
+.cardContainer {
+  margin-bottom: 1.5rem;
+}
+
+.docCard {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  transition: all 0.3s ease;
+  color: var(--ifm-font-color-base);
+  height: 100%;
+}
+
+.docCard:hover {
+  border-color: var(--ifm-color-primary);
+  text-decoration: none;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.docCard h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--ifm-color-primary);
+}
+
+.docCard p {
+  font-size: 1rem;
+  color: var(--ifm-font-color-secondary);
+}

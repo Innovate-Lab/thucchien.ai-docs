@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'AI Thực Chiến',
   tagline: 'Hướng dẫn sử dụng AI APIs trong cuộc thi AI thực chiến',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.png',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -79,6 +79,7 @@ const config: Config = {
       logo: {
         alt: 'AI Thực Chiến Logo',
         src: 'img/logo.svg',
+        href: '/',
       },
       items: [
         {
@@ -87,53 +88,52 @@ const config: Config = {
           position: 'right',
           label: 'Tài liệu',
         },
-        {
-          href: 'https://github.com/facebook/docusaurus',
-          label: 'GitHub',
-          position: 'right',
-        },
+        // {
+        //   href: 'https://github.com/facebook/docusaurus',
+        //   label: 'GitHub',
+        //   position: 'right',
+        // },
       ],
     },
     footer: {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
+          title: 'Tài liệu',
           items: [
             {
-              label: 'Tutorial',
+              label: 'Giới thiệu',
               to: '/docs/user-guide/introduction',
             },
+            {
+              label: 'Hướng dẫn sử dụng',
+              to: '/docs/user-guide/core-concepts',
+            },
+            {
+              label: 'VibeCoding',
+              to: '/docs/vibe-coding/introduction',
+            },
+
           ],
         },
         {
-          title: 'Community',
+          title: 'Liên kết',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+              label: 'Thông tin AI Thực Chiến',
+              href: 'https://thucchien.ai',
+            },
+            { label: "Thể lệ cuộc thi", 
+              href: 'https://thucchien.ai/the-le-cuoc-thi/' 
             },
             {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'X',
-              href: 'https://x.com/docusaurus',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
-            },
+              label: "Đăng ký dự thi",
+              href: "https://thucchien.ai/#registration"
+            }
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Tài liệu AI Thực Chiến.`,
     },
     prism: {
       theme: lightCodeTheme,
