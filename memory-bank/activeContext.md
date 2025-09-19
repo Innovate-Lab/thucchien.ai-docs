@@ -23,7 +23,7 @@
 - **Sửa lỗi biên dịch MDX:**
     - **Khắc phục lỗi cú pháp:** Sửa lỗi thẻ đóng không khớp trong file `text-to-speech.mdx` bằng cách thay thế `</code></pre>` bằng `</CodeBlock>`, giải quyết vấn đề biên dịch thất bại.
 - **Hoàn thiện tính nhất quán tài liệu:**
-    - **Đồng bộ hóa code examples:** Thay thế các biến `LITELLM_MASTER_KEY` bằng `VBI_API_KEY` và cập nhật các comment liên quan trong tất cả các file hướng dẫn (`.mdx`) để đảm bảo tính nhất quán.
+    - **Đồng bộ hóa code examples:** Thay thế các biến `LITELLM_MASTER_KEY` bằng `AI_API_KEY` và cập nhật các comment liên quan trong tất cả các file hướng dẫn (`.mdx`) để đảm bảo tính nhất quán.
     - **Sửa lỗi component:** Thay thế các thẻ `<pre><code>` không đúng chuẩn bằng component `<CodeBlock>` của Docusaurus trong file `text-to-speech.mdx`.
     - **Cập nhật trang tham khảo:** Viết lại trang `references.md` để gỡ bỏ các liên kết trực tiếp đến tài liệu của LiteLLM, thay vào đó hướng người dùng đến tài liệu của các nhà cung cấp mô hình gốc.
 - **Cập nhật ngữ nghĩa tài liệu:**

@@ -347,12 +347,12 @@ import random
 random_prompt_seed = random.randint(1, 10000)
 # Seed is used use to generate different images for the same prompt and avoiding caching issues
 
-VBI_API_BASE = "https://api0.lab.vbi-server.com/v1"
-VBI_API_KEY = "your_api_key"
+AI_API_BASE = "https://api0.lab.vbi-server.com/v1"
+AI_API_KEY = "your_api_key"
 IMAGE_SAVE_PATH = "generated_chat_image.png"
 
-# Configure Litellm to use VBI API
-litellm.api_base = VBI_API_BASE
+# Configure Litellm to use AI API
+litellm.api_base = AI_API_BASE
 
 # Use streaming with Gemini 2.5 Flash Image Preview model
 response = litellm.completion(
@@ -363,7 +363,7 @@ response = litellm.completion(
             "content": "Tạo ảnh 2 con mèo bên khung cửa sổ đang nhìn ra vườn hoa. " + str(random_prompt_seed)
         }
     ],
-    api_key=VBI_API_KEY,
+    api_key=AI_API_KEY,
     modalities=["image"]  # Specify modalities to include image data
 )
 # Get the base64 image string from the response

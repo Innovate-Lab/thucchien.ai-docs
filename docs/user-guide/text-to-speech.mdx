@@ -44,14 +44,14 @@ API này cũng tuân theo chuẩn của OpenAI, giúp việc tích hợp trở n
     {`import requests
 
 # --- Cấu hình ---
-VBI_API_BASE = "https://api0.lab.vbi-server.com"
-VBI_API_KEY = "sk-1234" # Thay bằng API key của bạn
+AI_API_BASE = "https://api0.lab.vbi-server.com"
+AI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---
-url = f"{VBI_API_BASE}/audio/speech"
+url = f"{AI_API_BASE}/audio/speech"
 headers = {
     "Content-Type": "application/json",
-    "Authorization": f"Bearer {VBI_API_KEY}"
+    "Authorization": f"Bearer {AI_API_KEY}"
 }
 data = {
     "model": "gemini-2.5-pro-preview-tts",
@@ -82,13 +82,13 @@ else:
 from pathlib import Path
 
 # --- Cấu hình ---
-VBI_API_BASE = "https://api0.lab.vbi-server.com"
-VBI_API_KEY = "sk-1234" # Thay bằng API key của bạn
+AI_API_BASE = "https://api0.lab.vbi-server.com"
+AI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---
 client = OpenAI(
-    api_key=VBI_API_KEY,
-    base_url=VBI_API_BASE
+    api_key=AI_API_KEY,
+    base_url=AI_API_BASE
 )
 
 speech_file_path = Path(__file__).parent / "speech_from_openai.mp3"

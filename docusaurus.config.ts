@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'AI Thực Chiến',
-  tagline: 'Hướng dẫn sử dụng AI APIs thông qua LiteLLM',
+  tagline: 'Hướng dẫn sử dụng AI APIs trong cuộc thi AI thực chiến',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
