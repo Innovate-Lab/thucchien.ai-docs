@@ -3,6 +3,7 @@
   "position": 3,
   "link": {
     "type": "generated-index",
-    "description": "Hướng dẫn chi tiết cách tương tác với các mô hình AI thông qua LiteLLM Proxy."
+    "description": "Hướng dẫn chi tiết cách tương tác với các mô hình AI thông qua LiteLLM Proxy.",
+    "slug": "/user-guide"
   }
 }

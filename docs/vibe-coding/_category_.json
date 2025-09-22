@@ -3,6 +3,7 @@
   "position": 3,
   "link": {
     "type": "generated-index",
-    "description": "Learn how to practice VibeCoding with the AI Thực Chiến Gateway."
+    "description": "Learn how to practice VibeCoding with the AI Thực Chiến Gateway.",
+    "slug": "/vibe-coding"
   }
 }
