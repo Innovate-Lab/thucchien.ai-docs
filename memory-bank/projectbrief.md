@@ -21,7 +21,7 @@ Mục tiêu là cung cấp một tài liệu tập trung, dễ hiểu, với cá
     - Sinh video (Video Generation)
     - Chuyển văn bản thành giọng nói (Text-to-Speech)
 - **Nền tảng:** Docusaurus.
-- **Endpoint của Proxy:** `https://api0.lab.vbi-server.com`.
+- **Endpoint của Proxy:** `https://api.thucchien.ai`.
 - **Ngôn ngữ:** Tiếng Việt.
 
 ## 4. Yếu tố thành công

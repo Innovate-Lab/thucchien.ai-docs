@@ -29,7 +29,7 @@ Việc tạo video là một tác vụ tốn nhiều tài nguyên và thời gia
     Do máy chủ proxy đang sử dụng cơ chế pass-through tới Google AI Studio, bạn sẽ sử dụng header `x-goog-api-key` thay cho header `Authorization` tiêu chuẩn.
     :::
     <CodeBlock language="bash">
-    {`curl -X POST https://api0.lab.vbi-server.com/gemini/v1beta/models/veo-3.0-generate-preview:predictLongRunning \\
+    {`curl -X POST https://api.thucchien.ai/gemini/v1beta/models/veo-3.0-generate-preview:predictLongRunning \\
   -H "Content-Type: application/json" \\
   -H "x-goog-api-key: <your_api_key>" \\
   -d '{
@@ -55,8 +55,8 @@ Việc tạo video là một tác vụ tốn nhiều tài nguyên và thời gia
     <h4>Bước 2: Kiểm tra trạng thái</h4>
     <p>Sử dụng <code>operation_id</code> (ví dụ: <code>idrk08ltkg0a</code>) bạn nhận được ở Bước 1 để xây dựng URL và gửi yêu cầu GET để kiểm tra trạng thái.</p>
     <CodeBlock language="bash">
-    {`# URL kiểm tra trạng thái: https://api0.lab.vbi-server.com/gemini/v1beta/models/veo-3.0-generate-preview/operations/idrk08ltkg0a
-curl https://api0.lab.vbi-server.com/gemini/v1beta/models/veo-3.0-generate-preview/operations/<operation_id> \\
+    {`# URL kiểm tra trạng thái: https://api.thucchien.ai/gemini/v1beta/models/veo-3.0-generate-preview/operations/idrk08ltkg0a
+curl https://api.thucchien.ai/gemini/v1beta/models/veo-3.0-generate-preview/operations/<operation_id> \\
   -H "x-goog-api-key: <your_api_key>"`}
     </CodeBlock>
     <p>Lặp lại yêu cầu này cho đến khi response chứa <code>"done": true</code>.</p>
@@ -85,9 +85,9 @@ curl https://api0.lab.vbi-server.com/gemini/v1beta/models/veo-3.0-generate-previ
     <CodeBlock language="bash">
     {`# URI gốc từ Google: https://generativelanguage.googleapis.com/v1beta/files/3j6svp4106e7:download?alt=media
 # Đường dẫn tương đối cần dùng: v1beta/files/3j6svp4106e7:download?alt=media
-# URL tải xuống qua proxy: https://api0.lab.vbi-server.com/gemini/download/v1beta/files/3j6svp4106e7:download?alt=media
+# URL tải xuống qua proxy: https://api.thucchien.ai/gemini/download/v1beta/files/3j6svp4106e7:download?alt=media
 
-curl https://api0.lab.vbi-server.com/gemini/download/v1beta/files/<video_id>:download?alt=media \\
+curl https://api.thucchien.ai/gemini/download/v1beta/files/<video_id>:download?alt=media \\
   -H "x-goog-api-key: <your_api_key>" \\
   --output my_generated_video.mp4`}
     </CodeBlock>
@@ -128,7 +128,7 @@ from typing import Optional
 class VeoVideoGenerator:
     """Complete Veo video generation client using LiteLLM proxy."""
     
-    def __init__(self, base_url: str = "https://api0.lab.vbi-server.com/gemini/v1beta", 
+    def __init__(self, base_url: str = "https://api.thucchien.ai/gemini/v1beta", 
                  api_key: str = "sk-1234"):
         """
         Initialize the Veo video generator.
@@ -272,7 +272,7 @@ class VeoVideoGenerator:
         else:
             relative_path = video_uri
 
-        # base_url: https://api0.lab.vbi-server.com/gemini/v1beta
+        # base_url: https://api.thucchien.ai/gemini/v1beta
         if self.base_url.endswith("/v1beta"):
             base_path = self.base_url.replace("/v1beta", "/download")
         else:
@@ -378,12 +378,12 @@ def main():
     Example usage of the VeoVideoGenerator.
     
     Configure these environment variables:
-    - LITELLM_BASE_URL: Your LiteLLM proxy URL (default: https://api0.lab.vbi-server.com/gemini/v1beta)
+    - LITELLM_BASE_URL: Your LiteLLM proxy URL (default: https://api.thucchien.ai/gemini/v1beta)
     - LITELLM_API_KEY: Your LiteLLM API key (default: sk-1234)
     """
     
     # Configuration from environment or defaults
-    base_url = os.getenv("LITELLM_BASE_URL", "https://api0.lab.vbi-server.com/gemini/v1beta")
+    base_url = os.getenv("LITELLM_BASE_URL", "https://api.thucchien.ai/gemini/v1beta")
     api_key = os.getenv("LITELLM_API_KEY", "sk-1234")
     
     print("🚀 Starting Veo Video Generation Example")

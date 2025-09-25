@@ -24,7 +24,7 @@ API này tuân theo chuẩn của OpenAI, vì vậy bạn có thể sử dụng 
   <TabItem value="curl" label="curl">
     <p>Đây là cách đơn giản nhất để kiểm tra API. Thay <code>{'<your_api_key>'}</code> bằng API key của bạn.</p>
     <CodeBlock language="bash">
-    {`curl https://api0.lab.vbi-server.com/chat/completions \\
+    {`curl https://api.thucchien.ai/chat/completions \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer <your_api_key>" \\
   -d '{
@@ -50,7 +50,7 @@ API này tuân theo chuẩn của OpenAI, vì vậy bạn có thể sử dụng 
 import json
 
 # --- Cấu hình ---
-AI_API_BASE = "https://api0.lab.vbi-server.com"
+AI_API_BASE = "https://api.thucchien.ai"
 AI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---
@@ -86,7 +86,7 @@ else:
     {`from openai import OpenAI
 
 # --- Cấu hình ---
-AI_API_BASE = "https://api0.lab.vbi-server.com"
+AI_API_BASE = "https://api.thucchien.ai"
 AI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---
@@ -114,7 +114,7 @@ print(response.choices[0].message.content)`}
     {`import litellm
 
 # --- Cấu hình ---
-AI_API_BASE = "https://api0.lab.vbi-server.com"
+AI_API_BASE = "https://api.thucchien.ai"
 AI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---

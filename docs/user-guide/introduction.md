@@ -10,7 +10,7 @@ Chào mừng bạn đến với tài liệu hướng dẫn sử dụng [AI Thự
 
 [AI Thực Chiến](https://thucchien.ai) gateway là một cổng kết nối (gateway) hợp nhất, giúp bạn truy cập các mô hình AI hàng đầu một cách đơn giản và hiệu quả. Thay vì phải quản lý nhiều API phức tạp từ các nhà cung cấp khác nhau, bạn chỉ cần gửi yêu cầu đến một endpoint duy nhất do chúng tôi cung cấp:
 
-`https://api0.lab.vbi-server.com`
+`https://api.thucchien.ai`
 
 Hệ thống sẽ tự động định tuyến yêu cầu của bạn đến đúng mô hình và nhà cung cấp tương ứng, sau đó trả về kết quả.
 

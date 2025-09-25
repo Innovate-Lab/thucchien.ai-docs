@@ -21,7 +21,7 @@ Các mô hình Text-to-Speech (TTS) cho phép bạn chuyển đổi một đoạ
   <TabItem value="curl" label="curl">
     <p>Cách này cho phép bạn nhanh chóng tạo và lưu file âm thanh.</p>
     <CodeBlock language="bash">
-    {`curl https://api0.lab.vbi-server.com/audio/speech \\
+    {`curl https://api.thucchien.ai/audio/speech \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer <your_api_key>" \\
   -d '{
@@ -42,7 +42,7 @@ Các mô hình Text-to-Speech (TTS) cho phép bạn chuyển đổi một đoạ
     {`import requests
 
 # --- Cấu hình ---
-AI_API_BASE = "https://api0.lab.vbi-server.com"
+AI_API_BASE = "https://api.thucchien.ai"
 AI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---
@@ -80,7 +80,7 @@ else:
 from pathlib import Path
 
 # --- Cấu hình ---
-AI_API_BASE = "https://api0.lab.vbi-server.com"
+AI_API_BASE = "https://api.thucchien.ai"
 AI_API_KEY = "sk-1234" # Thay bằng API key của bạn
 
 # --- Thực thi ---

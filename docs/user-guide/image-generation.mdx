@@ -37,7 +37,7 @@ Ngoài ra để tránh lỗi caching, bạn có thể thêm một chuỗi ngẫu
     <p>Sử dụng <code>curl</code> để tạo nhiều hình ảnh và lưu chúng từ dữ liệu base64.</p>
     <CodeBlock language="bash">
     {`# Cấu hình
-API_URL="https://api0.lab.vbi-server.com/v1/images/generations"
+API_URL="https://api.thucchien.ai/v1/images/generations"
 API_KEY="<your_api_key>"
 PROMPT="Một bức tranh phong cảnh biển hoàng hôn, phong cách sơn dầu"
 NUM_IMAGES=2 # Số lượng ảnh cần tạo
@@ -81,7 +81,7 @@ import json
 import base64
 
 # --- Cấu hình ---
-AI_API_BASE = "https://api0.lab.vbi-server.com/v1"
+AI_API_BASE = "https://api.thucchien.ai/v1"
 AI_API_KEY = "<your_api_key>"
 
 # --- Gọi API để tạo hình ảnh ---
@@ -123,7 +123,7 @@ except requests.exceptions.RequestException as e:
 import base64
 
 # --- Cấu hình ---
-AI_API_BASE = "https://api0.lab.vbi-server.com/v1"
+AI_API_BASE = "https://api.thucchien.ai/v1"
 AI_API_KEY = "<your_api_key>"
 
 # --- Khởi tạo client ---
@@ -157,7 +157,7 @@ for i, image_obj in enumerate(response.data):
 import base64
 
 # --- Cấu hình ---
-AI_API_BASE = "https://api0.lab.vbi-server.com"
+AI_API_BASE = "https://api.thucchien.ai"
 AI_API_KEY = "your_api_key"
 
 
@@ -198,7 +198,7 @@ Một số mô hình đa phương thức cho phép bạn tạo hình ảnh ngay 
     <p>Sử dụng <code>curl</code> để yêu cầu hình ảnh và lưu từ dữ liệu base64.</p>
     <CodeBlock language="bash">
     {`# Bước 1: Gọi API và trích xuất dữ liệu ảnh base64
-IMAGE_DATA=$(curl -s https://api0.lab.vbi-server.com/v1/chat/completions \\
+IMAGE_DATA=$(curl -s https://api.thucchien.ai/v1/chat/completions \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer <your_api_key>" \\
   -d '{
@@ -232,7 +232,7 @@ import json
 import base64
 
 # --- Cấu hình ---
-AI_API_BASE = "https://api0.lab.vbi-server.com/v1"
+AI_API_BASE = "https://api.thucchien.ai/v1"
 AI_API_KEY = "<your_api_key>" # Thay bằng API key của bạn
 IMAGE_SAVE_PATH = "generated_chat_image.png"
 
@@ -292,7 +292,7 @@ except (KeyError, IndexError) as e:
 import base64
 
 # --- Cấu hình ---
-AI_API_BASE = "https://api0.lab.vbi-server.com/v1"
+AI_API_BASE = "https://api.thucchien.ai/v1"
 AI_API_KEY = "<your_api_key>" # Thay bằng API key của bạn
 IMAGE_SAVE_PATH = "generated_chat_image.png"
 
@@ -347,7 +347,7 @@ import random
 random_prompt_seed = random.randint(1, 10000)
 # Seed is used use to generate different images for the same prompt and avoiding caching issues
 
-AI_API_BASE = "https://api0.lab.vbi-server.com/v1"
+AI_API_BASE = "https://api.thucchien.ai/v1"
 AI_API_KEY = "your_api_key"
 IMAGE_SAVE_PATH = "generated_chat_image.png"
 
