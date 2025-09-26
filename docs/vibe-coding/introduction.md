@@ -37,5 +37,5 @@ VibeCoding mở ra một kỷ nguyên mới, nơi rào cản kỹ thuật đư�
 :::warning[Khả năng tương thích]
 Khả năng tích hợp AI Thực Chiến Gateway với các AI Coding Assistant của bên thứ ba phụ thuộc vào kiến trúc API và chính sách của từng nhà cung cấp. Nhiều công cụ hoạt động trong một hệ sinh thái đóng, không cung cấp giao diện để định tuyến yêu cầu đến các endpoint tùy chỉnh (Custom Models) hoặc sử dụng khóa API riêng (Bring Your Own Key - BYOK).
 
-Để đảm bảo khả năng tương thích linh hoạt, AI Thực Chiến Gateway được thiết kế tuân thủ chuẩn API của OpenAI. Do đó, Gateway hoạt động hiệu quả nhất với các công cụ hỗ trợ cấu hình proxy API, đặc biệt là các giải pháp dựa trên LiteLLM như Cline, Cursor, và KiloCode.
+Để đảm bảo khả năng tương thích linh hoạt, AI Thực Chiến Gateway được thiết kế tuân thủ chuẩn API của OpenAI. Do đó, Gateway hoạt động hiệu quả nhất với các công cụ hỗ trợ cấu hình proxy API, đặc biệt là các giải pháp dựa trên LiteLLM như [Cline](/docs/vibe-coding/cline-integration), [Cursor](/docs/vibe-coding/cursor-integration), và KiloCode.
 :::
