@@ -33,3 +33,9 @@ Quy trình VibeCoding rất đơn giản và trực quan:
 VibeCoding mở ra một kỷ nguyên mới, nơi rào cản kỹ thuật được giảm xuống, cho phép nhiều người hơn tham gia vào quá trình sáng tạo phần mềm. Tuy nhiên, để đảm bảo chất lượng và bảo mật, việc kết hợp sức mạnh của AI với kiến thức lập trình cơ bản là vô cùng quan trọng.
 
 **AI Thực Chiến Gateway** chính là "bộ não" đằng sau quy trình VibeCoding của bạn, cung cấp quyền truy cập vào các mô hình AI hàng đầu để biến ý tưởng của bạn thành hiện thực.
+
+:::warning[Khả năng tương thích]
+Khả năng tích hợp AI Thực Chiến Gateway với các AI Coding Assistant của bên thứ ba phụ thuộc vào kiến trúc API và chính sách của từng nhà cung cấp. Nhiều công cụ hoạt động trong một hệ sinh thái đóng, không cung cấp giao diện để định tuyến yêu cầu đến các endpoint tùy chỉnh (Custom Models) hoặc sử dụng khóa API riêng (Bring Your Own Key - BYOK).
+
+Để đảm bảo khả năng tương thích linh hoạt, AI Thực Chiến Gateway được thiết kế tuân thủ chuẩn API của OpenAI. Do đó, Gateway hoạt động hiệu quả nhất với các công cụ hỗ trợ cấu hình proxy API, đặc biệt là các giải pháp dựa trên LiteLLM như Cline, Cursor, và KiloCode.
+:::
