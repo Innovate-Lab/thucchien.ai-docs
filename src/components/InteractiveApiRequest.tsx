@@ -1,35 +1,65 @@
-import React, { useState } from 'react';
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import React, { useState, useEffect } from 'react';
 import InlineEditableCodeBlock from './InlineEditableCodeBlock';
-import styles from './InlineEditableCodeBlock.module.css'; // Using the same CSS for inputs
+import styles from './InlineEditableCodeBlock.module.css';
 import reqStyles from './InteractiveApiRequest.module.css';
 import CodeBlock from '@theme/CodeBlock';
 
-export default function InteractiveApiRequest() {
-  const [apiKey, setApiKey] = useState('<your_api_key>');
-  const [model, setModel] = useState('gemini-2.5-flash');
-  const [promptText, setPromptText] = useState('Hãy viết một câu giới thiệu về Việt Nam.');
+// --- PROPS DEFINITION ---
+interface ParameterControl {
+  type: 'input' | 'select';
+  options?: string[];
+}
+
+interface InteractiveApiRequestProps {
+  apiUrl: string;
+  method?: 'POST' | 'GET' | 'PUT' | 'DELETE';
+  headers?: Record<string, string>;
+  initialParameters: Record<string, any>;
+  parameterControls: Record<string, ParameterControl>;
+  codeTemplates: Record<string, { language: string; template: string }>;
+  buildBody: (params: Record<string, any>) => Record<string, any>;
+  exampleResponse: Record<string, any>;
+}
+
+// --- COMPONENT ---
+export default function InteractiveApiRequest({
+  apiUrl,
+  method = 'POST',
+  headers = { 'Content-Type': 'application/json' },
+  initialParameters,
+  parameterControls,
+  codeTemplates,
+  buildBody,
+  exampleResponse,
+}: InteractiveApiRequestProps) {
+  const [parameters, setParameters] = useState(initialParameters);
+  const [selectedTemplate, setSelectedTemplate] = useState(Object.keys(codeTemplates)[0]);
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
+
+  const handleParameterChange = (key, value) => {
+    setParameters((prevParams) => ({
+      ...prevParams,
+      [key]: value,
+    }));
+  };
 
   const handleExecute = async () => {
     setIsLoading(true);
     setResponse(null);
     setError(null);
 
+    const finalHeaders = { ...headers };
+    if (parameters.apiKey) {
+      finalHeaders['Authorization'] = `Bearer ${parameters.apiKey}`;
+    }
+
     try {
-      const res = await fetch('https://api.thucchien.ai/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: model,
-          messages: [{ role: 'user', content: promptText }],
-        }),
+      const res = await fetch(apiUrl, {
+        method: method,
+        headers: finalHeaders,
+        body: JSON.stringify(buildBody(parameters)),
       });
 
       if (!res.ok) {
@@ -46,112 +76,89 @@ export default function InteractiveApiRequest() {
     }
   };
 
-  const curlTemplate = `curl https://api.thucchien.ai/chat/completions \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer {{apiKey}}" \\
-  -d '{
-    "model": "{{model}}",
-    "messages": [
-      {
-        "role": "user",
-        "content": "{{prompt}}"
-      }
-    ]
-  }'`;
+  // Generate replacements for the code block
+  const replacements = Object.keys(parameterControls).reduce((acc, key) => {
+    const control = parameterControls[key];
+    if (control.type === 'input') {
+      acc[key] = (
+        <input
+          type="text"
+          value={parameters[key]}
+          onChange={(e) => handleParameterChange(key, e.target.value)}
+          className={styles.inlineInput}
+          size={Math.max(String(parameters[key]).length, 15)}
+        />
+      );
+    } else if (control.type === 'select' && control.options) {
+      acc[key] = (
+        <select
+          value={parameters[key]}
+          onChange={(e) => handleParameterChange(key, e.target.value)}
+          className={styles.inlineSelect}
+        >
+          {control.options.map((opt) => (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ))}
+        </select>
+      );
+    }
+    return acc;
+  }, {});
 
-  const pythonTemplate = `# Cấu hình
-from openai import OpenAI
+  // Generate final code for each template
+  const finalCodes = Object.keys(codeTemplates).reduce((acc, key) => {
+    let finalCode = codeTemplates[key].template;
+    for (const paramKey in parameters) {
+      // Basic escaping for strings in code
+      const value = typeof parameters[paramKey] === 'string'
+        ? parameters[paramKey].replace(/"/g, '\\"')
+        : parameters[paramKey];
+      finalCode = finalCode.replace(new RegExp(`{{${paramKey}}}`, 'g'), value);
+    }
+    acc[key] = finalCode;
+    return acc;
+  }, {});
 
-client = OpenAI(
-    api_key="{{apiKey}}",
-    base_url="https://api.thucchien.ai"
-)
-
-# Thực thi
-response = client.chat.completions.create(
-    model="{{model}}",
-    messages=[
-        {
-            "role": "user",
-            "content": "{{prompt}}"
-        }
-    ]
-)
-
-print(response.choices[0].message.content)`;
-
-  // Generate the final code strings for the copy button
-  const curlCommand = curlTemplate
-    .replace('{{apiKey}}', apiKey)
-    .replace('{{model}}', model)
-    .replace('{{prompt}}', promptText.replace(/"/g, '\\"'));
-
-  const pythonCode = pythonTemplate
-    .replace('{{apiKey}}', apiKey)
-    .replace('{{model}}', model)
-    .replace('{{prompt}}', promptText.replace(/"/g, '\\"'));
-
-  const replacements = {
-    apiKey: (
-      <input
-        type="text"
-        value={apiKey}
-        onChange={(e) => setApiKey(e.target.value)}
-        className={styles.inlineInput}
-        style={{ width: '250px' }}
-      />
-    ),
-    model: (
-      <select
-        value={model}
-        onChange={(e) => setModel(e.target.value)}
-        className={styles.inlineSelect}
-      >
-        <option value="gemini-2.5-pro">gemini-2.5-pro</option>
-        <option value="gemini-2.5-flash">gemini-2.5-flash</option>
-      </select>
-    ),
-    prompt: (
-      <input
-        type="text"
-        value={promptText}
-        onChange={(e) => setPromptText(e.target.value)}
-        className={styles.inlineInput}
-        style={{ width: '80%' }}
-      />
-    ),
-  };
+  const currentTemplate = codeTemplates[selectedTemplate];
 
   return (
-    <div>
-      <Tabs>
-      <TabItem value="curl" label="curl">
-        <InlineEditableCodeBlock
-          language="bash"
-          code={curlTemplate}
-          finalCode={curlCommand}
-          replacements={replacements}
-        />
-      </TabItem>
-      <TabItem value="python" label="Python (openai)">
-        <InlineEditableCodeBlock
-          language="python"
-          code={pythonTemplate}
-          finalCode={pythonCode}
-          replacements={replacements}
-        />
-      </TabItem>
-      </Tabs>
-
-      <div className={reqStyles.executeSection}>
-        <button onClick={handleExecute} disabled={isLoading} className={reqStyles.executeButton}>
-          {isLoading ? 'Executing...' : 'Execute'}
-        </button>
+    <div className={reqStyles.container}>
+       <div className={reqStyles.selectContainer}>
+        <select
+          value={selectedTemplate}
+          onChange={(e) => setSelectedTemplate(e.target.value)}
+          className={reqStyles.languageSelect}
+        >
+          {Object.keys(codeTemplates).map((key) => (
+            <option key={key} value={key}>
+              {key}
+            </option>
+          ))}
+        </select>
       </div>
-
+      <InlineEditableCodeBlock
+        key={selectedTemplate}
+        language={currentTemplate.language}
+        code={currentTemplate.template}
+        finalCode={finalCodes[selectedTemplate]}
+        replacements={replacements}
+        onExecute={handleExecute}
+        isLoading={isLoading}
+      />
       {isLoading && <div className={reqStyles.loading}>Loading...</div>}
       {error && <CodeBlock language="text" title="Error">{error}</CodeBlock>}
-      {response && <CodeBlock language="json" title="Response">{JSON.stringify(response, null, 2)}</CodeBlock>}
+      {response && (
+        <CodeBlock language="json" title="Response">
+          {JSON.stringify(response, null, 2)}
+        </CodeBlock>
+      )}
+      {!isLoading && !error && !response && exampleResponse && (
+        <CodeBlock language="json" title="Example Response">
+          {JSON.stringify(exampleResponse, null, 2)}
+        </CodeBlock>
+      )}
     </div>
   );
 }

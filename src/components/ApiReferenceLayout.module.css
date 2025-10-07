@@ -1,31 +1,24 @@
-.apiReferenceLayout {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.leftCol {
-  flex: 1;
-  min-width: 0;
-}
-
-.rightCol {
-  flex: 1;
-  min-width: 0;
-}
-
-/* On larger screens, use a two-column layout */
-@media (min-width: 997px) {
-  .apiReferenceLayout {
-    flex-direction: row;
+.layout {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 2rem;
+    margin-top: 1.5rem;
   }
-
-  .leftCol {
-    /* Adjust the flex-basis to control the width ratio */
-    flex: 0 0 55%;
+  
+  .leftColumn {
+    /* No specific styles needed here for now */
   }
-
-  .rightCol {
-    flex: 1;
+  
+  .rightColumn {
+    min-width: 0;
   }
-}
+  
+  /* On smaller screens, stack the columns */
+  @media (max-width: 996px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+    .rightColumn {
+        /* No special styles needed for mobile anymore */
+    }
+  }

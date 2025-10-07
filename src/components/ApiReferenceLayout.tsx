@@ -23,9 +23,9 @@ export default function ApiReferenceLayout({ children }: { children: ReactNode }
   );
 
   return (
-    <div className={styles.apiReferenceLayout}>
-      <div className={styles.leftCol}>{left}</div>
-      <div className={styles.rightCol}>{right}</div>
+    <div className={styles.layout}>
+      <div className={styles.leftColumn}>{left}</div>
+      <div className={styles.rightColumn}>{right}</div>
     </div>
   );
 }

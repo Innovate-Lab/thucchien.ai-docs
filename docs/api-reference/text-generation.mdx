@@ -1,26 +1,28 @@
 ---
 sidebar_position: 1
-title: Text Generation
+title: Tạo phản hồi trò chuyện
+description: Tạo một phản hồi cho một cuộc hội thoại cho trước.
 hide_table_of_contents: true
 ---
 
 import ApiReferenceLayout, { LeftColumn, RightColumn } from '@site/src/components/ApiReferenceLayout';
 import InteractiveApiRequest from '@site/src/components/InteractiveApiRequest';
 import ApiParameter from '@site/src/components/ApiParameter';
+import CodeBlock from '@theme/CodeBlock';
+import Badge from '@site/src/components/Badge';
 
-# Tham chiếu API: Sinh văn bản
+# Tạo phản hồi trò chuyện (Chat Completions)
 
-Tài liệu này cung cấp mô tả chi tiết về endpoint dùng để tạo ra các phản hồi văn bản.
+<Badge method="POST" /> `/chat/completions`
 
+Tạo một phản hồi cho một cuộc hội thoại cho trước.
 <ApiReferenceLayout>
   <LeftColumn>
-    ## Create chat completion
+  :::tip[Tham số nâng cao]
+  Chi tiết đầy đủ các tham số, tham khảo [tài liệu LiteLLM API](https://docs.litellm.ai/docs/completion)
+  :::
 
-    `POST /chat/completions`
-
-    Tạo một phản hồi cho một cuộc hội thoại cho trước.
-
-    ### Request Body
+    ### Cấu trúc yêu cầu (Request Body)
 
     <ApiParameter name="messages" type="array" required>
       Một danh sách các đối tượng message mô tả cuộc hội thoại cho đến thời điểm hiện tại.
@@ -28,20 +30,11 @@ Tài liệu này cung cấp mô tả chi tiết về endpoint dùng để tạo 
     <ApiParameter name="model" type="string" required>
       ID của mô hình sẽ sử dụng. Xem danh sách các mô hình được hỗ trợ trong trang hướng dẫn.
     </ApiParameter>
-    <ApiParameter name="frequency_penalty" type="number">
-      Giá trị từ -2.0 đến 2.0. Giá trị dương sẽ phạt các token mới dựa trên tần suất xuất hiện của chúng trong văn bản đã có, làm tăng khả năng mô hình nói về các chủ đề mới.
-    </ApiParameter>
     <ApiParameter name="max_tokens" type="integer">
       Số lượng token tối đa được tạo ra trong phần hoàn thành.
     </ApiParameter>
     <ApiParameter name="n" type="integer">
       Số lượng lựa chọn hoàn thành cần tạo cho mỗi tin nhắn đầu vào. Mặc định là 1.
-    </ApiParameter>
-    <ApiParameter name="presence_penalty" type="number">
-      Giá trị từ -2.0 đến 2.0. Giá trị dương sẽ phạt các token mới dựa trên việc chúng có xuất hiện trong văn bản đã có hay không, làm tăng khả năng mô hình nói về các chủ đề mới.
-    </ApiParameter>
-    <ApiParameter name="response_format" type="object">
-      Một đối tượng chỉ định định dạng mà mô hình phải tạo ra. Ví dụ: `&lbrace; "type": "json_object" &rbrace;` để bật chế độ JSON.
     </ApiParameter>
     <ApiParameter name="seed" type="integer">
       Nếu được chỉ định, hệ thống sẽ cố gắng trả về kết quả có tính xác định (deterministic).
@@ -52,48 +45,152 @@ Tài liệu này cung cấp mô tả chi tiết về endpoint dùng để tạo 
     <ApiParameter name="temperature" type="number">
       Giá trị từ 0 đến 2. Giá trị cao hơn (ví dụ: 0.8) sẽ làm cho đầu ra ngẫu nhiên hơn, trong khi giá trị thấp hơn (ví dụ: 0.2) sẽ làm cho nó tập trung và xác định hơn.
     </ApiParameter>
-    <ApiParameter name="top_p" type="number">
+    <ApiParameter name="top_p" type="number" isEnd>
       Một phương pháp thay thế cho việc lấy mẫu bằng temperature, được gọi là nucleus sampling. Mô hình sẽ xem xét kết quả của các token với tổng khối lượng xác suất `top_p`. Ví dụ, 0.1 có nghĩa là chỉ các token chiếm 10% khối lượng xác suất hàng đầu được xem xét.
     </ApiParameter>
-    <ApiParameter name="user" type="string">
-      Một định danh duy nhất đại diện cho người dùng cuối của bạn, có thể giúp giám sát và phát hiện lạm dụng.
+
+    ---
+
+    ### Cấu trúc Phản hồi (Response Body)
+
+    API sẽ trả về một đối tượng JSON với cấu trúc như sau.
+
+    #### Đối tượng `ChatCompletion`
+
+    <ApiParameter name="id" type="string">
+      Một định danh duy nhất cho yêu cầu hoàn thành trò chuyện.
+    </ApiParameter>
+    <ApiParameter name="choices" type="array">
+      Một danh sách các lựa chọn hoàn thành.
+    </ApiParameter>
+    <ApiParameter name="created" type="integer">
+      Thời gian Unix timestamp của thời điểm yêu cầu được tạo.
+    </ApiParameter>
+    <ApiParameter name="model" type="string">
+      Tên mô hình đã được sử dụng.
+    </ApiParameter>
+    <ApiParameter name="object" type="string">
+      Loại đối tượng, luôn là `chat.completion`.
+    </ApiParameter>
+    <ApiParameter name="usage" type="object" isEnd>
+      Thống kê sử dụng cho yêu cầu.
+    </ApiParameter>
+
+    #### Đối tượng `Choice`
+
+    <ApiParameter name="finish_reason" type="string">
+      Lý do mô hình ngừng tạo token. Có thể là `stop` (đạt điểm dừng tự nhiên), `length` (đạt `max_tokens`), v.v.
+    </ApiParameter>
+    <ApiParameter name="index" type="integer">
+      Chỉ số của lựa chọn trong danh sách.
+    </ApiParameter>
+    <ApiParameter name="message" type="object" isEnd>
+      Đối tượng message chứa nội dung phản hồi.
+    </ApiParameter>
+
+    #### Đối tượng `Usage`
+
+    <ApiParameter name="completion_tokens" type="integer">
+      Số lượng token trong phần nội dung được tạo ra.
+    </ApiParameter>
+    <ApiParameter name="prompt_tokens" type="integer">
+      Số lượng token trong phần prompt đầu vào.
+    </ApiParameter>
+    <ApiParameter name="total_tokens" type="integer" isEnd>
+      Tổng số token đã sử dụng trong yêu cầu.
     </ApiParameter>
   </LeftColumn>
   <RightColumn>
-    ### Yêu cầu Tương tác
-    <InteractiveApiRequest />
+    <InteractiveApiRequest
+  apiUrl="https://api.thucchien.ai/chat/completions"
+  initialParameters={{
+    apiKey: '<your_api_key>',
+    model: 'gemini-2.5-flash',
+    prompt: 'Hãy viết một câu giới thiệu về Việt Nam.',
+  }}
+  parameterControls={{
+    apiKey: { type: 'input' },
+    model: { type: 'select', options: ['gemini-2.5-pro', 'gemini-2.5-flash'] },
+    prompt: { type: 'input' },
+  }}
+  codeTemplates={{
+    'curl': {
+      language: 'bash',
+      template: `curl https://api.thucchien.ai/chat/completions \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer {{apiKey}}" \\
+  -d '{
+    "model": "{{model}}",
+    "messages": [
+      {
+        "role": "user",
+        "content": "{{prompt}}"
+      }
+    ]
+  }'`,
+    },
+    'Python (openai)': {
+      language: 'python',
+      template: `# Cấu hình
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="{{apiKey}}",
+    base_url="https://api.thucchien.ai"
+)
+
+# Thực thi
+response = client.chat.completions.create(
+    model="{{model}}",
+    messages=[
+        {
+            "role": "user",
+            "content": "{{prompt}}"
+        }
+    ]
+)
+
+print(response.choices[0].message.content)`,
+    },
+  }}
+  buildBody={(params) => ({
+    model: params.model,
+    messages: [{ role: 'user', content: params.prompt }],
+  })}
+  exampleResponse={{
+    "id": "k4LkaMWmM622vr0PutCC6AU",
+    "created": 1759806089,
+    "model": "gemini-2.5-flash",
+    "object": "chat.completion",
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "content": "Dưới đây là một vài lựa chọn, tùy thuộc vào sắc thái bạn muốn truyền tải:\n\n**Lựa chọn 1 (Tổng quát, phổ biến):**\n\"Việt Nam là một đất nước hình chữ S xinh đẹp, nơi cảnh sắc thiên nhiên hùng vĩ hòa quyện cùng nền văn hóa phong phú và lịch sử hào hùng.\"\n\n**Lựa chọn 2 (Ngắn gọn, hấp dẫn):**\n\"Việt Nam – mảnh đất quyến rũ với vẻ đẹp thiên nhiên ngoạn mục, chiều sâu văn hóa độc đáo và ẩm thực làm say đắm lòng người.\"\n\n**Lựa chọn 3 (Nhấn mạnh sự thân thiện):**\n\"Việt Nam là điểm đến hấp dẫn với phong cảnh thiên nhiên kỳ vĩ, lịch sử ngàn năm và con người thân thiện, mến khách.\"\n\nBạn thích câu nào nhất?",
+          "role": "assistant",
+          "images": [],
+          "thinking_blocks": []
+        }
+      }
+    ],
+    "usage": {
+      "completion_tokens": 1581,
+      "prompt_tokens": 11,
+      "total_tokens": 1592,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1399,
+        "text_tokens": 182
+      },
+      "prompt_tokens_details": {
+        "text_tokens": 11
+      }
+    },
+    "vertex_ai_grounding_metadata": [],
+    "vertex_ai_url_context_metadata": [],
+    "vertex_ai_safety_results": [],
+    "vertex_ai_citation_metadata": []
+  }}
+/>
   </RightColumn>
 </ApiReferenceLayout>
-
----
-
-### Cấu trúc Phản hồi (Response Body)
-
-API sẽ trả về một đối tượng JSON với cấu trúc như sau.
-
-#### Đối tượng `ChatCompletion`
-
-| Thuộc tính | Kiểu dữ liệu | Mô tả |
-| :--- | :--- | :--- |
-| `id` | string | Một định danh duy nhất cho yêu cầu hoàn thành trò chuyện. |
-| `choices` | array | Một danh sách các lựa chọn hoàn thành. |
-| `created` | integer | Thời gian Unix timestamp của thời điểm yêu cầu được tạo. |
-| `model` | string | Tên mô hình đã được sử dụng. |
-| `object` | string | Loại đối tượng, luôn là `chat.completion`. |
-| `usage` | object | Thống kê sử dụng cho yêu cầu. |
-
-#### Đối tượng `Choice`
-
-| Thuộc tính | Kiểu dữ liệu | Mô tả |
-| :--- | :--- | :--- |
-| `finish_reason` | string | Lý do mô hình ngừng tạo token. Có thể là `stop` (đạt điểm dừng tự nhiên), `length` (đạt `max_tokens`), v.v. |
-| `index` | integer | Chỉ số của lựa chọn trong danh sách. |
-| `message` | object | Đối tượng message chứa nội dung phản hồi. |
-
-#### Đối tượng `Usage`
-
-| Thuộc tính | Kiểu dữ liệu | Mô tả |
-| :--- | :--- | :--- |
-| `completion_tokens` | integer | Số lượng token trong phần nội dung được tạo ra. |
-| `prompt_tokens` | integer | Số lượng token trong phần prompt đầu vào. |
-| `total_tokens` | integer | Tổng số token đã sử dụng trong yêu cầu. |

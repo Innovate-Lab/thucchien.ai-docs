@@ -5,12 +5,21 @@ interface Props {
   name: string;
   type: string;
   required?: boolean;
+  isEnd?: boolean;
   children: ReactNode;
 }
 
-export default function ApiParameter({ name, type, required, children }: Props) {
+export default function ApiParameter({
+  name,
+  type,
+  required,
+  isEnd,
+  children,
+}: Props) {
   return (
-    <div className={styles.paramContainer}>
+    <div
+      className={`${styles.paramContainer} ${isEnd ? styles.isEnd : ''}`.trim()}
+    >
       <div className={styles.paramHeader}>
         <code className={styles.paramName}>{name}</code>
         <span className={styles.paramType}>{type}</span>

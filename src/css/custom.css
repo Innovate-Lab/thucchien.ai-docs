@@ -55,3 +55,15 @@ div[class*="codeBlockContainer_"] {
 .copyButtonSuccess_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-CopyButton-styles-module {
   color: var(--ifm-color-success-dark);
 }
+
+.sidebar-item-post-parent .menu__list-item:first-child > a::before {
+  content: 'POST';
+  background-color: #007bff;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7em;
+  font-weight: bold;
+  margin-right: 8px;
+  text-transform: uppercase;
+}

@@ -1,53 +1,70 @@
 .container {
-  position: relative;
-}
-
-.pre {
-  padding: 1rem;
-  border-radius: var(--ifm-pre-border-radius);
-  overflow-x: auto;
-}
-
-.code {
-  font-family: var(--ifm-font-family-monospace);
-  font-size: 0.9rem;
-  white-space: pre-wrap; /* Allow wrapping */
-}
-
-/* Styles for injected inputs */
-.inlineInput, .inlineSelect {
-  display: inline-block;
-  width: auto;
-  padding: 2px 6px;
-  margin: 0 4px;
-  border-radius: 4px;
-  border: 1px solid var(--ifm-color-emphasis-500);
-  background-color: var(--ifm-background-surface-color);
-  color: var(--ifm-font-color-base);
-  font-family: var(--ifm-font-family-monospace);
-  font-size: 0.85rem;
-}
-
-.inlineInput:focus, .inlineSelect:focus {
-  outline: none;
-  border-color: var(--ifm-color-primary);
-}
-
-.copyButton {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  background-color: var(--ifm-color-emphasis-200);
-  color: var(--ifm-font-color-base);
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 4px;
-  padding: 4px 8px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.container:hover .copyButton {
-  opacity: 1;
-}
+    position: relative;
+    border-radius: var(--ifm-code-border-radius);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    margin-bottom: 1rem;
+    border: 1px solid var(--ifm-color-emphasis-300);
+  }
+  
+  .pre {
+    margin: 0;
+    border-radius: 0; 
+    border: none;
+  }
+  
+  .code {
+    font-family: var(--ifm-font-family-monospace);
+  }
+  
+  .inlineInput, .inlineSelect {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--ifm-color-emphasis-400);
+    border-radius: 4px;
+    color: var(--ifm-font-color-base);
+    padding: 2px 6px;
+    font-family: var(--ifm-font-family-monospace);
+  }
+  
+  .inlineInput:focus, .inlineSelect:focus {
+    outline: none;
+    border-color: var(--ifm-color-primary);
+  }
+  
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: var(--ifm-code-background);
+    border-top: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 0 0 var(--ifm-code-border-radius) var(--ifm-code-border-radius);
+  }
+  
+  .copyButton, .tryItButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .copyButton {
+    color: var(--ifm-color-content-secondary);
+  }
+  
+  .tryItButton {
+    background-color: var(--ifm-color-primary);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .tryItButton:hover {
+    background-color: var(--ifm-color-primary-dark);
+  }
+  
+  .tryItButton:disabled {
+    background-color: var(--ifm-color-emphasis-300);
+    cursor: not-allowed;
+  }
