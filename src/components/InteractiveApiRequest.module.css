@@ -55,3 +55,17 @@
       transform: rotate(360deg);
     }
   }
+
+  .responseTitle {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--ifm-heading-color);
+  }
+  
+  .videoPreview {
+    max-width: 100%;
+    border-radius: var(--ifm-code-border-radius);
+    border: 1px solid var(--ifm-color-emphasis-300);
+  }

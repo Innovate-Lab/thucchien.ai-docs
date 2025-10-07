@@ -1,0 +1,60 @@
+---
+sidebar_position: 6
+title: 'Tải xuống video hoàn thành'
+description: Tải xuống file video đã được tạo.
+hide_table_of_contents: true
+---
+
+import ApiReferenceLayout, { LeftColumn, RightColumn } from '@site/src/components/ApiReferenceLayout';
+import InteractiveApiRequest from '@site/src/components/InteractiveApiRequest';
+import ApiParameter from '@site/src/components/ApiParameter';
+import Badge from '@site/src/components/Badge';
+
+# Sinh video (Bước 3/3): Tải video
+
+## <Badge method="GET" /> `/gemini/download/v1beta/files/{video_id}:download?alt=media`
+
+Khi video đã sẵn sàng, kết quả kiểm tra trạng thái sẽ chứa một URI. Bạn sử dụng `video_id` trích xuất từ URI này để tải video về.
+
+<ApiReferenceLayout>
+  <LeftColumn>
+    ### Tham số đường dẫn (Path Parameters)
+    <ApiParameter name="video_id" type="string" required isEnd>
+      ID của video cần tải về, được trích xuất từ `uri` ở Bước 2. Ví dụ: `3j6svp4106e7`.
+    </ApiParameter>
+    
+    ---
+
+    ### Phản hồi (Response)
+    Phản hồi thành công sẽ là dữ liệu video (ví dụ: file `video/mp4`).
+  </LeftColumn>
+  <RightColumn>
+    <InteractiveApiRequest
+      method="GET"
+      apiUrl="https://api.thucchien.ai/gemini/download/v1beta/files/{{video_id}}:download?alt=media"
+      initialParameters={{
+        apiKey: '<your_api_key>',
+        video_id: '3j6svp4106e7',
+      }}
+      headers={{
+        'x-goog-api-key': '<your_api_key>',
+      }}
+      parameterControls={{
+        apiKey: { type: 'input' },
+        video_id: { type: 'input' },
+      }}
+      codeTemplates={{
+        'curl': {
+          language: 'bash',
+          template: `curl "https://api.thucchien.ai/gemini/download/v1beta/files/{{video_id}}:download?alt=media" \\
+  -H "x-goog-api-key: {{apiKey}}" \\
+  --output my_generated_video.mp4`,
+        },
+      }}
+      buildBody={(params) => null}
+      exampleResponse={{
+        "message": "Phản hồi thành công sẽ là file video. Trình duyệt sẽ tự động tải file về."
+      }}
+    />
+  </RightColumn>
+</ApiReferenceLayout>

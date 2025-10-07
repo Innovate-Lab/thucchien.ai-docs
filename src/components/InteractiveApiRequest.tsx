@@ -39,6 +39,16 @@ export default function InteractiveApiRequest({
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Cleanup function to revoke the object URL to prevent memory leaks
+    return () => {
+      if (previewUrl) {
+        window.URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   const handleParameterChange = (key, value) => {
     setParameters((prevParams) => ({
@@ -51,26 +61,67 @@ export default function InteractiveApiRequest({
     setIsLoading(true);
     setResponse(null);
     setError(null);
+    setPreviewUrl(null);
 
     const finalHeaders = { ...headers };
     if (parameters.apiKey) {
-      finalHeaders['Authorization'] = `Bearer ${parameters.apiKey}`;
+      if (headers['x-goog-api-key'] !== undefined) {
+        finalHeaders['x-goog-api-key'] = parameters.apiKey;
+      }
+      if (headers['Authorization'] !== undefined) {
+        finalHeaders['Authorization'] = `Bearer ${parameters.apiKey}`;
+      }
+    }
+
+    let finalApiUrl = apiUrl;
+    for (const key in parameters) {
+      finalApiUrl = finalApiUrl.replace(new RegExp(`{{${key}}}`, 'g'), parameters[key]);
     }
 
     try {
-      const res = await fetch(apiUrl, {
+      const fetchOptions: RequestInit = {
         method: method,
         headers: finalHeaders,
-        body: JSON.stringify(buildBody(parameters)),
-      });
+      };
+
+      if (method !== 'GET' && buildBody) {
+        const body = buildBody(parameters);
+        if (body) {
+          fetchOptions.body = JSON.stringify(body);
+        }
+      }
+
+      const res = await fetch(finalApiUrl, fetchOptions);
 
       if (!res.ok) {
         const errorText = await res.text();
         throw new Error(`API Error: ${res.status} ${res.statusText} - ${errorText}`);
       }
 
-      const data = await res.json();
-      setResponse(data);
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const data = await res.json();
+        setResponse(data);
+      } else {
+        setResponse(null);
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+
+        // If the content is a video, create a preview URL
+        if (blob.type.startsWith('video/')) {
+          setPreviewUrl(url);
+        }
+
+        // Trigger the download
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'my_generated_video.mp4';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        // The object URL is not revoked here because it's needed for the preview.
+        // The useEffect hook will handle cleanup when the component unmounts or the URL changes.
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -177,7 +228,13 @@ export default function InteractiveApiRequest({
           truncatedCode={JSON.stringify(response, jsonReplacer, 2)}
         />
       )}
-      {!isLoading && !error && !response && exampleResponse && (
+      {previewUrl && (
+        <div>
+          <h3 className={reqStyles.responseTitle}>Preview</h3>
+          <video src={previewUrl} controls className={reqStyles.videoPreview} />
+        </div>
+      )}
+      {!isLoading && !error && !response && !previewUrl && exampleResponse && (
         <CopyableCodeBlock
           language="json"
           title="Example Response"

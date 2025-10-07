@@ -58,9 +58,24 @@ div[class*="codeBlockContainer_"] {
 
 .sidebar-item-post-parent .menu__list-item:first-child > a::before,
 .sidebar-item-post-parent .menu__list-item:nth-child(2) > a::before,
-.sidebar-item-post-parent .menu__list-item:nth-child(3) > a::before {
+.sidebar-item-post-parent .menu__list-item:nth-child(3) > a::before,
+.sidebar-item-post-parent .menu__list-item:nth-child(4) > a::before,
+.sidebar-item-post-parent .menu__list-item:nth-child(5) > a::before {
   content: 'POST';
   background-color: #007bff;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7em;
+  font-weight: bold;
+  margin-right: 8px;
+  text-transform: uppercase;
+}
+
+.sidebar-item-post-parent .menu__list-item:nth-child(6) > a::before,
+.sidebar-item-post-parent .menu__list-item:nth-child(7) > a::before {
+  content: 'GET';
+  background-color: #28a745; /* Green for GET */
   color: white;
   padding: 2px 6px;
   border-radius: 4px;

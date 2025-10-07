@@ -1,0 +1,147 @@
+---
+sidebar_position: 3
+title: Sinh hình ảnh (với Chat)
+description: Tạo hình ảnh trong một cuộc hội thoại bằng cách sử dụng mô hình đa phương thức.
+hide_table_of_contents: true
+---
+
+import ApiReferenceLayout, { LeftColumn, RightColumn } from '@site/src/components/ApiReferenceLayout';
+import InteractiveApiRequest from '@site/src/components/InteractiveApiRequest';
+import ApiParameter from '@site/src/components/ApiParameter';
+import CodeBlock from '@theme/CodeBlock';
+import Badge from '@site/src/components/Badge';
+
+# Sinh hình ảnh (với Chat Completions)
+
+## <Badge method="POST" /> `/chat/completions`
+
+Tạo hình ảnh trong một cuộc hội thoại bằng cách sử dụng mô hình đa phương thức.
+
+<ApiReferenceLayout>
+  <LeftColumn>
+    ### Cấu trúc yêu cầu (Request Body)
+
+    <ApiParameter name="messages" type="array" required>
+      Một danh sách các đối tượng message. Message cuối cùng nên chứa prompt để tạo ảnh.
+    </ApiParameter>
+    <ApiParameter name="model" type="string" required>
+      ID của mô hình đa phương thức sẽ sử dụng. Ví dụ: `gemini-2.5-flash-image-preview`.
+    </ApiParameter>
+    <ApiParameter name="modalities" type="array" isEnd>
+      Chỉ định `["image"]` để yêu cầu trả về dữ liệu hình ảnh.
+    </ApiParameter>
+
+    ---
+
+    ### Cấu trúc Phản hồi (Response Body)
+
+    Phản hồi sẽ tương tự như của Chat Completions, nhưng đối tượng `message` sẽ chứa một mảng `images`.
+
+    #### Đối tượng `ImageMessage`
+    <ApiParameter name="images" type="array" isEnd>
+      Một danh sách các đối tượng hình ảnh được tạo.
+    </ApiParameter>
+
+    #### Đối tượng `ImageURL`
+    <ApiParameter name="image_url" type="object" isEnd>
+       Đối tượng chứa URL dữ liệu base64 của ảnh.
+    </ApiParameter>
+     <ApiParameter name="url" type="string" isEnd>
+       URL dữ liệu base64 của ảnh (ví dụ: `data:image/png;base64,...`).
+    </ApiParameter>
+
+  </LeftColumn>
+  <RightColumn>
+    <InteractiveApiRequest
+      apiUrl="https://api.thucchien.ai/chat/completions"
+      initialParameters={{
+        apiKey: '<your_api_key>',
+        model: 'gemini-2.5-flash-image-preview',
+        prompt: 'A breathtaking scene where a majestic waterfall cascades down rugged cliffs, shimmering like silver threads under the warm sunlight. Lush greenery surrounds the falls—towering trees, vibrant flowers, and soft moss painting nature’s perfect canvas. Mist rises gently, forming a magical rainbow that arches across the sky, while birds soar gracefully above as if dancing to the music of nature. A dreamlike moment that blends serenity and beauty in one stunning view.',
+      }}
+      parameterControls={{
+        apiKey: { type: 'input' },
+        model: { type: 'select', options: ['gemini-2.5-flash-image-preview'] },
+        prompt: { type: 'textarea' },
+      }}
+      codeTemplates={{
+        'curl': {
+          language: 'bash',
+          template: `curl https://api.thucchien.ai/chat/completions \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer {{apiKey}}" \\
+  -d '{
+    "model": "{{model}}",
+    "messages": [
+      {
+        "role": "user",
+        "content": "{{prompt}}"
+      }
+    ],
+    "modalities": ["image"]
+  }'`,
+        },
+        'Python (openai)': {
+          language: 'python',
+          template: `from openai import OpenAI
+import base64
+
+client = OpenAI(
+    api_key="{{apiKey}}",
+    base_url="https://api.thucchien.ai"
+)
+
+response = client.chat.completions.create(
+    model="{{model}}",
+    messages=[{"role": "user", "content": "{{prompt}}"}],
+    modalities=["image"]
+)
+
+# Lưu ảnh từ dữ liệu base64
+base64_string = response.choices[0].message.images[0].image_url.url
+if ',' in base64_string:
+    header, encoded = base64_string.split(',', 1)
+else:
+    encoded = base64_string
+image_data = base64.b64decode(encoded)
+with open("generated_chat_image.png", "wb") as f:
+    f.write(image_data)
+print("Image saved to generated_chat_image.png")`,
+        },
+      }}
+      buildBody={(params) => ({
+        model: params.model,
+        messages: [{ role: 'user', content: params.prompt }],
+        modalities: ['image'],
+      })}
+      exampleResponse={{
+        "id": "chatcmpl-mock",
+        "object": "chat.completion",
+        "created": 1759806089,
+        "model": "gemini-2.5-flash-image-preview",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": null,
+              "images": [
+                {
+                  "image_url": {
+                    "url": "data:image/png;base64,<base64_encoded_image_data>"
+                  }
+                }
+              ]
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 15,
+          "completion_tokens": 1,
+          "total_tokens": 16
+        }
+      }}
+    />
+  </RightColumn>
+</ApiReferenceLayout>
