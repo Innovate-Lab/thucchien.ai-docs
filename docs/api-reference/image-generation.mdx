@@ -70,14 +70,14 @@ Tạo một hoặc nhiều hình ảnh dựa trên mô tả văn bản (prompt).
       initialParameters={{
         apiKey: '<your_api_key>',
         model: 'imagen-4',
-        prompt: 'An astronaut riding a horse on Mars, photorealistic',
+        prompt: 'A photograph of a weathered wooden bench situated on rain-slicked pavement at a quiet waterfront. The bench, with its ornate metal arms, reflects the luminous full moon above, showcasing faint scratches and a subtle grey patina on its surface. Across the tranquil water, blurred city lights shimmer and are mirrored in gentle ripples, while bare tree branches frame the moon and add a touch of gothic elegance to the composition. The scene is bathed in cool, silvery moonlight, creating a hushed and contemplative atmosphere, with "El Magnifico" hand-signed in the lower right corner and dated 06.10.2025.',
         n: 1,
         size: '1024x1024',
       }}
       parameterControls={{
         apiKey: { type: 'input' },
         model: { type: 'select', options: ['imagen-4'] },
-        prompt: { type: 'input' },
+        prompt: { type: 'textarea' },
         n: { type: 'input' },
         size: { type: 'select', options: ['auto', '1024x1024', '1536x1024', '1024x1536'] },
       }}

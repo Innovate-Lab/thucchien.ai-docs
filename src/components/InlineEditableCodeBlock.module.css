@@ -14,6 +14,8 @@
   
   .code {
     font-family: var(--ifm-font-family-monospace);
+    white-space: pre-wrap;
+    word-break: break-all;
   }
   
   .inlineInput, .inlineSelect {
@@ -23,6 +25,8 @@
     color: var(--ifm-font-color-base);
     padding: 2px 6px;
     font-family: var(--ifm-font-family-monospace);
+    white-space: pre-wrap;
+    word-break: break-all;
   }
 
   .inlineSelect option {

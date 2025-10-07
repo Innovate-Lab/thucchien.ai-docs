@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import AutoResizingTextarea from './AutoResizingTextarea';
 import InlineEditableCodeBlock from './InlineEditableCodeBlock';
 import styles from './InlineEditableCodeBlock.module.css';
 import reqStyles from './InteractiveApiRequest.module.css';
@@ -7,7 +8,7 @@ import CopyableCodeBlock from './CopyableCodeBlock';
 
 // --- PROPS DEFINITION ---
 interface ParameterControl {
-  type: 'input' | 'select';
+  type: 'input' | 'select' | 'textarea';
   options?: string[];
 }
 
@@ -87,7 +88,14 @@ export default function InteractiveApiRequest({
           value={parameters[key]}
           onChange={(e) => handleParameterChange(key, e.target.value)}
           className={styles.inlineInput}
-          size={Math.max(String(parameters[key]).length, 15)}
+        />
+      );
+    } else if (control.type === 'textarea') {
+      acc[key] = (
+        <AutoResizingTextarea
+          value={parameters[key]}
+          onChange={(e) => handleParameterChange(key, e.target.value)}
+          className={styles.inlineInput}
         />
       );
     } else if (control.type === 'select' && control.options) {
@@ -155,7 +163,11 @@ export default function InteractiveApiRequest({
         onExecute={handleExecute}
         isLoading={isLoading}
       />
-      {isLoading && <div className={reqStyles.loading}>Loading...</div>}
+      {isLoading && (
+        <div className={reqStyles.loading}>
+          <div className={reqStyles.spinner}></div>
+        </div>
+      )}
       {error && <CodeBlock language="text" title="Error">{error}</CodeBlock>}
       {response && (
         <CopyableCodeBlock
