@@ -51,6 +51,12 @@ Do máy chủ proxy đang sử dụng cơ chế pass-through tới Google AI Stu
       Tỷ lệ khung hình của video.
       - **Tất cả các model**: `"16:9"` (mặc định), `"9:16"` (chỉ 720p).
     </ApiParameter>
+      <ApiParameter name="durationSeconds" type="number" indent={1}>
+      Thời gian của video (tính bằng giây), từ 5-8. Chỉ hỗ trợ cho **Veo 2**. Mặc định là 8 giây.
+    </ApiParameter>
+      <ApiParameter name="sampleCount" type="number" indent={1}>
+      Số lượng mẫu video cần tạo. Chỉ hỗ trợ cho **Veo 2**. Mặc định là 1, tối đa là 2.
+    </ApiParameter>
     <ApiParameter name="resolution" type="string" indent={1}>
       Độ phân giải của video.
       - **Veo 3**: `"720p"` (mặc định), `"1080p"` (chỉ cho 16:9).
