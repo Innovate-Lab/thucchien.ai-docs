@@ -106,11 +106,13 @@ Tạo một phản hồi cho một cuộc hội thoại cho trước.
   initialParameters={{
     apiKey: '<your_api_key>',
     model: 'gemini-2.5-flash',
+    systemPrompt: 'Bạn là một trợ lý ảo',
     prompt: 'Hãy viết một câu giới thiệu về Việt Nam.',
   }}
   parameterControls={{
     apiKey: { type: 'input' },
     model: { type: 'select', options: ['gemini-2.5-pro', 'gemini-2.5-flash'] },
+    systemPrompt: { type: 'input' },
     prompt: { type: 'input' },
   }}
   codeTemplates={{
@@ -122,6 +124,10 @@ Tạo một phản hồi cho một cuộc hội thoại cho trước.
   -d '{
     "model": "{{model}}",
     "messages": [
+      {
+        "role": "system",
+        "content": "{{systemPrompt}}"
+      },
       {
         "role": "user",
         "content": "{{prompt}}"
@@ -144,6 +150,10 @@ response = client.chat.completions.create(
     model="{{model}}",
     messages=[
         {
+            "role": "system",
+            "content": "{{systemPrompt}}"
+        },
+        {
             "role": "user",
             "content": "{{prompt}}"
         }
@@ -152,10 +162,76 @@ response = client.chat.completions.create(
 
 print(response.choices[0].message.content)`,
     },
+    'Python (requests)': {
+      language: 'python',
+      template: `import requests
+import json
+
+# --- Cấu hình ---
+AI_API_BASE = "https://api.thucchien.ai"
+AI_API_KEY = "{{apiKey}}" # Thay bằng API key của bạn
+
+# --- Thực thi ---
+url = f"{AI_API_BASE}/chat/completions"
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {AI_API_KEY}"
+}
+data = {
+    "model": "{{model}}",
+    "messages": [
+        {
+            "role": "system",
+            "content": "{{systemPrompt}}"
+        },
+        {
+            "role": "user",
+            "content": "{{prompt}}"
+        }
+    ]
+}
+
+response = requests.post(url, headers=headers, data=json.dumps(data))
+
+if response.status_code == 200:
+    result = response.json()
+    print(result['choices'][0]['message']['content'])
+else:
+    print(f"Error: {response.status_code}")
+    print(response.text)`,
+    },
+    'Python (litellm)': {
+      language: 'python',
+      template: `import litellm
+
+# --- Cấu hình ---
+litellm.api_base = "https://api.thucchien.ai"
+
+# --- Thực thi ---
+response = litellm.completion(
+    model="{{model}}",
+    messages=[
+        {
+            "role": "system",
+            "content": "{{systemPrompt}}"
+        },
+        {
+            "role": "user",
+            "content": "{{prompt}}"
+        }
+    ],
+    api_key="{{apiKey}}"
+)
+
+print(response.choices[0].message.content)`,
+    },
   }}
   buildBody={(params) => ({
     model: params.model,
-    messages: [{ role: 'user', content: params.prompt }],
+    messages: [
+      { role: 'system', content: params.systemPrompt },
+      { role: 'user', content: params.prompt }
+    ],
   })}
   exampleResponse={{
     "id": "k4LkaMWmM622vr0PutCC6AU",
