@@ -3,6 +3,7 @@ import InlineEditableCodeBlock from './InlineEditableCodeBlock';
 import styles from './InlineEditableCodeBlock.module.css';
 import reqStyles from './InteractiveApiRequest.module.css';
 import CodeBlock from '@theme/CodeBlock';
+import CopyableCodeBlock from './CopyableCodeBlock';
 
 // --- PROPS DEFINITION ---
 interface ParameterControl {
@@ -123,6 +124,13 @@ export default function InteractiveApiRequest({
 
   const currentTemplate = codeTemplates[selectedTemplate];
 
+  const jsonReplacer = (key, value) => {
+    if (typeof value === 'string' && value.length > 200) {
+      return value.substring(0, 50) + '... [TRUNCATED]';
+    }
+    return value;
+  };
+
   return (
     <div className={reqStyles.container}>
        <div className={reqStyles.selectContainer}>
@@ -150,14 +158,20 @@ export default function InteractiveApiRequest({
       {isLoading && <div className={reqStyles.loading}>Loading...</div>}
       {error && <CodeBlock language="text" title="Error">{error}</CodeBlock>}
       {response && (
-        <CodeBlock language="json" title="Response">
-          {JSON.stringify(response, null, 2)}
-        </CodeBlock>
+        <CopyableCodeBlock
+          language="json"
+          title="Response"
+          fullCode={JSON.stringify(response, null, 2)}
+          truncatedCode={JSON.stringify(response, jsonReplacer, 2)}
+        />
       )}
       {!isLoading && !error && !response && exampleResponse && (
-        <CodeBlock language="json" title="Example Response">
-          {JSON.stringify(exampleResponse, null, 2)}
-        </CodeBlock>
+        <CopyableCodeBlock
+          language="json"
+          title="Example Response"
+          fullCode={JSON.stringify(exampleResponse, null, 2)}
+          truncatedCode={JSON.stringify(exampleResponse, jsonReplacer, 2)}
+        />
       )}
     </div>
   );

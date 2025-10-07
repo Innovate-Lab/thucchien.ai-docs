@@ -56,7 +56,9 @@ div[class*="codeBlockContainer_"] {
   color: var(--ifm-color-success-dark);
 }
 
-.sidebar-item-post-parent .menu__list-item:first-child > a::before {
+.sidebar-item-post-parent .menu__list-item:first-child > a::before,
+.sidebar-item-post-parent .menu__list-item:nth-child(2) > a::before,
+.sidebar-item-post-parent .menu__list-item:nth-child(3) > a::before {
   content: 'POST';
   background-color: #007bff;
   color: white;

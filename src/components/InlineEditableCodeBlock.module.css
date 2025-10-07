@@ -17,12 +17,17 @@
   }
   
   .inlineInput, .inlineSelect {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--ifm-code-background);
     border: 1px solid var(--ifm-color-emphasis-400);
     border-radius: 4px;
     color: var(--ifm-font-color-base);
     padding: 2px 6px;
     font-family: var(--ifm-font-family-monospace);
+  }
+
+  .inlineSelect option {
+    background-color: var(--ifm-background-color);
+    color: var(--ifm-font-color-base);
   }
   
   .inlineInput:focus, .inlineSelect:focus {

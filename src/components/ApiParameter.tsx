@@ -6,6 +6,7 @@ interface Props {
   type: string;
   required?: boolean;
   isEnd?: boolean;
+  indent?: number;
   children: ReactNode;
 }
 
@@ -14,11 +15,17 @@ export default function ApiParameter({
   type,
   required,
   isEnd,
+  indent = 0,
   children,
 }: Props) {
+  const indentStyle = {
+    paddingLeft: `${indent * 24}px`,
+  };
+
   return (
     <div
       className={`${styles.paramContainer} ${isEnd ? styles.isEnd : ''}`.trim()}
+      style={indentStyle}
     >
       <div className={styles.paramHeader}>
         <code className={styles.paramName}>{name}</code>

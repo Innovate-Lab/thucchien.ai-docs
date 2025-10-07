@@ -1,0 +1,30 @@
+.container {
+  position: relative;
+}
+
+.codeBlock {
+  /* Add any specific styling for the code block here if needed */
+}
+
+/* Hide the default copy button from Docusaurus */
+.codeBlock button[class*="copyButton_"] {
+  display: none;
+}
+
+.copyButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-content-secondary);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copyButton:hover {
+  background-color: var(--ifm-color-emphasis-300);
+}
