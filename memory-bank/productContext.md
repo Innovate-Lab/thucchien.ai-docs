@@ -2,7 +2,7 @@
 
 ## 1. Vấn đề cần giải quyết
 
-Việc sử dụng nhiều mô hình AI từ các nhà cung cấp khác nhau (Google, Azure, v.v.) tạo ra sự phức tạp cho nhà phát triển:
+Việc sử dụng nhiều mô hình AI từ các nhà cung cấp khác nhau (Google, v.v.) tạo ra sự phức tạp cho nhà phát triển:
 - **Nhiều API khác nhau:** Mỗi nhà cung cấp có một bộ API, SDK và quy trình xác thực riêng.
 - **Khó khăn trong việc chuyển đổi:** Việc chuyển từ mô hình này sang mô hình khác đòi hỏi phải thay đổi code đáng kể.
 - **Thiếu một nguồn tài liệu duy nhất:** Nhà phát triển phải tham khảo nhiều trang tài liệu khác nhau, gây mất thời gian và dễ xảy ra lỗi.

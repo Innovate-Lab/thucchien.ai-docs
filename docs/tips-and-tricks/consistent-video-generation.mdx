@@ -1,0 +1,38 @@
+---
+sidebar_position: 3
+---
+
+# Generate Videos đồng nhất bối cảnh và kịch bản
+
+Để duy trì sự đồng nhất về bối cảnh, nhân vật và kịch bản trong video, việc áp dụng các chiến lược và kỹ thuật chuyên sâu là rất quan trọng. Dưới đây là các phương pháp thực chiến hiệu quả.
+
+## Các kỹ thuật tạo sự đồng nhất cho Video
+
+### 1. Kịch bản chi tiết (Detailed Scripting)
+
+- **Phân cảnh rõ ràng:** Viết kịch bản chi tiết cho từng cảnh (scene), mô tả rõ hành động, bối cảnh, và biểu cảm của nhân vật.
+- **Mô tả nhất quán:** Đảm bảo các mô tả về nhân vật và bối cảnh được giữ nguyên giữa các cảnh, trừ khi có sự thay đổi theo kịch bản.
+
+### 2. Sử dụng Prompts có cấu trúc (Structured Prompts)
+
+- **Cấu trúc lặp lại:** Sử dụng một cấu trúc prompt cố định, chỉ thay đổi các chi tiết của từng cảnh. Ví dụ: `[Nhân vật] đang [hành động] tại [bối cảnh] vào [thời điểm]`.
+- **Mã định danh nhân vật:** Tương tự như sinh ảnh, sử dụng mã định danh (`Character_A`) để duy trì sự nhất quán cho nhân vật.
+
+### 3. Điều khiển nhân vật và bối cảnh
+
+- **Sử dụng ảnh hoặc video tham chiếu:** Nếu mô hình hỗ trợ, hãy cung cấp một ảnh hoặc một đoạn video ngắn làm tham chiếu để kiểm soát ngoại hình nhân vật và phong cách của cảnh.
+- **Giữ `seed` cố định cho các cảnh tương tự:** Đối với các cảnh có bối cảnh và góc máy gần giống nhau, việc sử dụng cùng một `seed` có thể giúp tăng tính nhất quán.
+
+### 4. Kỹ thuật "Storyboarding" với AI
+
+- **Tạo Keyframes trước:** Sử dụng các mô hình sinh ảnh để tạo ra các khung hình chính (keyframes) cho từng cảnh quan trọng trong video.
+- **Sử dụng Keyframes làm tham chiếu:** Dùng các keyframes này làm ảnh đầu vào (image-to-video) để generate các đoạn video ngắn, đảm bảo video bám sát storyboard đã định.
+
+### 5. Post-production và biên tập
+
+- **Ghép nối các clip:** Sử dụng phần mềm chỉnh sửa video để ghép nối các đoạn video đã generate thành một video hoàn chỉnh.
+- **Hiệu chỉnh màu sắc và âm thanh:** Đồng bộ màu sắc (color grading) và thêm âm thanh để tạo ra một sản phẩm cuối cùng liền mạch và chuyên nghiệp.
+
+## Phân tích một dự án Video thực tế
+
+_(Nội dung sẽ được cập nhật sau)_

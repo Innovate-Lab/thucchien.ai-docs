@@ -1,0 +1,35 @@
+---
+sidebar_position: 1
+---
+
+# Xử lý lỗi Gibberish khi Generate chữ
+
+Hiện tượng "gibberish" là khi mô hình tạo ra các ký tự hoặc từ ngữ vô nghĩa, lộn xộn. Dưới đây là các nguyên nhân và phương pháp xử lý thực chiến.
+
+## Nguyên nhân gây lỗi Gibberish
+
+- **Chất lượng dữ liệu huấn luyện:** Dữ liệu chứa nhiễu, sai sót hoặc không nhất quán.
+- **Kiến trúc mô hình:** Hạn chế của mô hình trong việc nắm bắt các quy tắc ngôn ngữ phức tạp.
+- **Tham số sinh văn bản (Generation Parameters):** Cấu hình sai các tham số như `temperature`, `top-p`, `top-k` có thể dẫn đến kết quả không mong muốn.
+
+## Phương pháp xử lý
+
+### 1. Tinh chỉnh Prompt (Prompt Engineering)
+
+- **Cung cấp ngữ cảnh rõ ràng:** Đưa ra chỉ dẫn, ví dụ và định dạng cụ thể trong prompt.
+- **Sử dụng "Few-shot learning":** Cung cấp một vài ví dụ (input-output) để mô hình học theo.
+
+### 2. Điều chỉnh tham số (Parameters Tuning)
+
+- **`temperature`:** Giảm giá trị `temperature` (ví dụ: xuống dưới 0.5) để mô hình tạo ra các kết quả an toàn và ít sáng tạo hơn, giảm thiểu gibberish.
+- **`top-p` (Nucleus Sampling):** Sử dụng giá trị `top-p` hợp lý (ví dụ: 0.9) để giới hạn các lựa chọn từ có xác suất thấp.
+- **`repetition_penalty`:** Tăng giá trị này để phạt các từ hoặc cụm từ lặp lại, một dạng phổ biến của gibberish.
+
+### 3. Kỹ thuật Post-processing
+
+- **Lọc và kiểm tra:** Xây dựng các bộ lọc để tự động phát hiện và loại bỏ các chuỗi ký tự vô nghĩa.
+- **Sử dụng mô hình phụ:** Dùng một mô hình ngôn ngữ khác để đánh giá và sửa lỗi cho kết quả của mô hình chính.
+
+## Case study thực tế
+
+_(Nội dung sẽ được cập nhật sau)_

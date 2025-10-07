@@ -8,95 +8,33 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
 
-Các mô hình sinh văn bản cho phép bạn thực hiện nhiều tác vụ như trả lời câu hỏi, viết nội dung, tóm tắt văn bản, và nhiều hơn nữa.
+Các mô hình sinh văn bản cho phép bạn thực hiện nhiều tác vụ như trả lời câu hỏi, viết nội dung, tóm tắt văn bản, và nhiều hơn nữa. API này tuân theo chuẩn của OpenAI, vì vậy bạn có thể sử dụng các thư viện client của OpenAI một cách trực tiếp.
 
 **Các model được hỗ trợ:**
 - `gemini-2.5-pro` (Google Gemini)
-- `gpt-5-mini` (Azure OpenAI)
-- `gpt-4.1` (Azure OpenAI)
-- `o3-mini` (Azure OpenAI)
+- `gemini-2.5-flash` (Google Gemini)
 
-**Endpoint:** `POST /chat/completions`
+:::info[Tham khảo API chi tiết]
+Để xem danh sách đầy đủ các tham số request, response và các ví dụ chi tiết, vui lòng truy cập trang [**Tham chiếu API: Sinh văn bản**](../api-reference/text-generation.mdx).
+:::
 
-API này tuân theo chuẩn của OpenAI, vì vậy bạn có thể sử dụng các thư viện client của OpenAI một cách trực tiếp.
+## Ví dụ nhanh
 
-<Tabs>
-  <TabItem value="curl" label="curl">
-    <p>Đây là cách đơn giản nhất để kiểm tra API. Thay <code>{'<your_api_key>'}</code> bằng API key của bạn.</p>
-    <CodeBlock language="bash">
-    {`curl https://api.thucchien.ai/chat/completions \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer <your_api_key>" \\
-  -d '{
-    "model": "gpt-5-mini",
-    "messages": [
-      {
-        "role": "system",
-        "content": "You are a helpful assistant."
-      },
-      {
-        "role": "user",
-        "content": "Hãy viết một câu giới thiệu về Việt Nam."
-      }
-    ]
-  }'`}
-    </CodeBlock>
-    <p>Để sử dụng model khác, chỉ cần thay đổi giá trị <code>model</code>, ví dụ: <code>"model": "gemini-2.5-pro"</code>.</p>
-  </TabItem>
-  <TabItem value="python-requests" label="Python (requests)">
-    <p>Cách này cho bạn thấy rõ cấu trúc của một request HTTP trong Python.</p>
-    <CodeBlock language="python">
-    {`import requests
-import json
+Dưới đây là một ví dụ nhanh sử dụng thư viện `openai` trong Python, là cách tiếp cận được khuyến khích vì sự tiện lợi và quen thuộc.
+
+<CodeBlock language="python">
+{`from openai import OpenAI
 
 # --- Cấu hình ---
-AI_API_BASE = "https://api.thucchien.ai"
-AI_API_KEY = "sk-1234" # Thay bằng API key của bạn
-
-# --- Thực thi ---
-url = f"{AI_API_BASE}/chat/completions"
-headers = {
-    "Content-Type": "application/json",
-    "Authorization": f"Bearer {AI_API_KEY}"
-}
-data = {
-    "model": "gpt-4.1",
-    "messages": [
-        {
-            "role": "user",
-            "content": "What are the main benefits of using LiteLLM?"
-        }
-    ],
-    "temperature": 0.7
-}
-
-response = requests.post(url, headers=headers, data=json.dumps(data))
-
-if response.status_code == 200:
-    result = response.json()
-    print(result['choices'][0]['message']['content'])
-else:
-    print(f"Error: {response.status_code}")
-    print(response.text)`}
-    </CodeBlock>
-  </TabItem>
-  <TabItem value="python-openai" label="Python (openai)">
-    <p>Đây là cách tiếp cận được khuyến khích vì sự tiện lợi và quen thuộc.</p>
-    <CodeBlock language="python">
-    {`from openai import OpenAI
-
-# --- Cấu hình ---
-AI_API_BASE = "https://api.thucchien.ai"
-AI_API_KEY = "sk-1234" # Thay bằng API key của bạn
-
-# --- Thực thi ---
+# Thay <your_api_key> bằng API key của bạn
 client = OpenAI(
-    api_key=AI_API_KEY,
-    base_url=AI_API_BASE
+    api_key="<your_api_key>",
+    base_url="https://api.thucchien.ai"
 )
 
+# --- Thực thi ---
 response = client.chat.completions.create(
-    model="o3-mini", # Chọn model bạn muốn
+    model="gemini-2.5-pro", # Chọn model bạn muốn
     messages=[
         {
             "role": "user",
@@ -106,32 +44,4 @@ response = client.chat.completions.create(
 )
 
 print(response.choices[0].message.content)`}
-    </CodeBlock>
-  </TabItem>
-  <TabItem value="python-litellm" label="Python (litellm)">
-    <p>Thư viện <code>litellm</code> cũng cung cấp một cách tiện lợi để gọi API.</p>
-    <CodeBlock language="python">
-    {`import litellm
-
-# --- Cấu hình ---
-AI_API_BASE = "https://api.thucchien.ai"
-AI_API_KEY = "sk-1234" # Thay bằng API key của bạn
-
-# --- Thực thi ---
-litellm.api_base = AI_API_BASE
-
-response = litellm.completion(
-    model="litellm_proxy/gemini-2.5-pro",
-    messages=[
-        {
-            "role": "user",
-            "content": "Viết một đoạn văn ngắn về tầm quan trọng của AI."
-        }
-    ],
-    api_key=AI_API_KEY
-)
-
-print(response.choices[0].message.content)`}
-    </CodeBlock>
-  </TabItem>
-</Tabs>
+</CodeBlock>

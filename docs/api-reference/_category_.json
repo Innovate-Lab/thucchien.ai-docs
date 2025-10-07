@@ -1,0 +1,9 @@
+{
+  "label": "Tham chiếu API",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Tài liệu tham khảo chi tiết cho từng endpoint của API.",
+    "slug": "/api-reference"
+  }
+}

@@ -209,7 +209,7 @@ IMAGE_DATA=$(curl -s https://api.thucchien.ai/v1/chat/completions \\
             "content": "An olympic size swimming pool with crystal clear water and modern architecture. High resolution, photorealistic, 8k"
         }
     ]
-  }' | jq -r '.choices[0].message.image.url' | sed 's/^data:image\\/png;base64,//')
+  }' | jq -r '.choices[0].message.images[0].image_url.url' | sed 's/^data:image\\/png;base64,//')
 
 # Bước 2: Giải mã base64 và lưu thành file ảnh
 if [ -n "$IMAGE_DATA" ]; then
@@ -258,7 +258,7 @@ try:
 
     result = response.json()
     # Trích xuất dữ liệu ảnh base64 từ response
-    base64_string = result['choices'][0]['message']['image']['url']
+    base64_string = result['choices'][0]['message']['images'][0]['image_url']['url']
     print("Image data received successfully.")
 
     # --- Bước 2: Giải mã và lưu hình ảnh ---
@@ -316,7 +316,7 @@ try:
     )
 
     # Trích xuất dữ liệu ảnh base64
-    base64_string = response.choices[0].message.image.get('url')
+    base64_string = response.choices[0].message.images[0].get('image_url').get("url")
     print("Image data received successfully.")
 
     # --- Bước 2: Giải mã và lưu hình ảnh ---
@@ -367,7 +367,7 @@ response = litellm.completion(
     modalities=["image"]  # Specify modalities to include image data
 )
 # Get the base64 image string from the response
-base64_string = response.choices[0].message.provider_specific_fields.get('image').get('url')
+base64_string = response.choices[0].message.images[0].get("image_url").get("url")
 print("Image data received successfully.")
 
 # Decode and save the image ---

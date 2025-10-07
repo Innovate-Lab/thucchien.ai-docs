@@ -1,0 +1,34 @@
+---
+sidebar_position: 2
+---
+
+# Đồng nhất nhân vật khi Generate nhiều ảnh
+
+Để duy trì sự nhất quán của nhân vật qua nhiều hình ảnh với bối cảnh và kịch bản khác nhau, hãy áp dụng các kỹ thuật thực chiến dưới đây.
+
+## Các phương pháp tạo sự đồng nhất
+
+### 1. Xây dựng Prompt chi tiết và nhất quán
+
+- **Mô tả đặc điểm nhận dạng:** Liệt kê các đặc điểm ngoại hình không đổi của nhân vật (màu mắt, kiểu tóc, sẹo, hình xăm).
+- **Sử dụng tên riêng hoặc mã định danh:** Đặt cho nhân vật một cái tên hoặc mã định danh duy nhất (ví dụ: `Character_A`) và sử dụng nó trong tất cả các prompt.
+- **Giữ cấu trúc prompt tương đồng:** Duy trì một cấu trúc prompt nhất quán giữa các lần sinh ảnh, chỉ thay đổi các yếu tố liên quan đến bối cảnh hoặc hành động.
+
+### 2. Sử dụng Seed
+
+- **Cố định `seed`:** Sử dụng cùng một giá trị `seed` cho các lần generate ảnh liên tiếp sẽ giúp mô hình tạo ra các kết quả có bố cục và phong cách tương tự nhau.
+- **Lưu ý:** Kỹ thuật này hiệu quả nhất khi chỉ có những thay đổi nhỏ trong prompt.
+
+### 3. Kỹ thuật Image-to-Image (Img2Img)
+
+- **Sử dụng ảnh tham chiếu:** Dùng một ảnh đã tạo thành công làm ảnh đầu vào (reference image) cho các lần generate tiếp theo.
+- **Điều chỉnh `denoising strength`:** Tinh chỉnh tham số này để kiểm soát mức độ thay đổi so với ảnh gốc. Giá trị thấp sẽ giữ lại nhiều đặc điểm của ảnh gốc hơn.
+
+### 4. Fine-tuning và các mô hình chuyên biệt
+
+- **Huấn luyện mô hình LoRA:** Tạo một mô hình LoRA (Low-Rank Adaptation) được huấn luyện trên một bộ ảnh của nhân vật bạn muốn. Đây là phương pháp hiệu quả nhất để đạt được sự đồng nhất cao.
+- **Sử dụng các công cụ chuyên dụng:** Khám phá các công cụ hoặc nền tảng hỗ trợ tạo nhân vật nhất quán (ví dụ: IP-Adapter trong Stable Diffusion).
+
+## Case study: Tạo bộ ảnh cho một nhân vật
+
+_(Nội dung sẽ được cập nhật sau)_

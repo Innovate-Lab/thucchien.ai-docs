@@ -1,0 +1,46 @@
+.paramContainer {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.paramContainer:first-child {
+  padding-top: 0;
+}
+
+.paramContainer:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.paramHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.paramName {
+  font-size: 1rem;
+  font-family: var(--ifm-font-family-monospace);
+  background-color: transparent;
+  padding: 0;
+  border: none;
+  color: var(--ifm-color-primary);
+}
+
+.paramType {
+  font-size: 0.8rem;
+  color: var(--ifm-font-color-secondary);
+  font-family: var(--ifm-font-family-monospace);
+}
+
+.paramRequired {
+  font-size: 0.8rem;
+  color: var(--ifm-color-danger);
+  font-weight: bold;
+}
+
+.paramDescription {
+  color: var(--ifm-font-color-secondary);
+  font-size: 0.95rem;
+}

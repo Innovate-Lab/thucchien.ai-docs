@@ -3,7 +3,7 @@
 ## 1. Kiến trúc tổng quan
 
 Hệ thống bao gồm hai thành phần chính:
-1.  **LiteLLM Proxy:** Đóng vai trò là một lớp trung gian (middleware), nhận tất cả các yêu cầu API từ client. Nó chịu trách nhiệm xác thực, định tuyến yêu cầu đến đúng nhà cung cấp AI (Google, Azure), và trả kết quả về cho client.
+1.  **LiteLLM Proxy:** Đóng vai trò là một lớp trung gian (middleware), nhận tất cả các yêu cầu API từ client. Nó chịu trách nhiệm xác thực, định tuyến yêu cầu đến đúng nhà cung cấp AI Google, và trả kết quả về cho client.
 2.  **Docusaurus Website:** Là một trang web tĩnh (static site) được xây dựng để cung cấp tài liệu. Nó không tương tác trực tiếp với Proxy mà chỉ hiển thị thông tin hướng dẫn cách để các ứng dụng khác tương tác.
 
 ```mermaid

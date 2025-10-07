@@ -1,0 +1,31 @@
+.apiReferenceLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.leftCol {
+  flex: 1;
+  min-width: 0;
+}
+
+.rightCol {
+  flex: 1;
+  min-width: 0;
+}
+
+/* On larger screens, use a two-column layout */
+@media (min-width: 997px) {
+  .apiReferenceLayout {
+    flex-direction: row;
+  }
+
+  .leftCol {
+    /* Adjust the flex-basis to control the width ratio */
+    flex: 0 0 55%;
+  }
+
+  .rightCol {
+    flex: 1;
+  }
+}
