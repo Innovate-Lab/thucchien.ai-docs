@@ -98,7 +98,7 @@ response = client.chat.completions.create(
 )
 
 # Lưu ảnh từ dữ liệu base64
-base64_string = response.choices[0].message.images[0].image_url.url
+base64_string = response.choices[0].message.images[0].get("image_url").get("url")
 if ',' in base64_string:
     header, encoded = base64_string.split(',', 1)
 else:

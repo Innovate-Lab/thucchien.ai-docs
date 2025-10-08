@@ -25,8 +25,10 @@
     color: var(--ifm-font-color-base);
     padding: 2px 6px;
     font-family: var(--ifm-font-family-monospace);
-    white-space: pre-wrap;
-    word-break: break-all;
+  }
+
+  .inlineSelect {
+    min-width: 10ch;
   }
 
   .inlineSelect option {

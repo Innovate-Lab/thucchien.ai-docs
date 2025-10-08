@@ -67,8 +67,7 @@ export default function InteractiveApiRequest({
     if (parameters.apiKey) {
       if (headers['x-goog-api-key'] !== undefined) {
         finalHeaders['x-goog-api-key'] = parameters.apiKey;
-      }
-      if (headers['Authorization'] !== undefined) {
+      } else {
         finalHeaders['Authorization'] = `Bearer ${parameters.apiKey}`;
       }
     }
@@ -133,12 +132,15 @@ export default function InteractiveApiRequest({
   const replacements = Object.keys(parameterControls).reduce((acc, key) => {
     const control = parameterControls[key];
     if (control.type === 'input') {
+      const value = parameters[key] || '';
+      const width = Math.max(5, Math.min(value.length, 40)) + 2;
       acc[key] = (
         <input
           type="text"
-          value={parameters[key]}
+          value={value}
           onChange={(e) => handleParameterChange(key, e.target.value)}
           className={styles.inlineInput}
+          style={{ width: `${width}ch` }}
         />
       );
     } else if (control.type === 'textarea') {

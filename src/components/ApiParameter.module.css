@@ -39,7 +39,6 @@
 .paramRequired {
   font-size: 0.8rem;
   color: var(--ifm-color-danger);
-  font-weight: bold;
 }
 
 .paramDescription {
