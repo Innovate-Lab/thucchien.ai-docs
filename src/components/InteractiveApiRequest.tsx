@@ -41,6 +41,7 @@ export default function InteractiveApiRequest({
   const [error, setError] = useState(null);
   const [videoPreviewUrl, setVideoPreviewUrl] = useState<string | null>(null);
   const [audioPreviewUrl, setAudioPreviewUrl] = useState<string | null>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     // Cleanup function to revoke object URLs to prevent memory leaks
@@ -51,8 +52,11 @@ export default function InteractiveApiRequest({
       if (audioPreviewUrl) {
         window.URL.revokeObjectURL(audioPreviewUrl);
       }
+      if (imagePreviewUrl && imagePreviewUrl.startsWith('blob:')) {
+        window.URL.revokeObjectURL(imagePreviewUrl);
+      }
     };
-  }, [videoPreviewUrl, audioPreviewUrl]);
+  }, [videoPreviewUrl, audioPreviewUrl, imagePreviewUrl]);
 
   const handleParameterChange = (key, value) => {
     setParameters((prevParams) => ({
@@ -67,6 +71,7 @@ export default function InteractiveApiRequest({
     setError(null);
     setVideoPreviewUrl(null);
     setAudioPreviewUrl(null);
+    setImagePreviewUrl(null);
 
     const finalHeaders = { ...headers };
     if (parameters.apiKey) {
@@ -106,6 +111,45 @@ export default function InteractiveApiRequest({
       if (contentType && contentType.includes('application/json')) {
         const data = await res.json();
         setResponse(data);
+
+        // Check for image data for preview
+        let base64ImageData = null;
+        let imageMimeType = 'image/png';
+
+        // Case 1: Standard Image Generation API (/images/generations)
+        if (data?.data?.[0]?.b64_json) {
+          base64ImageData = data.data[0].b64_json;
+        }
+        // Case 2: Chat Completions with image modality
+        else if (data?.choices?.[0]?.message?.images?.[0]?.image_url?.url) {
+          const dataUrl = data.choices[0].message.images[0].image_url.url;
+          // It's a data URL, can be used directly in src
+          setImagePreviewUrl(dataUrl);
+        }
+        // Case 3: Gemini Image Generation API
+        else if (
+          data?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data &&
+          data.candidates[0].content.parts[0].inlineData.mimeType.startsWith('image/')
+        ) {
+          base64ImageData = data.candidates[0].content.parts[0].inlineData.data;
+          imageMimeType = data.candidates[0].content.parts[0].inlineData.mimeType;
+        }
+
+        if (base64ImageData) {
+          try {
+            const byteCharacters = atob(base64ImageData);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+              byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: imageMimeType });
+            const url = window.URL.createObjectURL(blob);
+            setImagePreviewUrl(url);
+          } catch (e) {
+            console.error("Error decoding base64 image:", e);
+          }
+        }
 
         // Check for Gemini TTS audio data in the response
         const audioData = data?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
@@ -302,6 +346,12 @@ export default function InteractiveApiRequest({
               <audio src={audioPreviewUrl} controls className={reqStyles.audioPreview} />
             </div>
           )}
+          {imagePreviewUrl && (
+            <div className={reqStyles.imagePreviewContainer}>
+              <h3 className={reqStyles.responseTitle}>Image Preview</h3>
+              <img src={imagePreviewUrl} alt="Generated Image" className={reqStyles.imagePreview} />
+            </div>
+          )}
         </div>
       )}
       {videoPreviewUrl && (
@@ -310,7 +360,7 @@ export default function InteractiveApiRequest({
           <video src={videoPreviewUrl} controls className={reqStyles.videoPreview} />
         </div>
       )}
-      {!isLoading && !error && !response && !videoPreviewUrl && !audioPreviewUrl && exampleResponse && (
+      {!isLoading && !error && !response && !videoPreviewUrl && !audioPreviewUrl && !imagePreviewUrl && exampleResponse && (
         <CopyableCodeBlock
           language="json"
           title="Example Response"

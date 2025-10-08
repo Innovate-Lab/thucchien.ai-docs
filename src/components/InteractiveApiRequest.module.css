@@ -56,6 +56,17 @@
     }
   }
 
+  .responseContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  
+  @media (min-width: 768px) {
+    .responseContainer {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  }
+
   .responseTitle {
     font-size: 1rem;
     font-weight: 600;
@@ -66,6 +77,21 @@
   
   .videoPreview {
     max-width: 100%;
+    border-radius: var(--ifm-code-border-radius);
+    border: 1px solid var(--ifm-color-emphasis-300);
+  }
+
+  .audioPreviewContainer, .imagePreviewContainer {
+    margin-top: 1rem;
+  }
+  
+  .audioPreview {
+    width: 100%;
+  }
+  
+  .imagePreview {
+    max-width: 100%;
+    height: auto;
     border-radius: var(--ifm-code-border-radius);
     border: 1px solid var(--ifm-color-emphasis-300);
   }
