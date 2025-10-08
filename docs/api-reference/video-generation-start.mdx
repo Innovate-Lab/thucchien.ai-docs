@@ -72,8 +72,12 @@ Do máy chủ proxy đang sử dụng cơ chế pass-through tới Google AI Stu
     </ApiParameter>
     <ApiParameter name="personGeneration" type="string" indent={1} isEnd>
       Kiểm soát việc tạo ra hình ảnh con người.
-      - **Veo 3 (Text-to-video)**: Chỉ hỗ trợ `"allow_all"`.
-      - **Veo 2 (Text-to-video)**: Hỗ trợ `"allow_all"`, `"allow_adult"`, `"dont_allow"`.
+      - **Veo 3**:
+        - **Text-to-video**: Chỉ hỗ trợ `"allow_all"`.
+        - **Image-to-video**: Chỉ hỗ trợ `"allow_adult"`.
+      - **Veo 2**:
+        - **Text-to-video**: Hỗ trợ `"allow_all"`, `"allow_adult"`, `"dont_allow"`.
+        - **Image-to-video**: Hỗ trợ `"allow_adult"` và `"dont_allow"`.
     </ApiParameter>
 
     ---

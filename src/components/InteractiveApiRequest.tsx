@@ -39,16 +39,20 @@ export default function InteractiveApiRequest({
   const [isLoading, setIsLoading] = useState(false);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [videoPreviewUrl, setVideoPreviewUrl] = useState<string | null>(null);
+  const [audioPreviewUrl, setAudioPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    // Cleanup function to revoke the object URL to prevent memory leaks
+    // Cleanup function to revoke object URLs to prevent memory leaks
     return () => {
-      if (previewUrl) {
-        window.URL.revokeObjectURL(previewUrl);
+      if (videoPreviewUrl) {
+        window.URL.revokeObjectURL(videoPreviewUrl);
+      }
+      if (audioPreviewUrl) {
+        window.URL.revokeObjectURL(audioPreviewUrl);
       }
     };
-  }, [previewUrl]);
+  }, [videoPreviewUrl, audioPreviewUrl]);
 
   const handleParameterChange = (key, value) => {
     setParameters((prevParams) => ({
@@ -61,7 +65,8 @@ export default function InteractiveApiRequest({
     setIsLoading(true);
     setResponse(null);
     setError(null);
-    setPreviewUrl(null);
+    setVideoPreviewUrl(null);
+    setAudioPreviewUrl(null);
 
     const finalHeaders = { ...headers };
     if (parameters.apiKey) {
@@ -101,6 +106,26 @@ export default function InteractiveApiRequest({
       if (contentType && contentType.includes('application/json')) {
         const data = await res.json();
         setResponse(data);
+
+        // Check for Gemini TTS audio data in the response
+        const audioData = data?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+        const mimeType = data?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.mimeType;
+
+        if (audioData && mimeType && mimeType.startsWith('audio/L16')) {
+          // It's raw PCM data, we need to wrap it in a WAV header to make it playable
+          const rateMatch = mimeType.match(/rate=(\d+)/);
+          const sampleRate = rateMatch ? parseInt(rateMatch[1], 10) : 24000; // Default to 24000Hz if not specified
+
+          const decodedData = atob(audioData);
+          const pcmData = new Uint8Array(decodedData.length);
+          for (let i = 0; i < decodedData.length; i++) {
+            pcmData[i] = decodedData.charCodeAt(i);
+          }
+
+          const wavBlob = pcmToWav(pcmData, 1, sampleRate, 16);
+          const url = window.URL.createObjectURL(wavBlob);
+          setAudioPreviewUrl(url);
+        }
       } else {
         setResponse(null);
         const blob = await res.blob();
@@ -108,18 +133,20 @@ export default function InteractiveApiRequest({
 
         // If the content is a video, create a preview URL
         if (blob.type.startsWith('video/')) {
-          setPreviewUrl(url);
+          setVideoPreviewUrl(url);
+        } else if (blob.type.startsWith('audio/')) {
+          setAudioPreviewUrl(url);
         }
 
         // Trigger the download
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'my_generated_video.mp4';
+        a.download = blob.type.startsWith('video/') ? 'generated_video.mp4' : 'generated_audio.mp3';
         document.body.appendChild(a);
         a.click();
         a.remove();
         // The object URL is not revoked here because it's needed for the preview.
-        // The useEffect hook will handle cleanup when the component unmounts or the URL changes.
+        // The useEffect hook will handle cleanup.
       }
     } catch (err) {
       setError(err.message);
@@ -192,6 +219,45 @@ export default function InteractiveApiRequest({
     return value;
   };
 
+  // Helper function to create a WAV file from raw PCM data
+  const pcmToWav = (pcmData, numChannels, sampleRate, bitsPerSample) => {
+    const blockAlign = (numChannels * bitsPerSample) / 8;
+    const byteRate = sampleRate * blockAlign;
+    const dataSize = pcmData.length;
+    const buffer = new ArrayBuffer(44 + dataSize);
+    const view = new DataView(buffer);
+
+    // RIFF header
+    writeString(view, 0, 'RIFF');
+    view.setUint32(4, 36 + dataSize, true);
+    writeString(view, 8, 'WAVE');
+    // "fmt " sub-chunk
+    writeString(view, 12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true); // PCM
+    view.setUint16(22, numChannels, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, byteRate, true);
+    view.setUint16(32, blockAlign, true);
+    view.setUint16(34, bitsPerSample, true);
+    // "data" sub-chunk
+    writeString(view, 36, 'data');
+    view.setUint32(40, dataSize, true);
+
+    // Write PCM data
+    for (let i = 0; i < dataSize; i++) {
+      view.setUint8(44 + i, pcmData[i]);
+    }
+
+    return new Blob([view], { type: 'audio/wav' });
+  };
+
+  const writeString = (view, offset, string) => {
+    for (let i = 0; i < string.length; i++) {
+      view.setUint8(offset + i, string.charCodeAt(i));
+    }
+  };
+
   return (
     <div className={reqStyles.container}>
        <div className={reqStyles.selectContainer}>
@@ -223,20 +289,28 @@ export default function InteractiveApiRequest({
       )}
       {error && <CodeBlock language="text" title="Error">{error}</CodeBlock>}
       {response && (
-        <CopyableCodeBlock
-          language="json"
-          title="Response"
-          fullCode={JSON.stringify(response, null, 2)}
-          truncatedCode={JSON.stringify(response, jsonReplacer, 2)}
-        />
-      )}
-      {previewUrl && (
-        <div>
-          <h3 className={reqStyles.responseTitle}>Preview</h3>
-          <video src={previewUrl} controls className={reqStyles.videoPreview} />
+        <div className={reqStyles.responseContainer}>
+          <CopyableCodeBlock
+            language="json"
+            title="Response"
+            fullCode={JSON.stringify(response, null, 2)}
+            truncatedCode={JSON.stringify(response, jsonReplacer, 2)}
+          />
+          {audioPreviewUrl && (
+            <div className={reqStyles.audioPreviewContainer}>
+              <h3 className={reqStyles.responseTitle}>Audio Preview</h3>
+              <audio src={audioPreviewUrl} controls className={reqStyles.audioPreview} />
+            </div>
+          )}
         </div>
       )}
-      {!isLoading && !error && !response && !previewUrl && exampleResponse && (
+      {videoPreviewUrl && (
+        <div>
+          <h3 className={reqStyles.responseTitle}>Preview</h3>
+          <video src={videoPreviewUrl} controls className={reqStyles.videoPreview} />
+        </div>
+      )}
+      {!isLoading && !error && !response && !videoPreviewUrl && !audioPreviewUrl && exampleResponse && (
         <CopyableCodeBlock
           language="json"
           title="Example Response"
