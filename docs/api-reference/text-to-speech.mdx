@@ -17,7 +17,13 @@ import SpeechOutput from '@site/static/audio/speech_output.mp3';
 ## <Badge method="POST" /> `/audio/speech`
 
 Chuyển đổi một đoạn văn bản thành file âm thanh có giọng nói tự nhiên.
+:::info[Tham khảo]
+Chi tiết tham khảo tại [tài liệu LiteLLM API](https://docs.litellm.ai/docs/text_to_speech)
+:::
 
+:::tip[Phương pháp thay thế]
+Ngoài endpoint này, bạn cũng có thể sử dụng mô hình text-to-speech thông qua endpoint [Google Gemini](/docs/api-reference/text-to-speech-gemini) với multi-speaker prompts.
+:::
 <ApiReferenceLayout>
   <LeftColumn>
     ### Cấu trúc yêu cầu (Request Body)
@@ -36,13 +42,7 @@ Chuyển đổi một đoạn văn bản thành file âm thanh có giọng nói 
 
     ### Cấu trúc Phản hồi (Response Body)
 
-    Phản hồi thành công sẽ trả về file âm thanh. Kiểu nội dung (Content-Type) sẽ là `audio/mpeg`.
-
-    <br/>
-    <p>Ví dụ file audio đầu ra:</p>
-    <audio controls src={SpeechOutput} style={{ width: '100%' }}>
-      Your browser does not support the audio element.
-    </audio>
+    Phản hồi thành công sẽ trả về file âm thanh.
 
   </LeftColumn>
   <RightColumn>
@@ -111,10 +111,3 @@ print(f"File âm thanh đã được lưu tại: {speech_file_path}")`,
   </RightColumn>
 </ApiReferenceLayout>
 
-## Các tham số tùy chọn
-
-Ngoài `model`, `input`, và `voice`, bạn có thể sử dụng thêm các tham số khác để tinh chỉnh giọng nói, tốc độ, và định dạng âm thanh đầu ra.
-
-Để biết danh sách đầy đủ các tham số và cách sử dụng, vui lòng tham khảo tài liệu chính thức tại đây: [Google Cloud Text-to-Speech Documentation](https://cloud.google.com/text-to-speech/docs/gemini-tts#examples)
-
-Ngoài ra, xem thêm nhiều lượt nói (multi-speaker) tại [đây](https://ai.google.dev/gemini-api/docs/speech-generation#multi-speaker)
