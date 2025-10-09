@@ -5,6 +5,7 @@ import styles from './InlineEditableCodeBlock.module.css';
 import reqStyles from './InteractiveApiRequest.module.css';
 import CodeBlock from '@theme/CodeBlock';
 import CopyableCodeBlock from './CopyableCodeBlock';
+import ReactMarkdown from 'react-markdown';
 
 // --- PROPS DEFINITION ---
 interface ParameterControl {
@@ -21,6 +22,7 @@ interface InteractiveApiRequestProps {
   codeTemplates: Record<string, { language: string; template: string }>;
   buildBody: (params: Record<string, any>) => Record<string, any>;
   exampleResponse: Record<string, any>;
+  isMarkdownResponse?: boolean;
 }
 
 // --- COMPONENT ---
@@ -33,6 +35,7 @@ export default function InteractiveApiRequest({
   codeTemplates,
   buildBody,
   exampleResponse,
+  isMarkdownResponse,
 }: InteractiveApiRequestProps) {
   const [parameters, setParameters] = useState(initialParameters);
   const [selectedTemplate, setSelectedTemplate] = useState(Object.keys(codeTemplates)[0]);
@@ -42,6 +45,7 @@ export default function InteractiveApiRequest({
   const [videoPreviewUrl, setVideoPreviewUrl] = useState<string | null>(null);
   const [audioPreviewUrl, setAudioPreviewUrl] = useState<string | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [markdownContent, setMarkdownContent] = useState<string | null>(null);
 
   useEffect(() => {
     // Cleanup function to revoke object URLs to prevent memory leaks
@@ -72,6 +76,7 @@ export default function InteractiveApiRequest({
     setVideoPreviewUrl(null);
     setAudioPreviewUrl(null);
     setImagePreviewUrl(null);
+    setMarkdownContent(null);
 
     const finalHeaders = { ...headers };
     if (parameters.apiKey) {
@@ -111,6 +116,13 @@ export default function InteractiveApiRequest({
       if (contentType && contentType.includes('application/json')) {
         const data = await res.json();
         setResponse(data);
+
+        if (isMarkdownResponse) {
+          const content = data?.choices?.[0]?.message?.content;
+          if (content) {
+            setMarkdownContent(content);
+          }
+        }
 
         // Check for image data for preview
         let base64ImageData = null;
@@ -340,6 +352,14 @@ export default function InteractiveApiRequest({
             fullCode={JSON.stringify(response, null, 2)}
             truncatedCode={JSON.stringify(response, jsonReplacer, 2)}
           />
+          {markdownContent && (
+            <div className={reqStyles.markdownPreviewContainer}>
+              <h3 className={reqStyles.responseTitle}>Preview</h3>
+              <div className={reqStyles.markdownPreview}>
+                <ReactMarkdown>{markdownContent}</ReactMarkdown>
+              </div>
+            </div>
+          )}
           {imagePreviewUrl && (
             <div className={reqStyles.imagePreviewContainer}>
               <h3 className={reqStyles.responseTitle}>Image Preview</h3>

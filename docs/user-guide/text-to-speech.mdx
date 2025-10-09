@@ -27,7 +27,7 @@ Các mô hình Text-to-Speech (TTS) cho phép bạn chuyển đổi một đoạ
   -d '{
     "model": "gemini-2.5-flash-preview-tts",
     "input": "Xin chào, đây là một thử nghiệm chuyển văn bản thành giọng nói qua [AI Thực Chiến](https://thucchien.ai) gateway.",
-    "voice": "echo"
+    "voice": "Zephyr"
   }' \\
   --output speech_output.mp3`}
     </CodeBlock>
@@ -54,7 +54,7 @@ headers = {
 data = {
     "model": "gemini-2.5-pro-preview-tts",
     "input": "Hello world! This is a test of the text-to-speech API.",
-    "voice": "nova"
+    "voice": "Puck"
 }
 
 response = requests.post(url, headers=headers, json=data, stream=True)
@@ -93,7 +93,7 @@ speech_file_path = Path(__file__).parent / "speech_from_openai.mp3"
 
 response = client.audio.speech.create(
   model="gemini-2.5-flash-preview-tts",
-  voice="alloy",
+  voice="Charon",
   input="Hôm nay là một ngày đẹp trời để lập trình."
 )
 
