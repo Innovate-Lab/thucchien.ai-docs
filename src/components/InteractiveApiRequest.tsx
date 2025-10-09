@@ -340,12 +340,6 @@ export default function InteractiveApiRequest({
             fullCode={JSON.stringify(response, null, 2)}
             truncatedCode={JSON.stringify(response, jsonReplacer, 2)}
           />
-          {audioPreviewUrl && (
-            <div className={reqStyles.audioPreviewContainer}>
-              <h3 className={reqStyles.responseTitle}>Audio Preview</h3>
-              <audio src={audioPreviewUrl} controls className={reqStyles.audioPreview} />
-            </div>
-          )}
           {imagePreviewUrl && (
             <div className={reqStyles.imagePreviewContainer}>
               <h3 className={reqStyles.responseTitle}>Image Preview</h3>
@@ -356,8 +350,14 @@ export default function InteractiveApiRequest({
       )}
       {videoPreviewUrl && (
         <div>
-          <h3 className={reqStyles.responseTitle}>Preview</h3>
+          <h3 className={reqStyles.responseTitle}>Video Preview</h3>
           <video src={videoPreviewUrl} controls className={reqStyles.videoPreview} />
+        </div>
+      )}
+      {audioPreviewUrl && (
+        <div>
+          <h3 className={reqStyles.responseTitle}>Audio Preview</h3>
+          <audio src={audioPreviewUrl} controls className={reqStyles.audioPreview} />
         </div>
       )}
       {!isLoading && !error && !response && !videoPreviewUrl && !audioPreviewUrl && !imagePreviewUrl && exampleResponse && (
