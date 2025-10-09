@@ -1,6 +1,6 @@
 ---
 sidebar_position: 4
-title: Sinh hình ảnh (với Google Gemini)
+title: Sinh/Sửa hình ảnh (với Google Gemini)
 description: Tạo hình ảnh với endpoint pass through tới Google Gemini.
 hide_table_of_contents: true
 ---
@@ -11,11 +11,11 @@ import ApiParameter from '@site/src/components/ApiParameter';
 import CodeBlock from '@theme/CodeBlock';
 import Badge from '@site/src/components/Badge';
 
-# Sinh hình ảnh (với Google Gemini)
+# Sinh/Sửa hình ảnh (với Google Gemini)
 
 ## <Badge method="POST" /> `/gemini/v1beta/models/gemini-2.5-flash-image-preview:generateContent`
 
-Tạo hình ảnh với endpoint pass through tới Google Gemini.
+Tạo hình ảnh, sửa hình ảnh với endpoint pass through tới Google Gemini.
 
 :::info[Tham khảo]
 Chi tiết đầy đủ các tham số, tham khảo [tài liệu Google Gemini](https://ai.google.dev/gemini-api/docs/image-generation).
@@ -35,7 +35,7 @@ Chi tiết đầy đủ các tham số, tham khảo [tài liệu Google Gemini](
       Prompt văn bản để tạo hình ảnh.
     </ApiParameter>
     <ApiParameter name="inline_data" type="string" indent={2}>
-      Dữ liệu hình ảnh dưới dạng base64 (nếu có). Tham khảo cách truyền dữ liệu hình ảnh tại [đây](https://ai.google.dev/gemini-api/docs/image-generation#gemini-image-editing).
+      Dữ liệu hình ảnh dưới dạng base64 (nếu có). Tham khảo cách truyền dữ liệu hình ảnh [tại đây](https://ai.google.dev/gemini-api/docs/image-generation#gemini-image-editing).
     </ApiParameter>
     <ApiParameter name="mime_type" type="string" indent={4}>
       Loại MIME của hình ảnh, ví dụ: `image/png`, `image/jpeg`.
@@ -57,9 +57,6 @@ Chi tiết đầy đủ các tham số, tham khảo [tài liệu Google Gemini](
       - **Portrait:** `9:16`, `3:4`, `2:3`
       - **Flexible:** `5:4`, `4:5`
     </ApiParameter>
-    <ApiParameter name="responseModalities" type="array" isEnd>
-      Mô hình mặc định trả về phản hồi văn bản và hình ảnh (tức là `"responseModalities": ['Text', 'Image']`). Bạn có thể cấu hình phản hồi để chỉ trả về hình ảnh mà không có văn bản bằng cách sử dụng `"responseModalities": ['Image']`.
-    </ApiParameter>
 
     ---
 
@@ -78,7 +75,7 @@ Chi tiết đầy đủ các tham số, tham khảo [tài liệu Google Gemini](
     <ApiParameter name="inlineData" type="object" indent={3}>
       Dữ liệu hình ảnh dưới dạng base64.
     </ApiParameter>
-    <ApiParameter name="mime_type" type="string" indent={4}>
+    <ApiParameter name="mimeType" type="string" indent={4}>
       Loại MIME của hình ảnh, ví dụ: `image/png`.
     </ApiParameter>
     <ApiParameter name="data" type="string" indent={4} isEnd>
