@@ -258,7 +258,7 @@ export default function InteractiveApiRequest({
 
   const jsonReplacer = (key, value) => {
     if (typeof value === 'string' && value.length > 200) {
-      return value.substring(0, 50) + '... [TRUNCATED]';
+      return value.substring(0, 50) + '... [TRUNCATED] ...' + value.substring(value.length - 50);
     }
     return value;
   };

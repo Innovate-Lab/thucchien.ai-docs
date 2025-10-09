@@ -72,7 +72,7 @@ Tạo một hoặc nhiều hình ảnh dựa trên mô tả văn bản (prompt).
       initialParameters={{
         apiKey: '<your_api_key>',
         model: 'imagen-4',
-        prompt: 'A photograph of a weathered wooden bench situated on rain-slicked pavement at a quiet waterfront. The bench, with its ornate metal arms, reflects the luminous full moon above, showcasing faint scratches and a subtle grey patina on its surface. Across the tranquil water, blurred city lights shimmer and are mirrored in gentle ripples, while bare tree branches frame the moon and add a touch of gothic elegance to the composition. The scene is bathed in cool, silvery moonlight, creating a hushed and contemplative atmosphere, with "El Magnifico" hand-signed in the lower right corner and dated 06.10.2025.',
+        prompt: ' a digital render of a massive skyscraper, modern, grand, epic with a beautiful sunset in the background ',
         n: 1,
         aspect_ratio: '1:1',
       }}
@@ -185,6 +185,7 @@ print("Image saved to generated_image.png")`,
         model: params.model,
         prompt: params.prompt,
         n: parseInt(params.n, 10),
+        aspect_ratio: params.aspect_ratio,
       })}
       exampleResponse={{
         "created": 1759806089,
