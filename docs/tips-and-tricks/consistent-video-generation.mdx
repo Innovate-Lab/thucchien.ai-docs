@@ -1,6 +1,12 @@
 ---
 sidebar_position: 3
 ---
+import ConsistentVideo01Img from '@site/static/video/kenji_1.mp4'
+import ConsistentVideo02Img from '@site/static/video/kenji_2.mp4'
+import ConsistentCharacter04Img from '@site/static/img/iyconsistent_character_1.png'
+import ConsistentCharacter05Img from '@site/static/img/iyconsistent_character_2.png'
+import ConsistentCharacter06Img from '@site/static/img/iyconsistent_character_3.png'
+
 
 # Đồng Nhất Nhân Vật và Bối Cảnh Trong Video AI
 
@@ -30,8 +36,9 @@ Phương pháp này có thể không đạt được sự nhất quán 100% như
 
 **Ví dụ:**
 - **Ảnh đại diện 1:** Kenji đang đọc sách (nhân vật Kenji nhất quán).
+<img src={ConsistentCharacter05Img} alt="Kenji đang chạy" />
 - **Ảnh đại diện 2:** Kenji đang chạy (nhân vật Kenji nhất quán).
-- **Ảnh đại diện 3:** Cảnh một con phố Tokyo (bối cảnh Tokyo nhất quán).
+<img src={ConsistentCharacter06Img} alt="Cảnh phố Tokyo" />
 
 #### Bước 2: Chuyển các ảnh đại diện thành video ngắn
 
@@ -45,9 +52,14 @@ Với mỗi ảnh đại diện đã tạo ở **Bước 1**, sử dụng nó l�
 - **Input:** Ảnh đại diện 1 (Kenji đọc sách) + Prompt: _"Kenji slowly turns the page of his book, a gentle nod as he understands something."_
 - **Output:** Video ngắn 1 (Kenji đọc sách, hành động nhẹ nhàng).
 
+<video src={ConsistentVideo01Img} controls width={"100%"} />
+
+
 **Video ngắn 2:**
 - **Input:** Ảnh đại diện 2 (Kenji đang chạy) + Prompt: _"Kenji sprints down a narrow alley, looking determined."_
 - **Output:** Video ngắn 2 (Kenji chạy nhanh).
+
+<video src={ConsistentVideo02Img} controls width={"100%"} />
 
 #### Bước 3: Ghép các video ngắn lại thành video hoàn chỉnh
 
