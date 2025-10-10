@@ -2,34 +2,99 @@
 sidebar_position: 1
 ---
 
-# Xử lý lỗi Gibberish khi Generate chữ
+import HandlingGibberish01Img from '@site/static/img/handling_gibberish_1.png'
+import HandlingGibberish02Img from '@site/static/img/handling_gibberish_2.png'
+import HandlingGibberish03Img from '@site/static/img/handling_gibberish_3.png'
+import TextImage from '@site/static/img/kyuccuoi.png'
 
-Hiện tượng "gibberish" là khi mô hình tạo ra các ký tự hoặc từ ngữ vô nghĩa, lộn xộn. Dưới đây là các nguyên nhân và phương pháp xử lý thực chiến.
+# Hướng Dẫn Sửa Lỗi Tiếng Việt Của AI Tạo Ảnh
 
-## Nguyên nhân gây lỗi Gibberish
+Hầu hết các Model AI tạo ảnh hiện tại đều chưa "hiểu" được tiếng Việt (cách tạo chữ tiếng Việt đúng chuẩn), do đó thường tạo ra các văn bản bị lỗi font, sai chính tả hoặc vô nghĩa. Điều này khiến ảnh AI chỉ dừng lại ở mức "nguyên liệu" thô. Dưới đây là 2 tips giúp bạn khắc phục vấn đề này:
 
-- **Chất lượng dữ liệu huấn luyện:** Dữ liệu chứa nhiễu, sai sót hoặc không nhất quán.
-- **Kiến trúc mô hình:** Hạn chế của mô hình trong việc nắm bắt các quy tắc ngôn ngữ phức tạp.
-- **Tham số sinh văn bản (Generation Parameters):** Cấu hình sai các tham số như `temperature`, `top-p`, `top-k` có thể dẫn đến kết quả không mong muốn.
+## 1. Tạo ảnh không bị lỗi font với mô hình đa phương thức
 
-## Phương pháp xử lý
+**Mục tiêu:** Tạo ảnh nền với không gian trống để chèn chữ tiếng Việt sau này.
 
-### 1. Tinh chỉnh Prompt (Prompt Engineering)
+### Ví dụ ảnh bìa truyện
 
-- **Cung cấp ngữ cảnh rõ ràng:** Đưa ra chỉ dẫn, ví dụ và định dạng cụ thể trong prompt.
-- **Sử dụng "Few-shot learning":** Cung cấp một vài ví dụ (input-output) để mô hình học theo.
+**Prompt gốc:**
+```
+Comic book cover illustration titled "Ký Ức Cuối". A girl stands alone on a rooftop at sunset, wind blowing through her hair, holding an old fading photograph. The city skyline glows under the orange and purple sky. Soft lighting, emotional atmosphere, cinematic composition. Semi-realistic manga style, A4 vertical (3:4 ratio).
+```
 
-### 2. Điều chỉnh tham số (Parameters Tuning)
+<img src={HandlingGibberish01Img} alt="Ảnh bìa lỗi font" />
 
-- **`temperature`:** Giảm giá trị `temperature` (ví dụ: xuống dưới 0.5) để mô hình tạo ra các kết quả an toàn và ít sáng tạo hơn, giảm thiểu gibberish.
-- **`top-p` (Nucleus Sampling):** Sử dụng giá trị `top-p` hợp lý (ví dụ: 0.9) để giới hạn các lựa chọn từ có xác suất thấp.
-- **`repetition_penalty`:** Tăng giá trị này để phạt các từ hoặc cụm từ lặp lại, một dạng phổ biến của gibberish.
+**Vấn đề:** AI sẽ tạo chữ "Ký Ức Cuối" bị lỗi hoặc không đẹp.
 
-### 3. Kỹ thuật Post-processing
+### Giải pháp: Tạo ảnh với Nano-banana
 
-- **Lọc và kiểm tra:** Xây dựng các bộ lọc để tự động phát hiện và loại bỏ các chuỗi ký tự vô nghĩa.
-- **Sử dụng mô hình phụ:** Dùng một mô hình ngôn ngữ khác để đánh giá và sửa lỗi cho kết quả của mô hình chính.
+#### Bước 1: Tạo ảnh không có chữ
 
-## Case study thực tế
+Chỉ tạo ảnh mà không có chữ, yêu cầu AI tạo ra khung chứa chữ tương ứng.
 
-_(Nội dung sẽ được cập nhật sau)_
+Nếu đang trong cùng phiên chat với prompt tạo ảnh trên, bạn chỉ cần thêm:
+
+**Prompt:**
+```
+Do not include any text. Leave a clear, empty space or subtle placeholder area at the top center of the cover for the title text.
+```
+
+Hoặc nếu là phiên chat mới, dùng prompt mô tả ảnh bìa (gốc) và thêm yêu cầu không có text:
+
+**Prompt:**
+```
+(Mô tả ảnh bìa y hệt trên). Do not include any text. Leave a clear, empty space or subtle placeholder area at the top center of the cover for the title text.
+```
+<img src={HandlingGibberish02Img} alt="Ảnh bìa không có chữ" />
+
+**Kết quả:** Ảnh bìa đẹp, có không gian trống để chèn chữ.
+
+#### Bước 2: Tạo ảnh chứa dòng chữ tiếng Việt
+
+Sử dụng bất kỳ công cụ chỉnh sửa ảnh nào (Canva, Photoshop, Word...) để tạo một file ảnh (PNG/JPG) với nền trắng và dòng chữ "Ký Ức Cuối" với font và màu sắc mong muốn.
+
+<img src={TextImage} alt="Ảnh chữ Ký Ức Cuối" />
+
+#### Bước 3: Chèn chữ vào ảnh bìa bằng AI
+
+Nếu đang ở cùng phiên chat, sao chép (copy) và dán (paste) tấm ảnh chứa dòng chữ (ở Bước 2) vào khung chat.
+
+Sau đó, nhập prompt sau:
+
+**Prompt:**
+```
+Add the text from this image onto the cover image, keeping its original font, and style, just change color to yellow light. Place it in a visually fitting position.
+```
+
+:::tip Lưu ý
+Prompt này muốn giữ lại font... của chữ. Bạn có thể thay đổi yêu cầu để AI tạo style chữ khác nếu muốn, miễn là không bị lỗi font tiếng Việt.
+:::
+<img src={HandlingGibberish03Img} alt="Ảnh bìa có chữ đẹp" />
+
+**Kết quả:** Ảnh bìa hoàn chỉnh với chữ "Ký Ức Cuối" không lỗi font, được chèn đẹp mắt.
+
+## 2. Sửa ảnh bằng chức năng "Grab Text" của Canva
+
+**Mục tiêu:** Sử dụng công cụ bên ngoài để thay thế hoặc chèn chữ tiếng Việt vào ảnh AI đã có.
+
+### Các bước thực hiện
+
+#### Bước 1: Tạo ảnh bằng AI
+
+Tạo ảnh bằng AI (có hoặc không có chữ, nếu có chữ thì chấp nhận nó bị lỗi font).
+
+#### Bước 2: Tải ảnh lên Canva
+
+Tải ảnh AI đó lên Canva.
+
+#### Bước 3: Sử dụng chức năng "Grab Text"
+
+Sử dụng chức năng "Grab Text" (hoặc "Magic Write" / "Văn bản ma thuật" tùy phiên bản) của Canva để chỉnh sửa.
+
+- **Nếu ảnh AI có chữ:** Canva sẽ cố gắng nhận diện và bạn có thể chỉnh sửa trực tiếp chữ đó thành tiếng Việt đúng chuẩn.
+- **Nếu ảnh AI không có chữ:** Bạn chỉ cần thêm khung văn bản mới trong Canva và nhập chữ tiếng Việt vào.
+
+## Tài liệu tham khảo
+
+- [Bài viết của Cộng Làm Web trên Facebook về Canva Magic Write](https://www.facebook.com/conglamweb/posts/pfbid0gV1vJSi6B7uqHBsZNSSKUvGDzhgLtBgHQgLtTdXBK7Y6668jWWhVZTrS34V2RSZzl)
+- [Video hướng dẫn sử dụng Canva Text to Image](https://www.youtube.com/watch?v=VaptjSqnUzM)
