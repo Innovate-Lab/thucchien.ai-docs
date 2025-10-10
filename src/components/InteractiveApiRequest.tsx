@@ -138,13 +138,16 @@ export default function InteractiveApiRequest({
           // It's a data URL, can be used directly in src
           setImagePreviewUrl(dataUrl);
         }
-        // Case 3: Gemini Image Generation API
-        else if (
-          data?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data &&
-          data.candidates[0].content.parts[0].inlineData.mimeType.startsWith('image/')
-        ) {
-          base64ImageData = data.candidates[0].content.parts[0].inlineData.data;
-          imageMimeType = data.candidates[0].content.parts[0].inlineData.mimeType;
+        // Case 3: Gemini Image Generation API - check all parts for inline image data
+        else if (data?.candidates?.[0]?.content?.parts) {
+          const parts = data.candidates[0].content.parts;
+          for (const part of parts) {
+            if (part?.inlineData?.data && part.inlineData.mimeType.startsWith('image/')) {
+              base64ImageData = part.inlineData.data;
+              imageMimeType = part.inlineData.mimeType;
+              break;
+            }
+          }
         }
 
         if (base64ImageData) {
