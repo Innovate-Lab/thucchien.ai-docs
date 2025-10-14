@@ -348,7 +348,12 @@ export default function InteractiveApiRequest({
           <div className={reqStyles.spinner}></div>
         </div>
       )}
-      {error && <CodeBlock language="text" title="Error">{error}</CodeBlock>}
+      {error && (
+        <div className={reqStyles.error}>
+          <div className={reqStyles.errorTitle}>⚠️ Error</div>
+          <div className={reqStyles.errorMessage}>{error}</div>
+        </div>
+      )}
       {response && (
         <div className={reqStyles.responseContainer}>
           {customPreview && (

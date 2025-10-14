@@ -37,6 +37,37 @@
     justify-content: center;
     align-items: center;
   }
+
+  .error {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: rgba(207, 34, 46, 0.1);
+    border: 1px solid rgba(207, 34, 46, 0.3);
+    border-radius: var(--ifm-code-border-radius);
+    color: #cf222e;
+  }
+
+  [data-theme='dark'] .error {
+    background-color: rgba(248, 81, 73, 0.15);
+    border-color: rgba(248, 81, 73, 0.3);
+    color: #f85149;
+  }
+
+  .errorTitle {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .errorMessage {
+    font-family: var(--ifm-font-family-monospace);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
   
   .spinner {
     border: 4px solid rgba(0, 0, 0, 0.1);
