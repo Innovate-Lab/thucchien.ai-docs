@@ -1,0 +1,317 @@
+---
+sidebar_position: 10
+title: Kiểm tra chi tiêu
+description: Kiểm tra thông tin API key và chi tiêu hiện tại.
+hide_table_of_contents: true
+---
+
+import ApiReferenceLayout, { LeftColumn, RightColumn } from '@site/src/components/ApiReferenceLayout';
+import InteractiveApiRequest from '@site/src/components/InteractiveApiRequest';
+import ApiParameter from '@site/src/components/ApiParameter';
+import Badge from '@site/src/components/Badge';
+import styles from '@site/src/components/InteractiveApiRequest.module.css';
+
+export const KeyInfoPreview = ({ data }) => {
+  const info = data?.info;
+  if (!info) return null;
+
+  const spend = info.spend || 0;
+  const maxBudget = info.max_budget;
+  const budgetPercentage = maxBudget ? Math.min((spend / maxBudget) * 100, 100) : 0;
+  
+  const getProgressBarColor = () => {
+    if (!maxBudget) return styles.progressBarSuccess;
+    if (budgetPercentage >= 90) return styles.progressBarDanger;
+    if (budgetPercentage >= 70) return styles.progressBarWarning;
+    return styles.progressBarSuccess;
+  };
+
+  return (
+    <div className={styles.keyInfoPreview}>
+      <div className={styles.keyInfoTitle}>
+        📊 Budget Usage
+      </div>
+      
+      {/* Budget Progress Section */}
+      <div className={styles.budgetSection}>
+        <div className={styles.budgetHeader}>
+          <div className={styles.budgetAmount}>
+            <span className={styles.budgetLabel}>Spend:</span>
+            <span className={styles.budgetValue}>${spend.toFixed(4)}</span>
+          </div>
+          <div className={styles.budgetAmount}>
+            <span className={styles.budgetLabel}>Budget:</span>
+            <span className={styles.budgetValue}>
+              {maxBudget ? `$${maxBudget.toFixed(2)}` : 'Unlimited'}
+            </span>
+          </div>
+        </div>
+        
+        {maxBudget ? (
+          <>
+            <div className={styles.progressBarContainer}>
+              <div 
+                className={`${styles.progressBar} ${getProgressBarColor()}`}
+                style={{ width: `${budgetPercentage}%` }}
+              >
+                <span className={styles.progressBarText}>
+                  {budgetPercentage.toFixed(1)}%
+                </span>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className={styles.unlimitedBadge}>
+            No budget limit set
+          </div>
+        )}
+      </div>
+
+      {/* Additional Info Section */}
+      <div className={styles.infoSection}>
+        <div className={styles.infoRow}>
+          <span className={styles.infoLabel}>Key:</span>
+          <span className={styles.infoValue}>{info.key_alias || info.key_name || 'N/A'}</span>
+        </div>
+        <div className={styles.infoRow}>
+          <span className={styles.infoLabel}>Status:</span>
+          <span className={styles.infoValue}>
+            {info.blocked ? (
+              <span className={styles.statusBadgeDanger}>● Blocked</span>
+            ) : (
+              <span className={styles.statusBadgeSuccess}>● Active</span>
+            )}
+          </span>
+        </div>
+        <div className={styles.infoRow}>
+          <span className={styles.infoLabel}>TPM Limit:</span>
+          <span className={styles.infoValue}>
+            {info.tpm_limit ? info.tpm_limit.toLocaleString() : 'Unlimited'}
+          </span>
+        </div>
+        <div className={styles.infoRow}>
+          <span className={styles.infoLabel}>RPM Limit:</span>
+          <span className={styles.infoValue}>
+            {info.rpm_limit ? info.rpm_limit.toLocaleString() : 'Unlimited'}
+          </span>
+        </div>
+        <div className={styles.infoRow}>
+          <span className={styles.infoLabel}>Models:</span>
+          <span className={styles.infoValue}>
+            {info.models?.join(', ') || 'N/A'}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+# Kiểm tra chi tiêu (Spend Checking)
+
+## <Badge method="GET" /> `/key/info`
+
+Lấy thông tin chi tiết về API key và mức độ sử dụng hiện tại.
+
+<ApiReferenceLayout>
+  <LeftColumn>
+    ### Headers
+
+    <ApiParameter name="Authorization" type="string" required>
+      Bearer token với API key của bạn. Format: `Bearer <your_api_key>`
+    </ApiParameter>
+    <ApiParameter name="accept" type="string" isEnd>
+      Loại nội dung phản hồi mong muốn. Mặc định: `application/json`
+    </ApiParameter>
+
+    ---
+
+    ### Cấu trúc Phản hồi (Response Body)
+
+    API sẽ trả về một đối tượng JSON với thông tin chi tiết về API key và mức sử dụng.
+
+    #### Đối tượng Root
+
+    <ApiParameter name="key" type="string">
+      Mã định danh duy nhất của API key.
+    </ApiParameter>
+    <ApiParameter name="info" type="object" isEnd>
+      Đối tượng chứa thông tin chi tiết về API key.
+    </ApiParameter>
+
+    #### Đối tượng `info`
+
+    <ApiParameter name="key_name" type="string" indent={2}>
+      Tên hiển thị của API key (có thể được che một phần).
+    </ApiParameter>
+    <ApiParameter name="key_alias" type="string" indent={2}>
+      Tên bí danh của API key để dễ nhận diện.
+    </ApiParameter>
+    <ApiParameter name="spend" type="number" indent={2}>
+      Tổng số tiền đã chi tiêu bằng API key này (tính bằng USD).
+    </ApiParameter>
+    <ApiParameter name="max_budget" type="number" indent={2}>
+      Ngân sách tối đa được phép cho API key này. `null` nếu không giới hạn.
+    </ApiParameter>
+    <ApiParameter name="expires" type="string" indent={2}>
+      Thời gian hết hạn của API key. `null` nếu không hết hạn.
+    </ApiParameter>
+    <ApiParameter name="models" type="array" indent={2}>
+      Danh sách các mô hình được phép sử dụng với API key này.
+    </ApiParameter>
+    <ApiParameter name="user_id" type="string" indent={2}>
+      ID của người dùng sở hữu API key.
+    </ApiParameter>
+    <ApiParameter name="team_id" type="string" indent={2}>
+      ID của nhóm sở hữu API key.
+    </ApiParameter>
+    <ApiParameter name="blocked" type="boolean" indent={2}>
+      Trạng thái khóa của API key. `true` nếu bị khóa, `null` hoặc `false` nếu hoạt động.
+    </ApiParameter>
+    <ApiParameter name="tpm_limit" type="number" indent={2}>
+      Giới hạn tokens per minute. `null` nếu không giới hạn.
+    </ApiParameter>
+    <ApiParameter name="rpm_limit" type="number" indent={2}>
+      Giới hạn requests per minute. `null` nếu không giới hạn.
+    </ApiParameter>
+    <ApiParameter name="budget_duration" type="string" indent={2}>
+      Khoảng thời gian tính ngân sách (ví dụ: `1d`, `1w`, `1m`). `null` nếu không có chu kỳ.
+    </ApiParameter>
+    <ApiParameter name="budget_reset_at" type="string" indent={2}>
+      Thời điểm reset ngân sách tiếp theo (ISO 8601). `null` nếu không có chu kỳ.
+    </ApiParameter>
+    <ApiParameter name="model_spend" type="object" indent={2}>
+      Chi tiêu chi tiết theo từng mô hình.
+    </ApiParameter>
+    <ApiParameter name="model_max_budget" type="object" indent={2}>
+      Ngân sách tối đa theo từng mô hình.
+    </ApiParameter>
+    <ApiParameter name="created_at" type="string" indent={2}>
+      Thời gian tạo API key (định dạng ISO 8601).
+    </ApiParameter>
+    <ApiParameter name="updated_at" type="string" indent={2}>
+      Thời gian cập nhật cuối cùng của API key (định dạng ISO 8601).
+    </ApiParameter>
+    <ApiParameter name="metadata" type="object" indent={2}>
+      Metadata tùy chỉnh được gán cho API key.
+    </ApiParameter>
+    <ApiParameter name="permissions" type="object" indent={2} isEnd>
+      Các quyền hạn được cấp cho API key.
+    </ApiParameter>
+
+  </LeftColumn>
+  <RightColumn>
+    <InteractiveApiRequest
+      method="GET"
+      apiUrl="https://api.thucchien.ai/key/info"
+      initialParameters={{
+        apiKey: '<your_api_key>',
+      }}
+      parameterControls={{
+        apiKey: { type: 'input' },
+      }}
+      customPreview={(response) => <KeyInfoPreview data={response} />}
+      codeTemplates={{
+        'curl': {
+          language: 'bash',
+          template: `curl -X 'GET' \\
+  'https://api.thucchien.ai/key/info' \\
+  -H 'accept: application/json' \\
+  -H 'Authorization: Bearer {{apiKey}}'`,
+        },
+        'Python (requests)': {
+          language: 'python',
+          template: `import requests
+
+API_KEY = "{{apiKey}}"
+url = "https://api.thucchien.ai/key/info"
+
+headers = {
+    "accept": "application/json",
+    "Authorization": f"Bearer {API_KEY}"
+}
+
+response = requests.get(url, headers=headers)
+
+if response.status_code == 200:
+    key_info = response.json()
+    info = key_info['info']
+    print("Key Alias:", info['key_alias'])
+    print("Spend: $" + str(info['spend']))
+    print("Max Budget:", info.get('max_budget', 'Unlimited'))
+    print("Models:", info['models'])
+    print("Created:", info['created_at'])
+else:
+    print("Error:", response.status_code)
+    print(response.text)`,
+        },
+        'Node.js (fetch)': {
+          language: 'javascript',
+          template: `const API_KEY = "{{apiKey}}";
+const url = "https://api.thucchien.ai/key/info";
+
+fetch(url, {
+  method: 'GET',
+  headers: {
+    'accept': 'application/json',
+    'Authorization': \`Bearer \${API_KEY}\`
+  }
+})
+  .then(response => response.json())
+  .then(data => {
+    const info = data.info;
+    console.log('Key Alias:', info.key_alias);
+    console.log('Spend:', info.spend);
+    console.log('Max Budget:', info.max_budget || 'Unlimited');
+    console.log('Models:', info.models);
+    console.log('Created:', info.created_at);
+  })
+  .catch(error => console.error('Error:', error));`,
+        },
+      }}
+      buildBody={null}
+      exampleResponse={{
+        "key": "913b4e1f166a6be4dae7544498c2bef96046ed5f5f7b3dfa345a11d8f63a4923",
+        "info": {
+          "key_name": "sk-...vgJA",
+          "key_alias": "team1@key",
+          "soft_budget_cooldown": false,
+          "spend": 0.0036051,
+          "expires": null,
+          "models": ["all-team-models"],
+          "aliases": {},
+          "config": {},
+          "user_id": "85068790-77f3-4b51-9304-7114f2fba733",
+          "team_id": "b75a2976-fe49-418c-bf77-70f86c1ee656",
+          "permissions": {},
+          "max_parallel_requests": null,
+          "metadata": {},
+          "blocked": null,
+          "tpm_limit": null,
+          "rpm_limit": null,
+          "max_budget": null,
+          "budget_duration": null,
+          "budget_reset_at": null,
+          "allowed_cache_controls": [],
+          "allowed_routes": [],
+          "model_spend": {},
+          "model_max_budget": {},
+          "budget_id": null,
+          "organization_id": null,
+          "object_permission_id": null,
+          "created_at": "2025-10-14T02:48:21.288000+00:00",
+          "created_by": "default_user_id",
+          "updated_at": "2025-10-14T02:50:14.513000+00:00",
+          "updated_by": "default_user_id",
+          "rotation_count": 0,
+          "auto_rotate": false,
+          "rotation_interval": null,
+          "last_rotation_at": null,
+          "key_rotation_at": null,
+          "litellm_budget_table": null,
+          "litellm_organization_table": null,
+          "object_permission": null
+        }
+      }}
+    />
+  </RightColumn>
+</ApiReferenceLayout>

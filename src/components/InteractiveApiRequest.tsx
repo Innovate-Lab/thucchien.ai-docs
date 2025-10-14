@@ -23,6 +23,7 @@ interface InteractiveApiRequestProps {
   buildBody: (params: Record<string, any>) => Record<string, any>;
   exampleResponse: Record<string, any>;
   isMarkdownResponse?: boolean;
+  customPreview?: (response: any) => React.ReactNode;
 }
 
 // --- COMPONENT ---
@@ -36,6 +37,7 @@ export default function InteractiveApiRequest({
   buildBody,
   exampleResponse,
   isMarkdownResponse,
+  customPreview,
 }: InteractiveApiRequestProps) {
   const [parameters, setParameters] = useState(initialParameters);
   const [selectedTemplate, setSelectedTemplate] = useState(Object.keys(codeTemplates)[0]);
@@ -349,6 +351,11 @@ export default function InteractiveApiRequest({
       {error && <CodeBlock language="text" title="Error">{error}</CodeBlock>}
       {response && (
         <div className={reqStyles.responseContainer}>
+          {customPreview && (
+            <div className={reqStyles.customPreviewContainer}>
+              {customPreview(response)}
+            </div>
+          )}
           <CopyableCodeBlock
             language="json"
             title="Response"
