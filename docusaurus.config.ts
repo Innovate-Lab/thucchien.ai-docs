@@ -87,6 +87,11 @@ const config: Config = {
           position: 'right',
           label: 'Tài liệu',
         },
+        {
+          type: 'html',
+          position: 'right',
+          value: '<div id="navbar-otp-generator"></div>',
+        },
         // {
         //   href: 'https://github.com/facebook/docusaurus',
         //   label: 'GitHub',
