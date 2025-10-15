@@ -87,3 +87,18 @@ div[class*="codeBlockContainer_"] {
   margin-right: 8px;
   text-transform: uppercase;
 }
+
+/* Global image border radius */
+img {
+  border-radius: 8px;
+}
+
+/* Ensure border radius for images in markdown content */
+.markdown img {
+  border-radius: 8px;
+}
+
+/* Border radius for images in theme components */
+article img {
+  border-radius: 8px;
+}
