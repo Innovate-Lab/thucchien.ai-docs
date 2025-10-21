@@ -15,6 +15,11 @@ import Badge from '@site/src/components/Badge';
 :::info[Thông tin]
 Chi tiết về quy trình tạo video với Veo, xem tại [tài liệu chính thức của Google](https://ai.google.dev/gemini-api/docs/video?example=dialogue)
 :::
+
+:::warning[Cảnh báo]
+Để phù hợp với cuộc thi, giá của các mô hình Veo đã được điều chỉnh so với giá gốc.
+Giá hiện tại: $0.5 / request.
+:::
 ## <Badge method="POST" /> `/gemini/v1beta/models/{model}:predictLongRunning`
 
 Gửi một yêu cầu chứa mô tả (prompt) để bắt đầu quá trình tạo video. API sẽ trả về một `operation_name` để bạn theo dõi trong các bước tiếp theo.

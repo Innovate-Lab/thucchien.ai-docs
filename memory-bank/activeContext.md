@@ -2,8 +2,8 @@
 
 ## 1. Công việc đang tập trung
 
-- **Hoàn thành:** Thêm mục hướng dẫn VibeCoding, Cấu hình chuyển hướng trang chủ.
-- **Nhiệm vụ tiếp theo:** Cập nhật Memory Bank.
+- **Hoàn thành:** Thêm mục hướng dẫn VibeCoding, Cấu hình chuyển hướng trang chủ, Thêm công cụ OTP.
+- **Nhiệm vụ tiếp theo:** Hoàn tất cập nhật Memory Bank.
 
 ## 2. Các thay đổi gần đây
 
@@ -15,8 +15,15 @@
         - Cập nhật file `docusaurus.config.ts` để đảm bảo logo trên thanh điều hướng trỏ đúng đến trang giới thiệu.
 - **Thêm hướng dẫn VibeCoding:**
     - **Tạo nội dung:** Soạn thảo và tạo mới 4 file tài liệu (`introduction.md`, `cline-integration.md`, `cursor-integration.md`, `best-practices.mdx`) để giải thích và hướng dẫn phương pháp VibeCoding.
-    - **Cập nhật nội dung:** Thêm liên kết Wikipedia vào trang giới thiệu VibeCoding theo yêu cầu.
-    - **Cấu hình sidebar:** Thêm file `_category_.json` để đảm bảo mục VibeCoding hiển thị chính xác trên thanh điều hướng.
+- **Cập nhật nội dung:** Thêm liên kết Wikipedia vào trang giới thiệu VibeCoding theo yêu cầu.
+- **Cấu hình sidebar:** Thêm file `_category_.json` để đảm bảo mục VibeCoding hiển thị chính xác trên thanh điều hướng.
+
+- **Thêm công cụ OTP:**
+    - **Tạo trang tài liệu:** Tạo file `docs/tools/otp-generator.mdx` bằng tiếng Việt.
+    - **Chỉnh sửa component:** Cập nhật component `OtpGenerator.tsx` và CSS của nó để hiển thị trực tiếp, đồng thời triển khai tính năng ẩn/hiện secret key như một trường password tiêu chuẩn.
+    - **Cập nhật sidebar:** Thêm mục "Công cụ" vào `sidebars.ts`.
+    - **Cập nhật navbar:** Thêm liên kết đến công cụ OTP vào thanh điều hướng và loại bỏ component OTP khỏi header.
+    - **Ẩn sidebar:** Cập nhật trang OTP để ẩn sidebar, tạo giao diện tập trung vào công cụ.
 
 - **Gỡ bỏ tính năng tìm kiếm:**
     - **Gỡ cài đặt plugin:** Gỡ bỏ gói `docusaurus-lunr-search` khỏi dự án.

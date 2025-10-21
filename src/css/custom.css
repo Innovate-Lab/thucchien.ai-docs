@@ -102,3 +102,12 @@ img {
 article img {
   border-radius: 8px;
 }
+
+.full-width-page .col.col--3 {
+  display: none;
+}
+
+.full-width-page .col.col--9 {
+  flex: 1;
+  max-width: 100%;
+}

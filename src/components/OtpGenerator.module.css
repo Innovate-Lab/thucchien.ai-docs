@@ -1,93 +1,11 @@
-.otpContainer {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-}
-
-.otpButton {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 6px 12px;
-  background: #1675D1;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.otpButton:hover {
-  background: #1F53C0;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(22, 117, 209, 0.3);
-}
-
-.otpButton:active {
-  transform: translateY(0);
-}
-
-.otpDropdown {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  background: var(--ifm-background-color);
+.otpContainerEmbedded {
+  max-width: 450px;
+  margin: 24px auto;
   border: 1px solid var(--ifm-color-emphasis-300);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  min-width: 320px;
-  z-index: 1000;
-  animation: slideDown 0.2s ease;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.otpHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--ifm-color-emphasis-200);
-}
-
-.otpHeader h3 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--ifm-color-content);
-}
-
-.closeButton {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: var(--ifm-color-content-secondary);
-  padding: 0;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-}
-
-.closeButton:hover {
-  background: var(--ifm-color-emphasis-200);
-  color: var(--ifm-color-content);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: var(--ifm-background-color);
+  overflow: hidden;
 }
 
 .otpBody {
@@ -106,9 +24,15 @@
   color: var(--ifm-color-content);
 }
 
+.secretInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .secretInput {
   width: 100%;
-  padding: 8px 12px;
+  padding: 8px 40px 8px 12px;
   border: 1px solid var(--ifm-color-emphasis-300);
   border-radius: 6px;
   font-size: 14px;
@@ -121,6 +45,24 @@
   outline: none;
   border-color: #1675D1;
   box-shadow: 0 0 0 2px rgba(22, 117, 209, 0.15);
+}
+
+.toggleVisibilityButton {
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  bottom: 1px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0 12px;
+  font-size: 18px;
+  color: var(--ifm-font-color-secondary);
+  border-radius: 0 6px 6px 0;
+}
+
+.toggleVisibilityButton:hover {
+  color: var(--ifm-font-color-primary);
 }
 
 .inputHint {
@@ -265,21 +207,8 @@
   color: var(--ifm-color-content-secondary);
 }
 
-.otpInfo {
-  padding: 12px;
-  background: rgba(22, 117, 209, 0.08);
-  border-radius: 6px;
-  border-left: 3px solid #1675D1;
-}
-
-.otpInfo small {
-  font-size: 12px;
-  color: var(--ifm-color-content-secondary);
-  line-height: 1.4;
-}
-
 /* Dark mode adjustments */
-[data-theme='dark'] .otpDropdown {
+[data-theme='dark'] .otpContainerEmbedded {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   background: #1D1E1E;
 }
@@ -288,16 +217,6 @@
   background: rgba(222, 228, 233, 0.05);
   color: #50C2F6;
   border-color: rgba(222, 228, 233, 0.1);
-}
-
-[data-theme='dark'] .otpButton {
-  background: #1675D1;
-  color: #DEE4E9;
-}
-
-[data-theme='dark'] .otpButton:hover {
-  background: #50C2F6;
-  box-shadow: 0 2px 8px rgba(80, 194, 246, 0.3);
 }
 
 [data-theme='dark'] .copyButton {
@@ -329,22 +248,4 @@
 [data-theme='dark'] .secretInput:focus {
   border-color: #50C2F6;
   box-shadow: 0 0 0 2px rgba(80, 194, 246, 0.15);
-}
-
-[data-theme='dark'] .otpInfo {
-  background: rgba(80, 194, 246, 0.1);
-  border-left-color: #50C2F6;
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-  .otpDropdown {
-    right: -16px;
-    min-width: 280px;
-  }
-
-  .otpCode {
-    font-size: 28px;
-    padding: 12px;
-  }
 }

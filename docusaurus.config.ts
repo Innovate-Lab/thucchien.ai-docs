@@ -44,9 +44,11 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
+          routeBasePath: 'docs',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          // editUrl: null
+          // editUrl:
+          //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         blog: {
           showReadingTime: true,
@@ -56,8 +58,8 @@ const config: Config = {
           },
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          // editUrl:
+          //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -70,10 +72,28 @@ const config: Config = {
     ],
   ],
 
+  plugins: [
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'tools',
+        path: 'tools',
+        routeBasePath: 'tools',
+      },
+    ],
+  ],
+
   themeConfig: {
     // Replace with your project's social card
     image: 'img/thucchien-social-card.png',
+    docs: {
+      sidebar: {
+        hideable: true,
+        // autoCollapseCategories: true,
+      },
+    },
     navbar: {
+      // hideOnScroll: true,
       title: 'AI Thực Chiến',
       logo: {
         alt: 'AI Thực Chiến Logo',
@@ -85,12 +105,12 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'right',
-          label: 'Tài liệu',
+          label: '📄 Tài liệu',
         },
         {
-          type: 'html',
+          to: '/tools/suno-login-guidelines',
           position: 'right',
-          value: '<div id="navbar-otp-generator"></div>',
+          label: '🎵 Suno',
         },
         // {
         //   href: 'https://github.com/facebook/docusaurus',

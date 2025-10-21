@@ -152,6 +152,24 @@ Lấy thông tin chi tiết về API key và mức độ sử dụng hiện tạ
     <ApiParameter name="max_budget" type="number" indent={2}>
       Ngân sách tối đa được phép cho API key này. `null` nếu không giới hạn.
     </ApiParameter>
+        <ApiParameter name="max_parallel_requests" type="number" indent={2}>
+      Số lượng yêu cầu đồng thời tối đa được phép cho API key này. Giới hạn này kiểm soát số lượng request có thể xử lý song song cùng một lúc. Trường hợp vượt quá giới hạn này, các yêu cầu bổ sung sẽ bị từ chối trả lỗi 429 (Too Many Requests).
+    </ApiParameter>
+    <ApiParameter name="metadata" type="object" indent={2}>
+      Metadata tùy chỉnh được gán cho API key.
+    </ApiParameter>
+    <ApiParameter name="metadata.model_rpm_limit" type="object" indent={3}>
+      Giới hạn số lượng request per minute (RPM) cho từng mô hình cụ thể. Đây là giới hạn tần suất gọi API theo phút cho mỗi model. Xem thêm [Google AI Rate Limits](https://ai.google.dev/gemini-api/docs/rate-limits#tier-3) để biết chi tiết về các giới hạn.
+    </ApiParameter>
+    <ApiParameter name="metadata.model_tpm_limit" type="object" indent={3}>
+      Giới hạn số lượng token per minute (TPM) cho từng mô hình cụ thể. Đây là tổng số token (input) có thể xử lý trong một phút cho mỗi model. Xem thêm [Google AI Rate Limits](https://ai.google.dev/gemini-api/docs/rate-limits#tier-3) để biết chi tiết về quota và giới hạn token.
+    </ApiParameter>
+    <ApiParameter name="tpm_limit" type="number" indent={2}>
+      Giới hạn tokens per minute chung cho API Key. `null` nếu không giới hạn.
+    </ApiParameter>
+    <ApiParameter name="rpm_limit" type="number" indent={2}>
+      Giới hạn requests per minute chung cho API Key. `null` nếu không giới hạn.
+    </ApiParameter>
     <ApiParameter name="expires" type="string" indent={2}>
       Thời gian hết hạn của API key. `null` nếu không hết hạn.
     </ApiParameter>
@@ -166,12 +184,6 @@ Lấy thông tin chi tiết về API key và mức độ sử dụng hiện tạ
     </ApiParameter>
     <ApiParameter name="blocked" type="boolean" indent={2}>
       Trạng thái khóa của API key. `true` nếu bị khóa, `null` hoặc `false` nếu hoạt động.
-    </ApiParameter>
-    <ApiParameter name="tpm_limit" type="number" indent={2}>
-      Giới hạn tokens per minute. `null` nếu không giới hạn.
-    </ApiParameter>
-    <ApiParameter name="rpm_limit" type="number" indent={2}>
-      Giới hạn requests per minute. `null` nếu không giới hạn.
     </ApiParameter>
     <ApiParameter name="budget_duration" type="string" indent={2}>
       Khoảng thời gian tính ngân sách (ví dụ: `1d`, `1w`, `1m`). `null` nếu không có chu kỳ.
@@ -190,9 +202,6 @@ Lấy thông tin chi tiết về API key và mức độ sử dụng hiện tạ
     </ApiParameter>
     <ApiParameter name="updated_at" type="string" indent={2}>
       Thời gian cập nhật cuối cùng của API key (định dạng ISO 8601).
-    </ApiParameter>
-    <ApiParameter name="metadata" type="object" indent={2}>
-      Metadata tùy chỉnh được gán cho API key.
     </ApiParameter>
     <ApiParameter name="permissions" type="object" indent={2} isEnd>
       Các quyền hạn được cấp cho API key.
@@ -270,48 +279,75 @@ fetch(url, {
       }}
       buildBody={null}
       exampleResponse={{
-        "key": "913b4e1f166a6be4dae7544498c2bef96046ed5f5f7b3dfa345a11d8f63a4923",
-        "info": {
-          "key_name": "sk-...vgJA",
-          "key_alias": "team1@key",
-          "soft_budget_cooldown": false,
-          "spend": 0.0036051,
-          "expires": null,
-          "models": ["all-team-models"],
-          "aliases": {},
-          "config": {},
-          "user_id": "85068790-77f3-4b51-9304-7114f2fba733",
-          "team_id": "b75a2976-fe49-418c-bf77-70f86c1ee656",
-          "permissions": {},
-          "max_parallel_requests": null,
-          "metadata": {},
-          "blocked": null,
-          "tpm_limit": null,
-          "rpm_limit": null,
-          "max_budget": null,
-          "budget_duration": null,
-          "budget_reset_at": null,
-          "allowed_cache_controls": [],
-          "allowed_routes": [],
-          "model_spend": {},
-          "model_max_budget": {},
-          "budget_id": null,
-          "organization_id": null,
-          "object_permission_id": null,
-          "created_at": "2025-10-14T02:48:21.288000+00:00",
-          "created_by": "default_user_id",
-          "updated_at": "2025-10-14T02:50:14.513000+00:00",
-          "updated_by": "default_user_id",
-          "rotation_count": 0,
-          "auto_rotate": false,
-          "rotation_interval": null,
-          "last_rotation_at": null,
-          "key_rotation_at": null,
-          "litellm_budget_table": null,
-          "litellm_organization_table": null,
-          "object_permission": null
-        }
-      }}
+  "key": "b1ba143c164e66c912677762a7a0b0a2d5bd686b59999823e5fd2ccb3c71731f",
+  "info": {
+    "key_name": "sk-...gHQK",
+    "key_alias": "official-01@key",
+    "soft_budget_cooldown": false,
+    "spend": 0.5,
+    "expires": null,
+    "models": [
+      "all-team-models"
+    ],
+    "aliases": {},
+    "config": {},
+    "user_id": "f52b3ad4-986e-4c62-9bbd-79e80e221d0b",
+    "team_id": "5b4c20e9-1ff9-4ac0-bec6-0b00a25a31ab",
+    "permissions": {},
+    "max_parallel_requests": 200, // <- max concurrent requests per key
+    "metadata": {
+      "model_rpm_limit": {
+        "imagen-4": 20,
+        "gemini-2.5-pro": 2000,
+        "gemini-2.5-flash": 10000,
+        "veo-2.0-generate-001": 2,
+        "veo-2.0-generate-exp": 2,
+        "veo-3.0-generate-001": 10,
+        "gemini-2.5-flash-image": 5000,
+        "veo-2.0-generate-preview": 2,
+        "veo-3.1-generate-preview": 10,
+        "veo-3.0-fast-generate-001": 10,
+        "gemini-2.5-pro-preview-tts": 100,
+        "gemini-2.5-flash-preview-tts": 1000,
+        "veo-3.1-fast-generate-preview": 10,
+        "gemini-2.5-flash-image-preview": 5000
+      },
+      "model_tpm_limit": {
+        "gemini-2.5-pro": 8000000,
+        "gemini-2.5-flash": 8000000,
+        "gemini-2.5-flash-image": 5000000,
+        "gemini-2.5-pro-preview-tts": 1000000,
+        "gemini-2.5-flash-preview-tts": 1000000,
+        "gemini-2.5-flash-image-preview": 5000000
+      }
+    },
+    "blocked": null,
+    "tpm_limit": 800000,
+    "rpm_limit": 200,
+    "max_budget": 50,
+    "budget_duration": null,
+    "budget_reset_at": null,
+    "allowed_cache_controls": [],
+    "allowed_routes": [],
+    "model_spend": {},
+    "model_max_budget": {},
+    "budget_id": null,
+    "organization_id": null,
+    "object_permission_id": null,
+    "created_at": "2025-10-21T07:12:36.122000+00:00",
+    "created_by": "default_user_id",
+    "updated_at": "2025-10-21T07:24:39.726000+00:00",
+    "updated_by": "default_user_id",
+    "rotation_count": 0,
+    "auto_rotate": false,
+    "rotation_interval": null,
+    "last_rotation_at": null,
+    "key_rotation_at": null,
+    "litellm_budget_table": null,
+    "litellm_organization_table": null,
+    "object_permission": null
+  }
+}}
     />
   </RightColumn>
 </ApiReferenceLayout>

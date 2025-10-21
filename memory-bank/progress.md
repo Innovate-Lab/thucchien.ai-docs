@@ -3,6 +3,7 @@
 ## 1. Những gì đã hoạt động
 
 - **Tích hợp trang giới thiệu vào trang chủ:** Đã thay thế trang chủ mặc định bằng nội dung của trang giới thiệu, giúp người dùng tiếp cận thông tin quan trọng ngay lập tức.
+- **Thêm công cụ OTP:** Đã thêm một trang công cụ OTP, tích hợp component React, cập nhật giao diện (bao gồm ẩn/hiện secret key), và thêm điều hướng trong sidebar và navbar.
 - **Thêm hướng dẫn VibeCoding:** Đã tạo một mục tài liệu hoàn chỉnh để giải thích và hướng dẫn cách sử dụng phương pháp VibeCoding với CLine và Cursor thông qua AI Thực Chiến Gateway.
 - **Tùy chỉnh Theme cho Code Block:** Tạo file theme Prism tùy chỉnh (`src/utils/prismTheme.ts`) và cập nhật `docusaurus.config.ts` để áp dụng bảng màu mới cho việc tô sáng cú pháp, đảm bảo tính nhất quán về giao diện.
 - **Áp dụng Bảng màu Mới:** Cập nhật file `src/css/custom.css` để triển khai bảng màu mới theo yêu cầu, bao gồm việc định nghĩa lại các biến màu chính, màu nền và màu chữ cho cả hai chế độ sáng và tối.
@@ -24,7 +25,7 @@
 
 ## 3. Trạng thái hiện tại
 
-- **Sẵn sàng để tiếp tục:** Công việc trên trang tài liệu đã sẵn sàng để tiếp tục. Nhiệm vụ tiếp theo là triển khai tính năng tìm kiếm local.
+- **Sẵn sàng để tiếp tục:** Công việc trên trang tài liệu đã sẵn sàng để tiếp tục. Các tính năng chính đã được triển khai và trang web đang trong trạng thái tốt.
 
 ## 4. Các vấn đề đã biết
 

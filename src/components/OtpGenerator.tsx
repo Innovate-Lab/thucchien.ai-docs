@@ -50,8 +50,8 @@ function getTimeRemaining(timeStep: number = 30): number {
 }
 
 export default function OtpGenerator() {
-  const [isOpen, setIsOpen] = useState(false);
   const [secretKey, setSecretKey] = useState('');
+  const [isSecretVisible, setIsSecretVisible] = useState(false);
   const [otp, setOtp] = useState('------');
   const [errorMessage, setErrorMessage] = useState('');
   const [timeRemaining, setTimeRemaining] = useState(30);
@@ -90,139 +90,121 @@ export default function OtpGenerator() {
   const progressPercentage = (timeRemaining / 30) * 100;
 
   return (
-    <div className={styles.otpContainer}>
-      <button
-        className={styles.otpButton}
-        onClick={() => setIsOpen(!isOpen)}
-        title="OTP Generator"
-      >
-        🔐 OTP
-      </button>
-
-      {isOpen && (
-        <div className={styles.otpDropdown}>
-          <div className={styles.otpHeader}>
-            <h3>OTP Generator</h3>
-            <button
-              className={styles.closeButton}
-              onClick={() => setIsOpen(false)}
-            >
-              ✕
-            </button>
-          </div>
-
-          <div className={styles.otpBody}>
-            <div className={styles.inputGroup}>
-              <label htmlFor="secretKey">Secret Key (Base32):</label>
-              <input
-                id="secretKey"
-                type="text"
-                className={styles.secretInput}
-                value={secretKey}
-                onChange={(e) => setSecretKey(e.target.value)}
-                placeholder="Ví dụ: JBSWY3DPEHPK3PXP"
-              />
-              <div className={styles.inputHint}>
-                <small>
-                  💡 Thử với secret key mẫu: <button 
-                    className={styles.exampleButton}
-                    onClick={() => setSecretKey('JBSWY3DPEHPK3PXP')}
-                  >
-                    JBSWY3DPEHPK3PXP
-                  </button>
-                </small>
-              </div>
-            </div>
-
-            {errorMessage && (
-              <div className={styles.errorMessage}>
-                <span className={styles.errorIcon}>⚠️</span>
-                {errorMessage}
-              </div>
-            )}
-
-            <div className={styles.otpDisplay}>
-              <div className={styles.otpCode}>{otp}</div>
-              <button
-                className={styles.copyButton}
-                onClick={handleCopy}
-                disabled={otp === '------'}
-                title="Copy OTP"
-              >
-                {isCopied ? (
-                  <>
-                    <svg 
-                      width="16" 
-                      height="16" 
-                      viewBox="0 0 16 16" 
-                      fill="none"
-                      className={styles.buttonIcon}
-                    >
-                      <path 
-                        d="M13.5 4.5L6 12L2.5 8.5" 
-                        stroke="currentColor" 
-                        strokeWidth="2" 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    Copied!
-                  </>
-                ) : (
-                  <>
-                    <svg 
-                      width="16" 
-                      height="16" 
-                      viewBox="0 0 16 16" 
-                      fill="none"
-                      className={styles.buttonIcon}
-                    >
-                      <rect 
-                        x="5" 
-                        y="5" 
-                        width="9" 
-                        height="9" 
-                        rx="1" 
-                        stroke="currentColor" 
-                        strokeWidth="1.5"
-                      />
-                      <path 
-                        d="M3 10.5V3C3 2.44772 3.44772 2 4 2H10.5" 
-                        stroke="currentColor" 
-                        strokeWidth="1.5" 
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                    Copy
-                  </>
-                )}
-              </button>
-            </div>
-
+    <div className={styles.otpContainerEmbedded}>
+      <div className={styles.otpBody}>
+        <div className={styles.inputGroup}>
+          <label htmlFor="secretKey">Secret Key (Base32):</label>
+          <div className={styles.secretInputWrapper}>
+            <input
+              id="secretKey"
+              type={isSecretVisible ? 'text' : 'password'}
+              className={styles.secretInput}
+              value={secretKey}
+              onChange={(e) => setSecretKey(e.target.value)}
+              placeholder="Ví dụ: JBSWY3DPEHPK3PXP"
+            />
             {secretKey && (
-              <div className={styles.timerSection}>
-                <div className={styles.progressBar}>
-                  <div
-                    className={styles.progressFill}
-                    style={{ width: `${progressPercentage}%` }}
-                  />
-                </div>
-                <div className={styles.timeRemaining}>
-                  Làm mới sau: {timeRemaining}s
-                </div>
-              </div>
+              <button
+                type="button"
+                className={styles.toggleVisibilityButton}
+                onClick={() => setIsSecretVisible(!isSecretVisible)}
+                title={isSecretVisible ? 'Ẩn secret' : 'Hiện secret'}
+              >
+                {isSecretVisible ? '🙈' : '👁️'}
+              </button>
             )}
-
-            {/* <div className={styles.otpInfo}>
-              <small>
-                💡 Sử dụng thuật toán TOTP (RFC 6238) tương thích với Microsoft Authenticator
-                <br />
-                ⏱️ Mã OTP tự động làm mới mỗi 30 giây dựa trên Unix timestamp
-              </small>
-            </div> */}
+          </div>
+          <div className={styles.inputHint}>
+            <small>
+              💡 Thử với secret key mẫu: <button 
+                className={styles.exampleButton}
+                onClick={() => setSecretKey('JBSWY3DPEHPK3PXP')}
+              >
+                JBSWY3DPEHPK3PXP
+              </button>
+            </small>
           </div>
         </div>
-      )}
+
+        {errorMessage && (
+          <div className={styles.errorMessage}>
+            <span className={styles.errorIcon}>⚠️</span>
+            {errorMessage}
+          </div>
+        )}
+
+        <div className={styles.otpDisplay}>
+          <div className={styles.otpCode}>{otp}</div>
+          <button
+            className={styles.copyButton}
+            onClick={handleCopy}
+            disabled={otp === '------'}
+            title="Copy OTP"
+          >
+            {isCopied ? (
+              <>
+                <svg 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 16 16" 
+                  fill="none"
+                  className={styles.buttonIcon}
+                >
+                  <path 
+                    d="M13.5 4.5L6 12L2.5 8.5" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                Copied!
+              </>
+            ) : (
+              <>
+                <svg 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 16 16" 
+                  fill="none"
+                  className={styles.buttonIcon}
+                >
+                  <rect 
+                    x="5" 
+                    y="5" 
+                    width="9" 
+                    height="9" 
+                    rx="1" 
+                    stroke="currentColor" 
+                    strokeWidth="1.5"
+                  />
+                  <path 
+                    d="M3 10.5V3C3 2.44772 3.44772 2 4 2H10.5" 
+                    stroke="currentColor" 
+                    strokeWidth="1.5" 
+                    strokeLinecap="round"
+                  />
+                </svg>
+                Copy
+              </>
+            )}
+          </button>
+        </div>
+
+        {secretKey && (
+          <div className={styles.timerSection}>
+            <div className={styles.progressBar}>
+              <div
+                className={styles.progressFill}
+                style={{ width: `${progressPercentage}%` }}
+              />
+            </div>
+            <div className={styles.timeRemaining}>
+              Làm mới sau: {timeRemaining}s
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
