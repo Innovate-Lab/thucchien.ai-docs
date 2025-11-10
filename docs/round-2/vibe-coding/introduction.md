@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Giới thiệu về VibeCoding
 
-[**VibeCoding**](https://vi.wikipedia.org/wiki/Vibe_coding?utm_source=chatgpt.com) là một phương pháp lập trình hiện đại, cho phép bạn xây dựng ứng dụng bằng cách mô tả ý tưởng bằng ngôn ngữ tự nhiên. Thay vì viết từng dòng code, bạn "ra lệnh" cho một trợ lý AI, và nó sẽ tạo ra mã nguồn cho bạn.
+[**VibeCoding**](https://vi.wikipedia.org/wiki/Vibe_coding) là một phương pháp lập trình hiện đại, cho phép bạn xây dựng ứng dụng bằng cách mô tả ý tưởng bằng ngôn ngữ tự nhiên. Thay vì viết từng dòng code, bạn "ra lệnh" cho một trợ lý AI, và nó sẽ tạo ra mã nguồn cho bạn.
 
 Thuật ngữ này được nhà nghiên cứu AI nổi tiếng Andrej Karpathy giới thiệu, đánh dấu một sự thay đổi trong cách chúng ta tiếp cận việc phát triển phần mềm.
 
@@ -37,5 +37,5 @@ VibeCoding mở ra một kỷ nguyên mới, nơi rào cản kỹ thuật đư�
 :::warning[Khả năng tương thích]
 Khả năng tích hợp AI Thực Chiến Gateway với các AI Coding Assistant của bên thứ ba phụ thuộc vào kiến trúc API và chính sách của từng nhà cung cấp. Nhiều công cụ hoạt động trong một hệ sinh thái đóng, không cung cấp giao diện để định tuyến yêu cầu đến các endpoint tùy chỉnh (Custom Models) hoặc sử dụng khóa API riêng (Bring Your Own Key - BYOK).
 
-Để đảm bảo khả năng tương thích linh hoạt, AI Thực Chiến Gateway được thiết kế tuân thủ chuẩn API của OpenAI. Do đó, Gateway hoạt động hiệu quả nhất với các công cụ hỗ trợ cấu hình proxy API, đặc biệt là các giải pháp dựa trên LiteLLM như [Cline](/docs/vibe-coding/cline-integration), [Cursor](/docs/vibe-coding/cursor-integration).
+Để đảm bảo khả năng tương thích linh hoạt, AI Thực Chiến Gateway được thiết kế tuân thủ chuẩn API của OpenAI. Do đó, Gateway hoạt động hiệu quả nhất với các công cụ hỗ trợ cấu hình proxy API, đặc biệt là các giải pháp dựa trên LiteLLM như [Cline](./cline-integration), [Cursor](./cursor-integration).
 :::
