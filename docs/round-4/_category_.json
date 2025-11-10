@@ -2,8 +2,7 @@
   "label": "Vòng Chung Kết",
   "position": 4,
   "link": {
-    "type": "generated-index",
-    "description": "Tài liệu tham khảo cho vòng Chung Kết",
-    "slug": "/round-4"
+    "type": "doc",
+    "id": "round-4/index"
   }
 }

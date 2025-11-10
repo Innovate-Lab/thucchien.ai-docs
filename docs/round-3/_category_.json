@@ -2,8 +2,7 @@
   "label": "Vòng Bán Kết",
   "position": 4,
   "link": {
-    "type": "generated-index",
-    "description": "Tài liệu tham khảo cho vòng Bán Kết",
-    "slug": "/round-3"
+    "type": "doc",
+    "id": "round-3/index"
   }
 }
