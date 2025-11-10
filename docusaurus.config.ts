@@ -72,17 +72,6 @@ const config: Config = {
     ],
   ],
 
-  plugins: [
-    [
-      '@docusaurus/plugin-content-docs',
-      {
-        id: 'tools',
-        path: 'tools',
-        routeBasePath: 'tools',
-      },
-    ],
-  ],
-
   themeConfig: {
     // Replace with your project's social card
     image: 'img/thucchien-social-card.png',
@@ -107,11 +96,11 @@ const config: Config = {
           position: 'right',
           label: '📄 Tài liệu',
         },
-        {
-          to: '/tools/suno-login-guidelines',
-          position: 'right',
-          label: '🎵 Suno',
-        },
+        // {
+        //   to: '/tools/suno-login-guidelines',
+        //   position: 'right',
+        //   label: '🎵 Suno',
+        // },
         // {
         //   href: 'https://github.com/facebook/docusaurus',
         //   label: 'GitHub',
@@ -127,15 +116,11 @@ const config: Config = {
           items: [
             {
               label: 'Giới thiệu',
-              to: '/docs/user-guide/introduction',
+              to: '/',
             },
             {
-              label: 'Hướng dẫn sử dụng',
-              to: '/docs/user-guide/core-concepts',
-            },
-            {
-              label: 'VibeCoding',
-              to: '/docs/vibe-coding/introduction',
+              label: 'Tài liệu vòng Chung Khảo',
+              to: '/docs/round-2',
             },
 
           ],
