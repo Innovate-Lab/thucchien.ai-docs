@@ -1,0 +1,9 @@
+{
+  "label": "Vòng Chung Khảo",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Tài liệu tham khảo chi tiết cho vòng Chung Khảo",
+    "slug": "/round-2"
+  }
+}
