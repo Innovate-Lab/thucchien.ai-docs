@@ -4,10 +4,6 @@
  * work well for content-centric websites.
  */
 
-<<<<<<< HEAD
-/* You can override the default Infima variables here. */
-:root {
-=======
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap');
 
@@ -15,7 +11,6 @@
 :root {
   --ifm-font-family-base: 'Lexend', sans-serif;
   --ifm-font-family-monospace: 'JetBrains Mono', monospace;
->>>>>>> d173241 (feat: add document for round 3)
   --ifm-color-primary: #1675D1;
   --ifm-color-primary-dark: #1F53C0;
   --ifm-color-primary-darker: #1F53C0;
