@@ -95,6 +95,7 @@ const config: Config = {
           sidebarId: 'tutorialSidebar',
           position: 'right',
           label: '📄 Tài liệu',
+          href: '/docs/round-3',
         },
         // {
         //   to: '/tools/suno-login-guidelines',
@@ -121,6 +122,10 @@ const config: Config = {
             {
               label: 'Tài liệu vòng Chung Khảo',
               to: '/docs/round-2',
+            },
+                        {
+              label: 'Tài liệu vòng Bán Kết',
+              to: '/docs/round-3',
             },
 
           ],
