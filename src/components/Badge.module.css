@@ -1,0 +1,30 @@
+.badge {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  color: white;
+  display: inline-block;
+}
+
+.get {
+  background-color: #28a745; /* Green */
+}
+
+.post {
+  background-color: #007bff; /* Blue */
+}
+
+.put {
+  background-color: #ffc107; /* Yellow */
+  color: black;
+}
+
+.delete {
+  background-color: #dc3545; /* Red */
+}
+
+.patch {
+    background-color: #fd7e14; /* Orange */
+}

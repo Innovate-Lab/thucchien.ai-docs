@@ -1,0 +1,39 @@
+---
+sidebar_position: 3
+---
+
+# Tích hợp với Cursor
+import CursorIntegrationImg from '@site/static/img/cursor_integration.png';
+import CursorIntegrationVideo from '@site/static/video/cursor_integration.mkv';
+
+[Cursor](https://cursor.com/) là một trình soạn thảo code được xây dựng dựa trên VSCode, được tối ưu hóa cho việc lập trình với AI. Việc tích hợp Cursor với **AI Thực Chiến Gateway** cho phép bạn tận dụng các mô hình mạnh mẽ ngay trong môi trường code của mình.
+
+## Cấu hình Cursor
+
+Cursor hỗ trợ việc sử dụng các mô hình OpenAI-compatible, giúp việc tích hợp trở nên dễ dàng.
+
+1.  **Thêm Model Tùy chỉnh:**
+    -   Truy cập `Settings > Models`.
+    -   Chọn `+ Add Custom Model`.
+    -   Nhập `gemini-2.5-pro` và nhấn `Add` để xác nhận.
+
+2.  **Cấu hình Endpoint và API Key:**
+    -   Trong mục `API Keys`, nhập `OpenAI API Key` của bạn.
+    -   Kích hoạt tùy chọn `Override OpenAI Base URL`.
+    -   Thiết lập Base URL thành `https://api.thucchien.ai/v1`.
+
+<figure style={{ textAlign: 'center' }}>
+  <img src={CursorIntegrationImg} alt="Cấu hình Cursor" />
+  <figcaption>Giao diện cấu hình model trong Cursor.</figcaption>
+</figure>
+
+:::warning[Lưu ý]
+Đảm bảo disable các provider khác trong mục API Keys chỉ giữ lại OpenAI
+:::
+
+Sau khi hoàn tất, bạn có thể chọn `gemini-2.5-pro` từ danh sách mô hình để bắt đầu sử dụng.
+
+## Video hướng dẫn
+<video width="100%" height="572" controls>
+  <source src={CursorIntegrationVideo} />
+</video>

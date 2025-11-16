@@ -1,0 +1,172 @@
+---
+sidebar_position: 4
+title: 'Tạo video'
+description: Bắt đầu một tác vụ tạo video từ mô tả văn bản.
+hide_table_of_contents: true
+---
+
+import ApiReferenceLayout, { LeftColumn, RightColumn } from '@site/src/components/ApiReferenceLayout';
+import InteractiveApiRequest from '@site/src/components/InteractiveApiRequest';
+import ApiParameter from '@site/src/components/ApiParameter';
+import CodeBlock from '@theme/CodeBlock';
+import Badge from '@site/src/components/Badge';
+
+# Sinh video (Bước 1/3): Bắt đầu tác vụ
+:::info[Thông tin]
+Chi tiết về quy trình tạo video với Veo, xem tại [tài liệu chính thức của Google](https://ai.google.dev/gemini-api/docs/video?example=dialogue)
+:::
+
+:::warning[Cảnh báo]
+Để phù hợp với cuộc thi, giá của các mô hình Veo đã được điều chỉnh so với giá gốc.
+Giá hiện tại: $0.5 / request.
+:::
+## <Badge method="POST" /> `/gemini/v1beta/models/{model}:predictLongRunning`
+
+Gửi một yêu cầu chứa mô tả (prompt) để bắt đầu quá trình tạo video. API sẽ trả về một `operation_name` để bạn theo dõi trong các bước tiếp theo.
+
+:::info[Quan trọng]
+Do máy chủ proxy đang sử dụng cơ chế pass-through tới Google AI Studio, bạn sẽ sử dụng header `x-goog-api-key` thay cho header `Authorization` tiêu chuẩn.
+:::
+
+<ApiReferenceLayout>
+  <LeftColumn>
+    ### Tham số đường dẫn (Path Parameters)
+    <ApiParameter name="model" type="string" required isEnd>
+      Mô hình sẽ sử dụng để tạo video. Hiện tại hỗ trợ:
+        - `veo-3.0-generate-001`
+        - `veo-3.0-fast-generate-001`
+        - `veo-2.0-generate-001`
+        
+      và các mô hình theo [tài liệu của Google Gemini](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/veo-video-generation).
+    </ApiParameter>
+    ### Cấu trúc yêu cầu (Request Body)
+
+    <ApiParameter name="instances" type="array" required>
+      Một danh sách các đối tượng instance. Hiện tại, chỉ hỗ trợ một instance mỗi yêu cầu.
+    </ApiParameter>
+    <ApiParameter name="prompt" type="string" required indent={1}>
+      Mô tả chi tiết về video cần tạo.
+    </ApiParameter>
+    <ApiParameter name="image" type="object" indent={1} isEnd>
+      Một hình ảnh ban đầu để tạo hiệu ứng hoạt hình.
+    </ApiParameter>
+    <ApiParameter name="bytesBase64Encoded" type="string" indent={2} isEnd>
+      Dữ liệu hình ảnh ban đầu được mã hóa base64.
+    </ApiParameter>
+    <ApiParameter name="mimeType" type="string" indent={2} isEnd>
+      Loại MIME của dữ liệu hình ảnh ban đầu. Ví dụ: `image/png`, `image/jpeg`.
+    </ApiParameter>
+    <ApiParameter name="parameters" type="object" isEnd>
+      Các tham số bổ sung để kiểm soát quá trình tạo video.
+    </ApiParameter>
+    <ApiParameter name="negativePrompt" type="string" indent={1}>
+      Mô tả những gì **không** nên có trong video.
+    </ApiParameter>
+    <ApiParameter name="aspectRatio" type="string" indent={1}>
+      Tỷ lệ khung hình của video.
+      - **Tất cả các model**: `"16:9"` (mặc định), `"9:16"` (chỉ 720p).
+    </ApiParameter>
+      <ApiParameter name="durationSeconds" type="number" indent={1}>
+      Thời gian của video (tính bằng giây), từ 5-8. Chỉ hỗ trợ cho **Veo 2**. Mặc định là 8 giây.
+    </ApiParameter>
+      <ApiParameter name="sampleCount" type="number" indent={1}>
+      Số lượng mẫu video cần tạo. Chỉ hỗ trợ cho **Veo 2**. Mặc định là 1, tối đa là 2.
+    </ApiParameter>
+    <ApiParameter name="resolution" type="string" indent={1}>
+      Độ phân giải của video.
+      - **Veo 3**: `"720p"` (mặc định), `"1080p"` (chỉ cho 16:9).
+      - **Veo 2**: Không hỗ trợ.
+    </ApiParameter>
+    <ApiParameter name="personGeneration" type="string" indent={1} isEnd>
+      Kiểm soát việc tạo ra hình ảnh con người.
+      - **Veo 3**:
+        - **Text-to-video**: Chỉ hỗ trợ `"allow_all"`.
+        - **Image-to-video**: Chỉ hỗ trợ `"allow_adult"`.
+      - **Veo 2**:
+        - **Text-to-video**: Hỗ trợ `"allow_all"`, `"allow_adult"`, `"dont_allow"`.
+        - **Image-to-video**: Hỗ trợ `"allow_adult"` và `"dont_allow"`.
+    </ApiParameter>
+
+    ---
+
+    ### Cấu trúc Phản hồi (Response Body)
+
+    <ApiParameter name="name" type="string" isEnd>
+      Tên của tác vụ (operation) đang chạy. Giá trị này được sử dụng để kiểm tra trạng thái ở [Bước 2](./video-generation-status). Ví dụ: `models/veo-3.0-generate-001/operations/idrk08ltkg0a`.
+    </ApiParameter>
+
+  </LeftColumn>
+  <RightColumn>
+    <InteractiveApiRequest
+      apiUrl="https://api.thucchien.ai/gemini/v1beta/models/{{model}}:predictLongRunning"
+      initialParameters={{
+        apiKey: '<your_api_key>',
+        model: 'veo-3.0-generate-001',
+        prompt: 'A cinematic shot of a baby raccoon wearing a tiny cowboy hat, riding a miniature pony through a field of daisies at sunset.',
+        negativePrompt: 'blurry, low quality',
+        aspectRatio: '16:9',
+        resolution: '720p',
+        personGeneration: 'allow_all',
+      }}
+      headers={{
+        'Content-Type': 'application/json',
+        'x-goog-api-key': '<your_api_key>',
+      }}
+      parameterControls={{
+        apiKey: { type: 'input' },
+        model: { type: 'select', options: ['veo-3.0-generate-001', 'veo-3.0-fast-generate-001', 'veo-2.0-generate-001'] },
+        prompt: { type: 'textarea' },
+        negativePrompt: { type: 'textarea' },
+        aspectRatio: { type: 'select', options: ['16:9', '9:16'] },
+        resolution: { type: 'select', options: ['720p', '1080p'] },
+        personGeneration: { type: 'select', options: ['allow_all', 'allow_adult', 'dont_allow'] },
+      }}
+      codeTemplates={{
+        'curl': {
+          language: 'bash',
+          template: `curl -X POST "https://api.thucchien.ai/gemini/v1beta/models/{{model}}:predictLongRunning" \\
+  -H "Content-Type: application/json" \\
+  -H "x-goog-api-key: {{apiKey}}" \\
+  -d '{
+    "instances": [{
+      "prompt": "{{prompt}}",
+      "image": null
+    }],
+    "parameters": {
+      "negativePrompt": "{{negativePrompt}}",
+      "aspectRatio": "{{aspectRatio}}",
+      "resolution": "{{resolution}}",
+      "personGeneration": "{{personGeneration}}"
+    }
+  }'`,
+        },
+      }}
+      buildBody={(params) => {
+        const body = {
+          instances: [{
+            prompt: params.prompt,
+          }],
+        };
+
+        const bodyParams = {};
+        if (params.negativePrompt) bodyParams.negativePrompt = params.negativePrompt;
+        if (params.aspectRatio) bodyParams.aspectRatio = params.aspectRatio;
+        if (params.personGeneration) bodyParams.personGeneration = params.personGeneration;
+
+        // Only add 'resolution' for Veo 3 models
+        if (params.model.startsWith('veo-3.0') && params.resolution) {
+          bodyParams.resolution = params.resolution;
+        }
+
+        if (Object.keys(bodyParams).length > 0) {
+          body.parameters = bodyParams;
+        }
+
+        return body;
+      }}
+      exampleResponse={{
+        "name": "models/veo-3.0-generate-001/operations/idrk08ltkg0a"
+      }}
+    />
+  </RightColumn>
+</ApiReferenceLayout>

@@ -1,0 +1,112 @@
+---
+sidebar_position: 7
+title: Chuyển văn bản thành giọng nói
+description: Chuyển đổi văn bản thành file âm thanh có giọng nói tự nhiên.
+hide_table_of_contents: true
+---
+
+import ApiReferenceLayout, { LeftColumn, RightColumn } from '@site/src/components/ApiReferenceLayout';
+import InteractiveApiRequest from '@site/src/components/InteractiveApiRequest';
+import ApiParameter from '@site/src/components/ApiParameter';
+import CodeBlock from '@theme/CodeBlock';
+import Badge from '@site/src/components/Badge';
+import SpeechOutput from '@site/static/audio/speech_output.mp3';
+
+# Chuyển văn bản thành giọng nói (Text-to-Speech)
+
+## <Badge method="POST" /> `/audio/speech`
+
+Chuyển đổi một đoạn văn bản thành file âm thanh có giọng nói tự nhiên.
+:::info[Tham khảo]
+Chi tiết tham khảo tại [tài liệu LiteLLM API](https://docs.litellm.ai/docs/text_to_speech)
+:::
+
+:::tip[Phương pháp thay thế]
+Ngoài endpoint này, bạn cũng có thể sử dụng mô hình text-to-speech thông qua endpoint [Google Gemini](./text-to-speech-gemini) với multi-speaker prompts.
+:::
+<ApiReferenceLayout>
+  <LeftColumn>
+    ### Cấu trúc yêu cầu (Request Body)
+
+    <ApiParameter name="model" type="string" required>
+      ID của mô hình text-to-speech sẽ sử dụng. Ví dụ: `gemini-2.5-flash-preview-tts`.
+    </ApiParameter>
+    <ApiParameter name="input" type="string" required>
+      Đoạn văn bản cần chuyển đổi thành giọng nói.
+    </ApiParameter>
+    <ApiParameter name="voice" type="string" required isEnd>
+      Giọng nói sẽ sử dụng. Các tùy chọn bao gồm `Zephyr`, `Puck`, `Charon`, và nhiều hơn nữa. Xem danh sách đầy đủ trong ví dụ tương tác.
+    </ApiParameter>
+
+    ---
+
+    ### Cấu trúc Phản hồi (Response Body)
+
+    Phản hồi thành công sẽ trả về file âm thanh.
+
+  </LeftColumn>
+  <RightColumn>
+    <InteractiveApiRequest
+      apiUrl="https://api.thucchien.ai/audio/speech"
+      initialParameters={{
+        apiKey: '<your_api_key>',
+        model: 'gemini-2.5-flash-preview-tts',
+        input: 'Xin chào, đây là một thử nghiệm chuyển văn bản thành giọng nói qua AI Thực Chiến gateway.',
+        voice: 'Zephyr',
+      }}
+      parameterControls={{
+        apiKey: { type: 'input' },
+        model: { type: 'select', options: ['gemini-2.5-flash-preview-tts', 'gemini-2.5-pro-preview-tts'] },
+        input: { type: 'textarea' },
+        voice: { type: 'select', options: ['Zephyr', 'Puck', 'Charon', 'Kore', 'Fenrir', 'Leda', 'Orus', 'Aoede', 'Callirrhoe', 'Autonoe', 'Enceladus', 'Iapetus', 'Umbriel', 'Algieba', 'Despina', 'Erinome', 'Algenib', 'Rasalgethi', 'Laomedeia', 'Achernar', 'Alnilam', 'Schedar', 'Gacrux', 'Pulcherrima', 'Achird', 'Zubenelgenubi', 'Vindemiatrix', 'Sadachbia', 'Sadaltager', 'Sulafat'] },
+      }}
+      codeTemplates={{
+        'curl': {
+          language: 'bash',
+          template: `curl https://api.thucchien.ai/audio/speech \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer {{apiKey}}" \\
+  -d '{
+    "model": "{{model}}",
+    "input": "{{input}}",
+    "voice": "{{voice}}"
+  }' \\
+  --output generated_audio.mp3`,
+        },
+        'Python (openai)': {
+          language: 'python',
+          template: `from openai import OpenAI
+from pathlib import Path
+
+client = OpenAI(
+    api_key="{{apiKey}}",
+    base_url="https://api.thucchien.ai"
+)
+
+speech_file_path = Path(__file__).parent / "speech_output.mp3"
+
+response = client.audio.speech.create(
+  model="{{model}}",
+  voice="{{voice}}",
+  input="{{input}}"
+)
+
+response.stream_to_file(speech_file_path)
+print(f"File âm thanh đã được lưu tại: {speech_file_path}")`,
+        },
+      }}
+      buildBody={(params) => ({
+        model: params.model,
+        input: params.input,
+        voice: params.voice,
+      })}
+      isAudioResponse={true}
+      exampleResponse={{
+        // This is a placeholder as the actual response is binary audio data.
+        "status": 200,
+        "contentType": "audio/mpeg",
+        "message": "Response body contains the audio file."
+      }}
+    />
+  </RightColumn>
+</ApiReferenceLayout>

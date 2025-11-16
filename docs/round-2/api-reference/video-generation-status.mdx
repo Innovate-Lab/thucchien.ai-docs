@@ -1,0 +1,84 @@
+---
+sidebar_position: 5
+title: 'Kiểm tra trạng thái video'
+description: Kiểm tra trạng thái của một tác vụ tạo video đang chạy.
+hide_table_of_contents: true
+---
+
+import ApiReferenceLayout, { LeftColumn, RightColumn } from '@site/src/components/ApiReferenceLayout';
+import InteractiveApiRequest from '@site/src/components/InteractiveApiRequest';
+import ApiParameter from '@site/src/components/ApiParameter';
+import Badge from '@site/src/components/Badge';
+
+# Sinh video (Bước 2/3): Kiểm tra trạng thái
+
+## <Badge method="GET" /> `/gemini/v1beta/{operation_name}`
+
+Sử dụng `operation_name` (`name` nhận được ở Bước 1) để hỏi API xem video đã được tạo xong chưa. Bạn cần lặp lại bước này cho đến khi nhận được trạng thái hoàn tất.
+
+<ApiReferenceLayout>
+  <LeftColumn>
+    ### Tham số đường dẫn (Path Parameters)
+    <ApiParameter name="operation_name" type="string" required isEnd>
+      Tên của tác vụ cần kiểm tra. Ví dụ: `models/veo-3.0-generate-001/operations/idrk08ltkg0a`.
+    </ApiParameter>
+
+    ---
+
+    ### Cấu trúc Phản hồi (Response Body)
+    <ApiParameter name="name" type="string">
+      Tên đầy đủ của tác vụ.
+    </ApiParameter>
+    <ApiParameter name="done" type="boolean">
+      Trạng thái của tác vụ. `true` nếu đã hoàn thành.
+    </ApiParameter>
+    <ApiParameter name="response" type="object" isEnd>
+      Chứa kết quả khi `done` là `true`.
+    </ApiParameter>
+    <ApiParameter name="uri" type="string" indent={3} isEnd>
+      Đường dẫn URI đến file video đã được tạo. Bạn sẽ sử dụng `video_id` trích xuất từ URI này để tải video về ở Bước 3. Trong ví dụ: `https://generativelanguage.googleapis.com/v1beta/files/3j6svp4106e7:download?alt=media`, thì `video_id` là `3j6svp4106e7`.
+    </ApiParameter>
+
+  </LeftColumn>
+  <RightColumn>
+    <InteractiveApiRequest
+      method="GET"
+      apiUrl="https://api.thucchien.ai/gemini/v1beta/{{operation_name}}"
+      initialParameters={{
+        apiKey: '<your_api_key>',
+        operation_name: 'models/veo-3.0-generate-001/operations/idrk08ltkg0a',
+      }}
+      headers={{
+        'x-goog-api-key': '<your_api_key>',
+      }}
+      parameterControls={{
+        apiKey: { type: 'input' },
+        operation_name: { type: 'input' },
+      }}
+      codeTemplates={{
+        'curl': {
+          language: 'bash',
+          template: `curl "https://api.thucchien.ai/gemini/v1beta/{{operation_name}}" \\
+  -H "x-goog-api-key: {{apiKey}}"`,
+        },
+      }}
+      buildBody={(params) => null}
+      exampleResponse={{
+        "name": "models/veo-3.0-generate-preview/operations/idrk08ltkg0a",
+        "done": true,
+        "response": {
+            "@type": "type.googleapis.com/google.ai.generativelanguage.v1beta.PredictLongRunningResponse",
+            "generateVideoResponse": {
+                "generatedSamples": [
+                    {
+                        "video": {
+                            "uri": "https://generativelanguage.googleapis.com/v1beta/files/3j6svp4106e7:download?alt=media"
+                        }
+                    }
+                ]
+            }
+        }
+      }}
+    />
+  </RightColumn>
+</ApiReferenceLayout>

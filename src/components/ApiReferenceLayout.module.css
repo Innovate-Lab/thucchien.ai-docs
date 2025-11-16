@@ -1,0 +1,24 @@
+.layout {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+  
+  .leftColumn {
+    /* No specific styles needed here for now */
+  }
+  
+  .rightColumn {
+    min-width: 0;
+  }
+  
+  /* On smaller screens, stack the columns */
+  @media (max-width: 996px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+    .rightColumn {
+        /* No special styles needed for mobile anymore */
+    }
+  }
