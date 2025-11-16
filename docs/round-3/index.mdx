@@ -1,0 +1,154 @@
+---
+sidebar_position: 1
+hide_sidebar: true
+---
+
+# Thể Lệ và Hướng Dẫn Chi Tiết Vòng 3
+
+Chào mừng các đội thi xuất sắc  đến với vòng 3 cuộc thi AI thực chiến – **Phát triển & Tối ưu các mô hình ngôn ngữ nền tảng (LLM/SLM) tối ưu cho tiếng Việt**. Để đảm bảo một môi trường thi đấu công bằng, minh bạch và thúc đẩy sự sáng tạo, Ban Tổ Chức (BTC) ban hành bộ quy tắc và hướng dẫn chi tiết sau đây.
+
+## 1. Tổng quan và Các Giai đoạn Phát triển (Cột Mốc)
+
+Vòng thi được thiết kế để mô phỏng một quy trình phát triển dự án AI hoàn chỉnh, được chia thành hai (02) giai đoạn chính, tương ứng với các cột mốc thời gian. Đây là mô tả về các công việc trọng tâm và các sản phẩm (deliverables) mà các đội cần hoàn thành trong từng mốc thời gian.
+
+<span className='red-text'>**Việc nộp các sản phẩm này tại mỗi cột mốc là bắt buộc**</span> để BTC có thể theo dõi tiến độ và đánh giá tính minh bạch của quá trình làm việc.
+
+
+### Bảng Mốc Thời gian
+
+| Giai đoạn | Thời gian (Dự kiến) | Mô tả Công việc Trọng tâm | Sản phẩm Bắt buộc (Deliverables) |
+|---|---|---|---|
+| **I** | Cuối tuần 1 | **Thu thập & Xử lý Dữ liệu** <br/><br/> Các đội có quyền sử dụng các nguồn dữ liệu thô (bao gồm cả các nguồn do BTC gợi ý). Trong trường hợp có phát sinh nhu cầu tạo dữ liệu tổng hợp (synthetic data), các đội bắt buộc phải sử dụng API Gateway của BTC để thực hiện. <br/><br/> *Lịch checkpoint 1: Các đội thi sẽ có lịch interview và checkpoint với đại diện BTC* | 1. **Báo cáo Dữ liệu:** Tài liệu mô tả nguồn gốc (thô, gợi ý, hay tổng hợp), phương pháp thu thập, định dạng.<br/><br/>2. **Bộ dữ liệu mẫu:** Một tệp nén (zip) chứa mẫu dữ liệu đã qua xử lý.<br/><br/>3. **Nhật ký API (nếu có)**: Log chi tiết về quá trình tạo synthetic data (sẽ được đối chiếu với log của BTC). |
+| **II** | Cuối tuần 2 | **Huấn luyện & Tối ưu Mô hình** <br/><br/> Các đội bắt buộc sử dụng server do BTC cung cấp để tiến hành huấn luyện, tinh chỉnh và tối ưu hóa hiệu suất mô hình dựa trên bộ dữ liệu đã chuẩn bị. <br/><br/> *Lịch checkpoint 2: Các đội thi sẽ có lịch interview và checkpoint với đại diện BTC* | 1. **Báo cáo Kỹ thuật:** Mô tả kiến trúc mô hình, các thử nghiệm (experiments) đã chạy, các tham số (hyperparameters) đã tinh chỉnh.<br/><br/>2. **Model Checkpoint:** Ít nhất một phiên bản checkpoint của mô hình đã huấn luyện trên server của BTC. |
+
+## 2. Các Quy định Chung Bắt buộc
+
+Các quy định sau đây áp dụng cho **toàn bộ thời gian** diễn ra cuộc thi:
+
+### 2.1. Quản lý Mã nguồn (Github)
+
+Mỗi đội sẽ được cấp một kho lưu trữ riêng tư (private repository) trên tổ chức Github của BTC. Toàn bộ mã nguồn, tài liệu, và dữ liệu thử nghiệm phải được lưu trữ tại đây.
+
+**Cam kết (Commits):**
+- Các đội phải thực hiện commit thường xuyên và liên tục trong suốt quá trình làm việc.
+- Nội dung commit (commit message) phải rõ ràng, chi tiết, mô tả cụ thể các thay đổi. Tham khảo [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+
+**Tệp** `README.md` Đây là bộ mặt của dự án. Tệp README phải được cập nhật liên tục và bao gồm:
+- Tổng quan Dự án và Giải pháp
+- Thành viên Đội và vai trò
+- Kiến trúc Giải pháp
+- Hướng dẫn Cài đặt & Sử dụng (để BTC có thể cài đặt và chạy lại kết quả)
+
+**Tệp** `WORKLOG.md`: Ghi lại các quyết định kỹ thuật lớn
+
+### 2.2. Nhật ký Làm việc Bắt buộc (Development Diary)
+
+Mỗi đội bắt buộc phải duy trì một tệp `WORKLOG.md` trong thư mục gốc của kho lưu trữ.
+
+Tệp này dùng để ghi lại chi tiết thay đổi của công việc (dưới dạng log).
+
+**Ví dụ:**
+> "Ngày 10/11: Team họp 1 tiếng, phân chia task. Thành viên A: Xử lý dữ liệu X (nguồn BTC). Thành viên B: Thử nghiệm 50 prompt để tạo synthetic data cho chủ đề Y bằng API Gemini 2.5 Flash..."
+
+**Đây là tài liệu quan trọng** để BTC theo dõi quá trình làm việc thực tế và sẽ được đối chiếu chéo với lịch sử commit.
+
+### 2.3. Quy định về Nộp Mô hình (Hugging Face)
+
+- BTC sẽ tạo một "Tổ chức" (Organization) chung trên Hugging Face
+- **Nghĩa vụ của Đội:** Khi kết thúc Giai đoạn III, mỗi đội phải tải lên mô hình đã huấn luyện hoàn chỉnh của mình
+- **Định dạng Bắt buộc:** Mô hình phải tuân thủ nghiêm ngặt cấu trúc và định dạng chuẩn của Hugging Face (sử dụng AutoModel, AutoTokenizer) và phải bao gồm tệp model_card.md mô tả chi tiết
+
+### 2.4. Điều khoản: Quy Định Ràng buộc về Sử Dụng Dữ Liệu
+
+#### 2.4.1. Dữ liệu Gợi ý từ Ban Tổ chức (BTC)
+
+- BTC có thể cung cấp một hoặc nhiều bộ dữ liệu ("Dữ liệu Gợi ý") nhằm mục đích tham khảo và hỗ trợ các đội thi
+- Việc sử dụng Dữ liệu Gợi ý này là hoàn toàn **không bắt buộc**
+- Các đội thi có quyền tham khảo, xem xét sự phù hợp và tự do lựa chọn nguồn dữ liệu phù hợp nhất với giải pháp của mình
+
+
+#### 2.4.2. Sử dụng Dữ liệu Bên ngoài hoặc Tự thu thập
+
+Các đội thi được phép và khuyến khích sử dụng các bộ dữ liệu khác, bao gồm:
+- Dữ liệu từ các nguồn công khai
+- Dữ liệu của bên thứ ba
+- Dữ liệu do chính đội thi thu thập ("Dữ liệu Bên ngoài") đảm bảo các yếu tố liên quan tới bản quyền.
+
+
+#### 2.4.3. Trách nhiệm Tuân thủ Bắt buộc (Điều khoản Ràng buộc)
+
+Khi sử dụng bất kỳ nguồn dữ liệu nào (bao gồm cả Dữ liệu Gợi ý và Dữ liệu Bên ngoài), tất cả các đội thi **bắt buộc phải cam kết và tuân thủ nghiêm ngặt** các quy định sau:
+
+**Tính hợp pháp và Quyền sở hữu trí tuệ:**
+- Đội thi phải đảm bảo mình có đầy đủ quyền hợp pháp để sử dụng, xử lý và trình bày dữ liệu trong cuộc thi
+- Tuyệt đối không vi phạm bản quyền, thương hiệu, hoặc bất kỳ quyền sở hữu trí tuệ nào của bên thứ ba
+
+**Giấy phép (Data Licensing):**
+- Nếu sử dụng dữ liệu từ bên thứ ba, đội thi phải tuân thủ 100% các điều khoản trong giấy phép của bộ dữ liệu đó (ví dụ: Creative Commons, MIT, Apache, giấy phép thương mại, v.v.)
+- Nếu dữ liệu yêu cầu ghi công (attribution) hoặc chia sẻ tương tự (share-alike), đội thi phải thực hiện đầy đủ các yêu cầu này trong phần trình bày sản phẩm của mình.
+
+**Quyền riêng tư và Bảo mật Dữ liệu:**
+- Nghiêm cấm sử dụng dữ liệu chứa Thông tin Nhận dạng Cá nhân (PII) mà không có sự đồng ý rõ ràng, hợp lệ
+- Tuân thủ pháp luật về bảo vệ dữ liệu (GDPR, Nghị định 13/2023/NĐ-CP của Việt Nam)
+- Tất cả dữ liệu nhạy cảm (liên quan đến sức khỏe, tài chính, v.v.) phải được ẩn danh (anonymized) hoặc giả danh (pseudonymized) một cách triệt để trước khi sử dụng.
+
+**Tính minh bạch và Trách nhiệm Giải trình:**
+- Các đội thi phải sẵn sàng giải trình rõ ràng về nguồn gốc, phương pháp thu thập và quyền sử dụng pháp lý của tất cả các bộ dữ liệu đã dùng.
+- BTC có quyền yêu cầu đội thi cung cấp bằng chứng (ví dụ: đường dẫn đến giấy phép, văn bản đồng ý) bất cứ lúc nào trong quá trình thi.
+
+
+## 3. Tài nguyên BTC Cung cấp
+
+Để hỗ trợ các đội, BTC sẽ cung cấp các tài nguyên sau:
+
+### 3.1. Kinh phí API Gateway (500 USD)
+
+- Mỗi đội được cấp một ngân sách (credit) trị giá **500 USD** để sử dụng qua API Gateway của BTC
+- Ngân sách này dùng để truy cập các mô hình như **Gemini 2.5 Flash/Pro**
+- **Quy định bắt buộc:** Nếu các đội có phát sinh nhu cầu tạo dữ liệu tổng hợp (synthetic data) trong Giai đoạn I, hoạt động này **phải được thực hiện duy nhất thông qua cổng API này**
+- Các đội không được phép sử dụng API khác hoặc tự tạo synthetic data bằng phương pháp khác
+
+### 3.2. Tài nguyên Huấn luyện (Server)
+
+- BTC sẽ cung cấp cho mỗi đội một môi trường máy chủ (server) riêng biệt với tài nguyên (GPU/CPU) được cấp phát sẵn
+- **Quy định bắt buộc:** Mọi hoạt động huấn luyện (training, fine-tuning) mô hình trong Giai đoạn II **phải được thực hiện trên máy chủ này**
+
+
+## 4. Giải trình về Tính Minh bạch và Cơ chế Chống Gian lận
+
+Theo quy định của AI Thực Chiến, mỗi đội phải hoàn toàn tự làm bài thi, không có sự tham gia giúp đỡ của người ngoài. Vì thế, Ban tổ chức áp dụng quy trình nghiêm ngặt để bảo đảm tính minh bạch trong suốt quá trình thi của các đội.
+
+### 4.1. Kiểm soát Đầu vào (API Logs)
+
+BTC có toàn quyền truy cập và sẽ giám sát nhật ký sử dụng API Gateway. Chúng tôi sẽ:
+- Đối chiếu nhật ký gọi API (Gemini 2.5 Flash/Pro) của các đội với báo cáo dữ liệu Giai đoạn I
+- Bất kỳ bộ dữ liệu synthetic nào được báo cáo mà không có bằng chứng tạo ra từ API của BTC sẽ bị **coi là không hợp lệ**
+
+### 4.2. Kiểm soát Quá trình (Server Logs)
+
+BTC sẽ giám sát nhật ký sử dụng tài nguyên (GPU/CPU) **24/7** trên server huấn luyện đã cấp. Chúng tôi sẽ:
+- Đối chiếu các log này với các checkpoint mô hình mà đội nộp tại Giai đoạn II
+- Nếu đội nộp một mô hình đã huấn luyện mà không có (hoặc có rất ít) log sử dụng GPU trên server BTC, hoặc các dấu hiệu bất thường trong quá trình sử dụng GPU (users, địa điểm,...) BTC sẽ tiến hành quá trình thanh kiểm tra.
+
+### 4.3. Giám sát Tiến độ (Github & Diary)
+
+BTC sẽ rà soát các kho lưu trữ Github và tệp `WORKLOG.md` một cách **thường xuyên, đột xuất**. Chúng tôi sẽ:
+- Kiểm soát tài khoản các thành viên được phép tham gia phát triển
+- Đối chiếu lịch sử commit với nội dung nhật ký
+- Mọi sự bất nhất (ví dụ: commit một lượng code lớn nhưng nhật ký không ghi lại công việc tương ứng) sẽ bị xem xét.
+
+
+### 4.4. Phiên Bảo vệ Code và Phỏng vấn Trực tiếp (Interview)
+
+- BTC có quyền chỉ vào bất kỳ dòng code nào hoặc bất kỳ dòng log nào trong `WORKLOG.md` và yêu cầu đội giải thích
+- Nếu một thành viên không thể giải thích logic của đoạn code do chính mình commit, đội đó sẽ bị xem xét về tính toàn vẹn
+
+### 4.5. Kiểm soát chuẩn đầu ra
+- BTC quy định các đội thi hoàn thiện mô hình, đóng gói theo chuẩn Hugging Face để đảm bảo minh bạch cho quá trình kiểm tra, kết hợp với github quá trình làm bài của các đội thi
+
+### 4.6. Audit (Kiểm tra Độc lập)
+- BTC sẽ tiến hành audit và kiểm tra toàn bộ codes cũng như quá trình làm bài của các đội trước khi chính thức công bố các đội thắng cuộc vào vòng Chung Kết. Việc phát hiện những sai phạm trong quá trình kiểm tra này sẽ có thể làm thay đổi kết quả của các đội thi.
+
+### 4.7. Hình thức Xử lý Vi phạm
+- BTC sẽ có quyền loại bỏ ngay lập tức bất kỳ đội thi nào vi phạm các quy định nêu trên mà không cần thông báo trước
+- Quyết định của BTC về việc xử lý vi phạm là quyết định cuối cùng và duy nhất.

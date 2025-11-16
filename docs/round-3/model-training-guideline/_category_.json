@@ -1,0 +1,10 @@
+{
+  "label": "Huấn luyện mô hình",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "title": "Hướng Dẫn Huấn Luyện Mô Hình",
+    "description": "Hướng dẫn chi tiết tham khảo về huấn luyện mô hình ngôn ngữ cho Vòng Bán Kết Thử Thách AI Thực Chiến.",
+    "slug": "/round-3/model-training-guideline"
+  }
+}
